@@ -24,7 +24,7 @@ import org.koin.core.component.KoinComponent
 
 class LoginComponent(
     componentContext: ComponentContext,
-    private val onNavigateWorkoutSession: () -> Unit,
+    private val onNavigateMain: () -> Unit,
     private val onNavigateRegister: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
@@ -42,7 +42,7 @@ class LoginComponent(
             scope.launch {
                 store.labels.collect { label ->
                     when (label) {
-                        LoginLabel.NavigateToWorkoutSession -> onNavigateWorkoutSession()
+                        LoginLabel.NavigateToWorkoutSession -> onNavigateMain()
                         is LoginLabel.ShowError -> _snackbar.emit(label.message)
                         LoginLabel.NavigateToRegister -> onNavigateRegister()
                     }

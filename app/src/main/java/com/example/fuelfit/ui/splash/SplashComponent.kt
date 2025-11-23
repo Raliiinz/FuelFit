@@ -19,7 +19,7 @@ import org.koin.core.component.inject
 
 class SplashComponent(
     componentContext: ComponentContext,
-    private val onNavigateWorkoutSession: () -> Unit,
+    private val onNavigateMain: () -> Unit,
     private val onNavigateLogin: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
@@ -35,7 +35,7 @@ class SplashComponent(
                 .catch { emit(SplashLabel.NavigateToLogin) }
                 .collect { label ->
                     when (label) {
-                        SplashLabel.NavigateToWorkoutSession -> onNavigateWorkoutSession()
+                        SplashLabel.NavigateToWorkoutSession -> onNavigateMain()
                         SplashLabel.NavigateToLogin -> onNavigateLogin()
                     }
                 }

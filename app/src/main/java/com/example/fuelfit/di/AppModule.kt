@@ -4,6 +4,7 @@ import android.app.Application
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.example.fuelfit.auth.impl.di.authModule
+import com.example.fuelfit.exercise.impl.di.exerciseModule
 import com.example.fuelfit.network.di.networkModule
 import com.example.fuelfit.ui.splash.di.splashModule
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +18,7 @@ val appModule = module {
         networkModule,
         splashModule,
         authModule,
+        exerciseModule
         // другие фичи
     )
 }

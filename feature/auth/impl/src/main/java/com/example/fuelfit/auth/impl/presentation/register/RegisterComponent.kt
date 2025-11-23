@@ -20,7 +20,7 @@ import org.koin.core.component.KoinComponent
 
 class RegisterComponent(
     componentContext: ComponentContext,
-    private val onNavigateWorkoutSession: () -> Unit,
+    private val onNavigateMain: () -> Unit,
     private val onNavigateLogin: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
@@ -41,7 +41,7 @@ class RegisterComponent(
             scope.launch {
                 store.labels.collect { label ->
                     when (label) {
-                        RegisterLabel.NavigateToWorkoutSession -> onNavigateWorkoutSession()
+                        RegisterLabel.NavigateToWorkoutSession -> onNavigateMain()
                         is RegisterLabel.ShowError -> _snackbar.emit(label.message)
                         RegisterLabel.NavigateToLogin -> onNavigateLogin()
                     }

@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.example.fuelfit.auth.impl.presentation.login.LoginComponent
 import com.example.fuelfit.auth.impl.presentation.register.RegisterComponent
+import com.example.fuelfit.navigation.tabs.DefaultTabsComponent
 import com.example.fuelfit.ui.splash.SplashComponent
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
 import kotlinx.serialization.Serializable
@@ -35,8 +36,8 @@ class DefaultRootComponent(
                 RootComponent.Child.SplashChild(
                     SplashComponent(
                         componentContext = childContext,
-                        onNavigateWorkoutSession = {
-                            navigation.replaceAll(Config.Workout)
+                        onNavigateMain = {
+                            navigation.replaceAll(Config.Tabs)
                         },
                         onNavigateLogin = {
                             navigation.replaceAll(Config.Login)
@@ -48,8 +49,8 @@ class DefaultRootComponent(
                 RootComponent.Child.LoginChild(
                     LoginComponent(
                         componentContext = childContext,
-                        onNavigateWorkoutSession = {
-                            navigation.replaceAll(Config.Workout)
+                        onNavigateMain = {
+                            navigation.replaceAll(Config.Tabs)
                         },
                         onNavigateRegister = {
                             navigation.replaceAll(Config.Register)
@@ -61,8 +62,8 @@ class DefaultRootComponent(
                 RootComponent.Child.RegisterChild(
                     RegisterComponent(
                         componentContext = childContext,
-                        onNavigateWorkoutSession = {
-                            navigation.replaceAll(Config.Workout)
+                        onNavigateMain = {
+                            navigation.replaceAll(Config.Tabs)
                         },
                         onNavigateLogin = {
                             navigation.replaceAll(Config.Login)
@@ -70,9 +71,9 @@ class DefaultRootComponent(
                     )
                 )
 
-            Config.Workout ->
-                RootComponent.Child.WorkoutChild(
-                    WorkoutSessionComponent(childContext)
+            Config.Tabs ->
+                RootComponent.Child.TabsChild(
+                    DefaultTabsComponent(childContext)
                 )
         }
 
@@ -89,7 +90,7 @@ class DefaultRootComponent(
         @Serializable
         object Register : Config()
         @Serializable
-        object Workout : Config()
+        object Tabs : Config()
     }
 }
 

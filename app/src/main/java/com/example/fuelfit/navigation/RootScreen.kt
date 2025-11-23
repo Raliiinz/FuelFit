@@ -8,8 +8,8 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.auth.impl.presentation.login.LoginScreen
 import com.example.fuelfit.auth.impl.presentation.register.RegisterScreen
+import com.example.fuelfit.navigation.tabs.TabsScreen
 import com.example.fuelfit.ui.splash.SplashScreen
-import com.example.fuelfit.workoutsession.impl.WorkoutSessionScreen
 
 @Composable
 fun RootScreen(component: RootComponent) {
@@ -20,7 +20,7 @@ fun RootScreen(component: RootComponent) {
             is RootComponent.Child.SplashChild -> SplashScreen(modifier = Modifier.fillMaxSize())
             is RootComponent.Child.LoginChild -> LoginScreen(child.component)
             is RootComponent.Child.RegisterChild -> RegisterScreen(child.component)
-            is RootComponent.Child.WorkoutChild -> WorkoutSessionScreen(child.component)
+            is RootComponent.Child.TabsChild -> TabsScreen(child.component)
         }
     }
 }
