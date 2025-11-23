@@ -1,0 +1,47 @@
+package com.example.fuelfit.ui.splash
+
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.example.fuelfit.ui.splash.mvi.SplashLabel
+import com.example.fuelfit.ui.splash.mvi.SplashState
+import com.example.fuelfit.ui.splash.mvi.SplashStoreFactory
+import com.example.fuelfit.utils.asValue
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+class SplashComponent(
+    componentContext: ComponentContext,
+    private val onNavigateWorkoutSession: () -> Unit,
+    private val onNavigateLogin: () -> Unit
+) : ComponentContext by componentContext, KoinComponent {
+
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private val factory: SplashStoreFactory by inject()
+
+    private val store by lazy { instanceKeeper.getStore { factory.create() } }
+    val state: Value<SplashState> = store.asValue()
+
+    init {
+        scope.launch {
+            store.labels
+                .catch { emit(SplashLabel.NavigateToLogin) }
+                .collect { label ->
+                    when (label) {
+                        SplashLabel.NavigateToWorkoutSession -> onNavigateWorkoutSession()
+                        SplashLabel.NavigateToLogin -> onNavigateLogin()
+                    }
+                }
+        }
+    }
+
+    fun onDestroy() = scope.cancel()
+}
+
