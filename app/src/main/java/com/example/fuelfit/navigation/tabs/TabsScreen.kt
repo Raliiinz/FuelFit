@@ -15,6 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.example.fuelfit.exercise.impl.presentation.list.ExercisesScreen
+import com.example.fuelfit.food.impl.FoodScreen
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionScreen
 
 @Composable

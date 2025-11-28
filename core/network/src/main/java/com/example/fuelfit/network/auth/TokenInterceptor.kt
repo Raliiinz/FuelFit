@@ -14,7 +14,7 @@ class TokenInterceptor(
         val access = runBlocking { tokenStorage.getAccessToken() }
         val newReq = access?.let {
             original.newBuilder()
-                .addHeader("Authorization", "Bearer $it")
+                .addHeader("Authorization", "Token $it")
                 .build()
         } ?: original
 

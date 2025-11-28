@@ -78,6 +78,8 @@ koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", versio
 
 # Extra
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+
 coil-network-okhttp = { group = "io.coil-kt", name = "coil-network-okhttp", version.ref = "coil" }
 
 

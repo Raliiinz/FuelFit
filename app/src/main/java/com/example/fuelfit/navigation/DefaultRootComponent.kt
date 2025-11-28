@@ -11,7 +11,6 @@ import com.example.fuelfit.auth.impl.presentation.login.LoginComponent
 import com.example.fuelfit.auth.impl.presentation.register.RegisterComponent
 import com.example.fuelfit.navigation.tabs.DefaultTabsComponent
 import com.example.fuelfit.ui.splash.SplashComponent
-import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
 import kotlinx.serialization.Serializable
 
 class DefaultRootComponent(

@@ -8,6 +8,7 @@ class GetExerciseByIdUseCaseImpl(
     private val repository: ExerciseRepository
 ) : GetExerciseByIdUseCase {
     override suspend fun invoke(id: Int): Exercise {
-        return repository.getExerciseById(id)
+//        return repository.getExerciseById(id)
+        TODO()
     }
 }

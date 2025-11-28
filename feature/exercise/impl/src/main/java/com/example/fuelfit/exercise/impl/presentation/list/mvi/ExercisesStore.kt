@@ -2,10 +2,10 @@ package com.example.fuelfit.exercise.impl.presentation.list.mvi
 
 import com.arkivanov.mvikotlin.core.store.Store
 
-internal interface ExerciseStore :
-    Store<ExerciseIntent, ExerciseState, ExerciseLabel> {
+internal interface ExercisesStore :
+    Store<ExercisesIntent, ExercisesState, ExercisesLabel> {
 
     interface Factory {
-        fun create(): ExerciseStore
+        fun create(): ExercisesStore
     }
 }

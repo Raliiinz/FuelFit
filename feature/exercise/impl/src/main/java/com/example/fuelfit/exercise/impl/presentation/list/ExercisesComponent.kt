@@ -3,11 +3,11 @@ package com.example.fuelfit.exercise.impl.presentation.list
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
-import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExerciseIntent
-import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExerciseLabel
-import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExerciseState
-import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExerciseStore
-import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExerciseStoreFactory
+import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesIntent
+import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesLabel
+import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesState
+import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesStore
+import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesStoreFactory
 import com.example.fuelfit.utils.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,16 +20,16 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 
-class ExerciseComponent(
+class ExercisesComponent(
     componentContext: ComponentContext
 ) : ComponentContext by componentContext, KoinComponent {
 
-    private val storeFactory: ExerciseStoreFactory by inject()
+    private val storeFactory: ExercisesStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    private val store: ExerciseStore = instanceKeeper.getStore { storeFactory.create() }
+    private val store: ExercisesStore = instanceKeeper.getStore { storeFactory.create() }
 
-    internal val state: Value<ExerciseState> = store.asValue()
+    internal val state: Value<ExercisesState> = store.asValue()
 
     private val _snackbar = MutableSharedFlow<String>()
     val snackbarFlow: SharedFlow<String> = _snackbar
@@ -38,13 +38,13 @@ class ExerciseComponent(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is ExerciseLabel.ShowError -> _snackbar.emit(label.message)
+                    is ExercisesLabel.ShowError -> _snackbar.emit(label.message)
                 }
             }
         }
     }
 
-    internal fun onIntent(intent: ExerciseIntent) {
+    internal fun onIntent(intent: ExercisesIntent) {
         store.accept(intent)
     }
 

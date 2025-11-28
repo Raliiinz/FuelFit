@@ -2,6 +2,8 @@ package com.example.fuelfit.navigation.tabs
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.example.fuelfit.exercise.impl.presentation.list.ExercisesComponent
+import com.example.fuelfit.food.impl.FoodComponent
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
 
 interface TabsComponent {

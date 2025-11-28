@@ -9,6 +9,7 @@ class UpdateExerciseUseCaseImpl(
     private val repository: ExerciseRepository
 ) : UpdateExerciseUseCase {
     override suspend fun invoke(id: Int, body: ExerciseUpdate): Exercise {
-        return repository.updateExercise(id, body)
+//        return repository.updateExercise(id, body)
+        TODO()
     }
 }

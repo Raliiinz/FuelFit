@@ -5,6 +5,7 @@ import com.example.fuelfit.exercise.api.model.ExerciseList
 interface GetExercisesUseCase {
     suspend operator fun invoke(
         limit: Int? = null,
-        offset: Int? = null
+        offset: Int? = null,
+        categories: List<Int>?
     ): ExerciseList
 }

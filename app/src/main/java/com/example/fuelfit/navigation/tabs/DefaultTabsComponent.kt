@@ -6,6 +6,8 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
+import com.example.fuelfit.exercise.impl.presentation.list.ExercisesComponent
+import com.example.fuelfit.food.impl.FoodComponent
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
 import kotlinx.serialization.Serializable
 

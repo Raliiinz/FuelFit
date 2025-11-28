@@ -50,6 +50,7 @@ dependencies {
 
     implementation(project(":feature:auth:impl"))
     implementation(project(":feature:exercise:impl"))
+    implementation(project(":feature:food:impl"))
     implementation(project(":feature:workoutsession:impl"))
 
     implementation("androidx.compose.material:material-icons-extended:1.6.8")

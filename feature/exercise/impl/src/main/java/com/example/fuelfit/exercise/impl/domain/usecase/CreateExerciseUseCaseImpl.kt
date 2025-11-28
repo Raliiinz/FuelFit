@@ -9,6 +9,7 @@ class CreateExerciseUseCaseImpl(
     private val repository: ExerciseRepository
 ) : CreateExerciseUseCase {
     override suspend fun invoke(body: ExerciseCreate): Exercise {
-        return repository.createExercise(body)
+//        return repository.createExercise(body)
+        TODO()
     }
 }

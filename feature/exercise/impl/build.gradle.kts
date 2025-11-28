@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging)
 
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
