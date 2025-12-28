@@ -8,6 +8,10 @@ class GetExercisesUseCaseImpl(
     private val repository: ExerciseRepository
 ) : GetExercisesUseCase {
     override suspend fun invoke(limit: Int?, offset: Int?, categories: List<Int>?): ExerciseList {
-        return repository.getExercises(limit, offset, categories)
+        return repository.getExercises(
+            limit = limit,
+            offset = offset,
+            categories = categories
+        )
     }
 }

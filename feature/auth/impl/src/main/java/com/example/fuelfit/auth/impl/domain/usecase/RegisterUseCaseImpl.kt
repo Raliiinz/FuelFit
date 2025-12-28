@@ -8,6 +8,7 @@ import com.example.fuelfit.auth.api.usecase.RegisterUseCase
 internal class RegisterUseCaseImpl(
     private val repository: AuthRepository
 ) : RegisterUseCase {
-    override suspend fun invoke(request: RegisterParams): AuthTokens =
-        repository.register(request)
+    override suspend fun invoke(request: RegisterParams): AuthTokens {
+        return repository.register(request)
+    }
 }

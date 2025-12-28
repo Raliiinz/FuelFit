@@ -3,43 +3,24 @@ package com.example.fuelfit.exercise.impl.data.mapper
 import com.example.fuelfit.exercise.api.model.Equipment
 import com.example.fuelfit.exercise.api.model.ExerciseAlias
 import com.example.fuelfit.exercise.api.model.ExerciseCategory
-import com.example.fuelfit.exercise.api.model.ExerciseCreate
 import com.example.fuelfit.exercise.api.model.ExerciseImage
 import com.example.fuelfit.exercise.api.model.ExerciseInfo
 import com.example.fuelfit.exercise.api.model.ExerciseList
 import com.example.fuelfit.exercise.api.model.ExerciseNote
 import com.example.fuelfit.exercise.api.model.ExerciseTranslation
-import com.example.fuelfit.exercise.api.model.ExerciseUpdate
 import com.example.fuelfit.exercise.api.model.ExerciseVideo
 import com.example.fuelfit.exercise.api.model.License
 import com.example.fuelfit.exercise.api.model.Muscle
-import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseUpdateRequest
-import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseCreateRequest
 import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoDto
 import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoListResponseDto
 import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.*
 
-//fun ExerciseDto.toDomain() = Exercise(
-//    id = id,
-//    uuid = uuid,
-//    created = created,
-//    lastUpdate = lastUpdate,
-//    category = category,
-//    muscles = muscles,
-//    musclesSecondary = musclesSecondary,
-//    equipment = equipment,
-//    variations = variations,
-//    licenseAuthor = licenseAuthor
-//)
-//
 fun ExerciseInfoListResponseDto.toDomain() = ExerciseList(
     count = count,
     next = next,
     previous = previous,
     exercises = results.map { it.toDomain() }
 )
-
-
 
 fun ExerciseInfoDto.toDomain(): ExerciseInfo =
     ExerciseInfo(
@@ -136,24 +117,4 @@ fun VideoDto.toDomain() = ExerciseVideo(
     licenseAuthorUrl = licenseAuthorUrl,
     licenseDerivativeSourceUrl = licenseDerivativeSourceUrl,
     authorHistory = authorHistory
-)
-
-
-
-fun ExerciseCreate.toDto() = ExerciseCreateRequest(
-    category = category,
-    muscles = muscles,
-    musclesSecondary = musclesSecondary,
-    equipment = equipment,
-    variations = variations,
-    licenseAuthor = licenseAuthor
-)
-
-fun ExerciseUpdate.toDto() = ExerciseUpdateRequest(
-    category = category,
-    muscles = muscles,
-    musclesSecondary = musclesSecondary,
-    equipment = equipment,
-    variations = variations,
-    licenseAuthor = licenseAuthor
 )

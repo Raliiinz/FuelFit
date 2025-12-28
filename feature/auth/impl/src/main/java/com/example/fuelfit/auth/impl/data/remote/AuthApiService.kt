@@ -29,4 +29,3 @@ interface AuthApiService {
     @POST("api/v2/token/verify")
     suspend fun verify(@Body body: TokenVerifyRequest)
 }
-

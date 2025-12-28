@@ -9,5 +9,6 @@ interface AuthRepository {
     suspend fun register(request: RegisterParams): AuthTokens
     suspend fun refreshToken(refresh: String): AuthTokens
     suspend fun verifyToken(token: String): Boolean
+    suspend fun isAuthorized(): Boolean
     suspend fun logout()
 }

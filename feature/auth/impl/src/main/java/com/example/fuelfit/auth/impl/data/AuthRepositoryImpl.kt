@@ -71,6 +71,11 @@ class AuthRepositoryImpl(
             }
         }
 
+    override suspend fun isAuthorized(): Boolean =
+        withContext(Dispatchers.IO) {
+            tokenStorage.getAccessToken() != null
+        }
+
     override suspend fun logout() {
         tokenStorage.clear()
     }

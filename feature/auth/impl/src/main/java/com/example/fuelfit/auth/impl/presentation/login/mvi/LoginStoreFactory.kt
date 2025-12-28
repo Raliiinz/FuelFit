@@ -51,7 +51,6 @@ internal class LoginStoreFactory(
             val password = state().password
             val email = state().email
 
-            // Валидация
             if (username.isBlank() || password.isBlank() || email.isBlank()) {
                 publish(LoginLabel.ShowError("Введите логин, email и пароль"))
                 return
@@ -70,17 +69,13 @@ internal class LoginStoreFactory(
                     )
 
                     dispatch(LoginMsg.Success)
-                    publish(LoginLabel.NavigateToWorkoutSession)
+                    publish(LoginLabel.NavigateToMain)
 
                 } catch (e: Exception) {
                     dispatch(LoginMsg.Error(e.message ?: "Ошибка"))
                     publish(LoginLabel.ShowError(e.message ?: "Ошибка"))
                 }
             }
-        }
-
-        override fun executeAction(action: LoginAction) {
-            // можно логировать открытие экрана
         }
     }
 

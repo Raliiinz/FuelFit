@@ -6,7 +6,8 @@ import com.example.fuelfit.auth.api.usecase.VerifyTokenUseCase
 class VerifyTokenUseCaseImpl internal constructor(
     private val repository: AuthRepository
 ) : VerifyTokenUseCase {
-    override suspend fun invoke(token: String): Boolean =
-        repository.verifyToken(token)
+    override suspend fun invoke(token: String): Boolean {
+        return repository.verifyToken(token)
+    }
 }
 

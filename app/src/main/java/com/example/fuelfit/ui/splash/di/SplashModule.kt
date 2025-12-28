@@ -7,9 +7,7 @@ val splashModule = module {
     factory {
         SplashStoreFactory(
             storeFactory = get(),
-            verifyTokenUseCase = get(),
-            tokenStorage = get()
+            isAuthorizedUseCase = get()
         )
     }
 }
-

@@ -9,5 +9,8 @@ internal data class ExercisesState(
     val selectedCategories: Set<Int> = emptySet(),
     val query: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null
+    val isPaging: Boolean = false,
+    val error: String? = null,
+    val offset: Int = 0,
+    val hasNext: Boolean = true
 )

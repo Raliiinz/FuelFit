@@ -6,5 +6,7 @@ import com.example.fuelfit.auth.api.usecase.LogoutUseCase
 internal class LogoutUseCaseImpl(
     private val repository: AuthRepository
 ) : LogoutUseCase {
-    override suspend fun invoke() = repository.logout()
+    override suspend fun invoke() {
+        return repository.logout()
+    }
 }

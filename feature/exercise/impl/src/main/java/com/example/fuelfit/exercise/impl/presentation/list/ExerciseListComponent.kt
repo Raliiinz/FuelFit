@@ -2,6 +2,8 @@ package com.example.fuelfit.exercise.impl.presentation.list
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesIntent
 import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesLabel
@@ -20,35 +22,35 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 
-class ExercisesComponent(
-    componentContext: ComponentContext
+class ExercisesListComponent(
+    componentContext: ComponentContext,
+    private val onExerciseClicked: (Int) -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val storeFactory: ExercisesStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
     private val store: ExercisesStore = instanceKeeper.getStore { storeFactory.create() }
-
     internal val state: Value<ExercisesState> = store.asValue()
 
     private val _snackbar = MutableSharedFlow<String>()
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
-        scope.launch {
-            store.labels.collect { label ->
-                when (label) {
-                    is ExercisesLabel.ShowError -> _snackbar.emit(label.message)
+        lifecycle.doOnCreate {
+            scope.launch {
+                store.labels.collect { label ->
+                    when (label) {
+                        is ExercisesLabel.ShowError -> _snackbar.emit(label.message)
+                        is ExercisesLabel.NavigateToExerciseDetail -> onExerciseClicked(label.id)
+                    }
                 }
             }
         }
+
+        lifecycle.doOnDestroy { scope.cancel() }
     }
 
     internal fun onIntent(intent: ExercisesIntent) {
         store.accept(intent)
-    }
-
-    fun onDestroy() {
-        scope.cancel()
     }
 }

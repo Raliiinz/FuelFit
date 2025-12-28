@@ -1,27 +1,22 @@
 package com.example.fuelfit.navigation.tabs
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.example.fuelfit.exercise.impl.presentation.list.ExercisesScreen
+import com.example.fuelfit.exercise.impl.navigation.ExercisesScreen
 import com.example.fuelfit.food.impl.FoodScreen
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionScreen
 
 @Composable
 fun TabsScreen(component: TabsComponent) {
-
     val stack by component.stack.subscribeAsState()
 
     Scaffold(
@@ -29,19 +24,19 @@ fun TabsScreen(component: TabsComponent) {
             NavigationBar {
                 NavigationBarItem(
                     selected = stack.active.instance is TabsComponent.Child.ExercisesChild,
-                    onClick = { component.onTabClicked(TabsComponent.Tab.EXERCISES) },
+                    onClick = { component.onTabClicked(TabsComponent.Config.Exercises) },
                     label = { Text("Exercises") },
                     icon = { Icon(Icons.Default.List, null) }
                 )
                 NavigationBarItem(
                     selected = stack.active.instance is TabsComponent.Child.WorkoutChild,
-                    onClick = { component.onTabClicked(TabsComponent.Tab.WORKOUT) },
+                    onClick = { component.onTabClicked(TabsComponent.Config.Workout) },
                     label = { Text("Workout") },
                     icon = { Icon(Icons.Default.FitnessCenter, null) }
                 )
                 NavigationBarItem(
                     selected = stack.active.instance is TabsComponent.Child.FoodChild,
-                    onClick = { component.onTabClicked(TabsComponent.Tab.FOOD) },
+                    onClick = { component.onTabClicked(TabsComponent.Config.Food) },
                     label = { Text("Food") },
                     icon = { Icon(Icons.Default.Fastfood, null) }
                 )

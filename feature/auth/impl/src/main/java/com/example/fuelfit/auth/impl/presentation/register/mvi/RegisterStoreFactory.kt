@@ -69,17 +69,13 @@ internal class RegisterStoreFactory(
                     )
 
                     dispatch(Success)
-                    publish(RegisterLabel.NavigateToWorkoutSession)
+                    publish(RegisterLabel.NavigateToMain)
 
                 } catch (e: Exception) {
                     dispatch(Error(e.message ?: "Ошибка"))
                     publish(RegisterLabel.ShowError(e.message ?: "Ошибка"))
                 }
             }
-        }
-
-        override fun executeAction(action: RegisterAction) {
-            // логирование
         }
     }
 

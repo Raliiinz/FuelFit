@@ -1,17 +1,14 @@
 package com.example.fuelfit.exercise.api.repository
 
-import com.example.fuelfit.exercise.api.model.Exercise
 import com.example.fuelfit.exercise.api.model.ExerciseCategory
-import com.example.fuelfit.exercise.api.model.ExerciseCreate
 import com.example.fuelfit.exercise.api.model.ExerciseInfo
 import com.example.fuelfit.exercise.api.model.ExerciseList
-import com.example.fuelfit.exercise.api.model.ExerciseUpdate
 
 interface ExerciseRepository {
     suspend fun getExercises(
         limit: Int? = null,
         offset: Int? = null,
-        category: Int? = null,
+        categories: List<Int>? = null,
         muscles: List<Int>? = null,
         musclesSecondary: List<Int>? = null,
         equipment: List<Int>? = null,
@@ -26,10 +23,4 @@ interface ExerciseRepository {
         name: String? = null,
         ordering: String? = null
     ): List<ExerciseCategory>
-
-//    suspend fun createExercise(body: ExerciseCreate): Exercise
-//
-//    suspend fun updateExercise(id: Int, body: ExerciseUpdate): Exercise
-
-    suspend fun deleteExercise(id: Int): Unit
 }

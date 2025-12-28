@@ -6,54 +6,42 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
-import com.example.fuelfit.exercise.impl.presentation.list.ExercisesComponent
+import com.example.fuelfit.exercise.impl.navigation.ExercisesTabComponent
 import com.example.fuelfit.food.impl.FoodComponent
 import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
-import kotlinx.serialization.Serializable
 
 class DefaultTabsComponent(
     componentContext: ComponentContext
 ) : TabsComponent, ComponentContext by componentContext {
 
-    private val navigation = StackNavigation<Config>()
+    private val navigation = StackNavigation<TabsComponent.Config>()
 
-    private val _stack =
+    private val _stack: Value<ChildStack<*, TabsComponent.Child>> =
         childStack(
             source = navigation,
-            serializer = Config.serializer(),
-            initialConfiguration = Config.Workout,
-            childFactory = ::child,
+            serializer = TabsComponent.Config.serializer(),
+            initialStack = { listOf(TabsComponent.Config.Workout) },
+            childFactory = ::createChild
         )
 
     override val stack: Value<ChildStack<*, TabsComponent.Child>> = _stack
 
-    @Serializable
-    private sealed interface Config {
-        @Serializable
-        data object Exercises : Config
-        @Serializable
-        data object Workout : Config
-        @Serializable
-        data object Food : Config
+    private fun createChild(
+        config: TabsComponent.Config,
+        childContext: ComponentContext
+    ): TabsComponent.Child = when (config) {
+        TabsComponent.Config.Exercises -> TabsComponent.Child.ExercisesChild(
+            ExercisesTabComponent(childContext)
+        )
+        TabsComponent.Config.Workout -> TabsComponent.Child.WorkoutChild(
+            WorkoutSessionComponent(childContext)
+        )
+        TabsComponent.Config.Food -> TabsComponent.Child.FoodChild(
+            FoodComponent(childContext)
+        )
     }
 
-    private fun child(config: Config, context: ComponentContext): TabsComponent.Child =
-        when (config) {
-            Config.Exercises ->
-                TabsComponent.Child.ExercisesChild(ExercisesComponent(context))
-
-            Config.Workout ->
-                TabsComponent.Child.WorkoutChild(WorkoutSessionComponent(context))
-
-            Config.Food ->
-                TabsComponent.Child.FoodChild(FoodComponent(context))
-        }
-
-    override fun onTabClicked(tab: TabsComponent.Tab) {
-        when (tab) {
-            TabsComponent.Tab.EXERCISES -> navigation.bringToFront(Config.Exercises)
-            TabsComponent.Tab.WORKOUT -> navigation.bringToFront(Config.Workout)
-            TabsComponent.Tab.FOOD -> navigation.bringToFront(Config.Food)
-        }
+    override fun onTabClicked(tab: TabsComponent.Config) {
+        navigation.bringToFront(tab)
     }
 }

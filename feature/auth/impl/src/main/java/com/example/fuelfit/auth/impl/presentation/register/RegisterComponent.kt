@@ -41,7 +41,7 @@ class RegisterComponent(
             scope.launch {
                 store.labels.collect { label ->
                     when (label) {
-                        RegisterLabel.NavigateToWorkoutSession -> onNavigateMain()
+                        RegisterLabel.NavigateToMain -> onNavigateMain()
                         is RegisterLabel.ShowError -> _snackbar.emit(label.message)
                         RegisterLabel.NavigateToLogin -> onNavigateLogin()
                     }

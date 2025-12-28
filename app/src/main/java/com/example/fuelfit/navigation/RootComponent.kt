@@ -6,7 +6,6 @@ import com.example.fuelfit.auth.impl.presentation.login.LoginComponent
 import com.example.fuelfit.auth.impl.presentation.register.RegisterComponent
 import com.example.fuelfit.navigation.tabs.TabsComponent
 import com.example.fuelfit.ui.splash.SplashComponent
-import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
 
 interface RootComponent {
     val stack: Value<ChildStack<*, Child>>

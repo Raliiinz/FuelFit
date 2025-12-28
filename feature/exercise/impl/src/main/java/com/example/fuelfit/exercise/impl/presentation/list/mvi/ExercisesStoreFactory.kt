@@ -2,6 +2,7 @@ package com.example.fuelfit.exercise.impl.presentation.list.mvi
 
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.example.fuelfit.exercise.api.model.ExerciseList
 import com.example.fuelfit.exercise.api.usecase.GetExerciseCategoriesUseCase
 import com.example.fuelfit.exercise.api.usecase.GetExercisesUseCase
 import kotlinx.coroutines.launch
@@ -32,22 +33,40 @@ internal class ExercisesStoreFactory(
         override fun executeIntent(intent: ExercisesIntent) {
             when (intent) {
                 is ExercisesIntent.SearchQueryChanged -> dispatch(ExercisesMsg.SetQuery(intent.query))
-                ExercisesIntent.Refresh -> loadExercises()
+                ExercisesIntent.Refresh -> loadExercises(reset = true)
                 ExercisesIntent.LoadCategories -> loadCategories()
                 is ExercisesIntent.CategoryToggled ->  toggleCategory(intent.categoryId, intent.isChecked)
+                ExercisesIntent.LoadNextPage -> {
+                    if (state().hasNext && !state().isLoading && !state().isPaging) {
+                        loadExercises(reset = false)
+                    }
+                }
+                is ExercisesIntent.ExerciseClicked -> publish(ExercisesLabel.NavigateToExerciseDetail(intent.id))
             }
         }
 
-        private fun loadExercises() {
+        private fun loadExercises(reset: Boolean = false) {
+            if (state().isLoading || state().isPaging) return
+
+            if (reset) {
+                dispatch(ExercisesMsg.ResetPaging)
+            }
+
             dispatch(ExercisesMsg.Loading)
+
             scope.launch {
                 try {
-                    val exercises = getExercisesUseCase(
-                        limit = 50,
-                        offset = 0,
+                    val result: ExerciseList = getExercisesUseCase(
+                        limit = 20,
+                        offset = if (reset) 0 else state().offset,
                         categories = state().selectedCategories.toList()
                     )
-                    dispatch(ExercisesMsg.SetExercises(exercises))
+
+                    dispatch(
+                        ExercisesMsg.AppendExercises(
+                            exerciseList = result
+                        )
+                    )
                 } catch (e: Exception) {
                     dispatch(ExercisesMsg.Error(e.message ?: "Ошибка загрузки"))
                     publish(ExercisesLabel.ShowError(e.message ?: "Ошибка загрузки"))
@@ -69,25 +88,48 @@ internal class ExercisesStoreFactory(
 
         private fun toggleCategory(id: Int, check: Boolean) {
             val updated = state().selectedCategories.toMutableSet()
-
             if (check) updated.add(id) else updated.remove(id)
-
             dispatch(ExercisesMsg.UpdateSelectedCategories(updated))
-            loadExercises()
         }
     }
 
     private object ReducerImpl : Reducer<ExercisesState, ExercisesMsg> {
         override fun ExercisesState.reduce(msg: ExercisesMsg): ExercisesState =
             when (msg) {
-                is ExercisesMsg.SetExercises -> copy(exercises = msg.exercises, isLoading = false, error = null)
                 is ExercisesMsg.SetQuery -> copy(query = msg.query)
-                ExercisesMsg.Loading -> copy(isLoading = true, error = null)
-                is ExercisesMsg.Error -> copy(isLoading = false, error = msg.message)
+                ExercisesMsg.Loading -> copy(
+                    isLoading = offset == 0,
+                    isPaging = offset > 0
+                )
+                is ExercisesMsg.Error -> copy(
+                    isLoading = false,
+                    isPaging = false,
+                    error = msg.message
+                )
                 is ExercisesMsg.SetCategories -> copy(categories = msg.categories)
+                is ExercisesMsg.UpdateSelectedCategories -> copy(selectedCategories = msg.selected)
+                ExercisesMsg.ResetPaging -> copy(
+                    exercises = null,
+                    offset = 0,
+                    hasNext = true
+                )
+                is ExercisesMsg.AppendExercises -> {
+                    val currentExercises = exercises?.exercises.orEmpty()
+                    val newExercises = currentExercises + msg.exerciseList.exercises
 
-                is ExercisesMsg.UpdateSelectedCategories ->
-                    copy(selectedCategories = msg.selected)
+                    copy(
+                        exercises = ExerciseList(
+                            count = msg.exerciseList.count,
+                            next = msg.exerciseList.next,
+                            previous = msg.exerciseList.previous,
+                            exercises = newExercises
+                        ),
+                        offset = offset + msg.exerciseList.exercises.size,
+                        hasNext = msg.exerciseList.next != null,
+                        isLoading = false,
+                        isPaging = false
+                    )
+                }
             }
     }
 }

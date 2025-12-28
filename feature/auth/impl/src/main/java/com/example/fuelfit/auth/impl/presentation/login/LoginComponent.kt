@@ -42,7 +42,7 @@ class LoginComponent(
             scope.launch {
                 store.labels.collect { label ->
                     when (label) {
-                        LoginLabel.NavigateToWorkoutSession -> onNavigateMain()
+                        LoginLabel.NavigateToMain -> onNavigateMain()
                         is LoginLabel.ShowError -> _snackbar.emit(label.message)
                         LoginLabel.NavigateToRegister -> onNavigateRegister()
                     }
