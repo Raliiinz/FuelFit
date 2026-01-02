@@ -14,6 +14,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.exercise.api.model.ExerciseInfo
+import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailIntent
 import com.example.fuelfit.utils.LaunchedEffectAndCollect
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +45,12 @@ fun ExerciseDetailScreen(component: ExerciseDetailComponent) {
     ) { padding ->
         when {
             state.isLoading -> LoadingContent()
-            state.error != null -> ErrorContent(state.error!!)
+            state.error != null -> ErrorContent(
+                state.error!!,
+                onRetry = {
+                    component.onIntent(ExerciseDetailIntent.Retry)
+                }
+            )
             state.detail != null -> ExerciseDetailContent(state.detail!!, Modifier.padding(padding))
         }
     }

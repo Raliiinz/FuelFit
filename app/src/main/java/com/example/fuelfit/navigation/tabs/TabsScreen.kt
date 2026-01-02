@@ -13,7 +13,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.exercise.impl.navigation.ExercisesScreen
 import com.example.fuelfit.food.impl.FoodScreen
-import com.example.fuelfit.workoutsession.impl.WorkoutSessionScreen
+import com.example.fuelfit.routine.impl.navigation.RoutineScreen
 
 @Composable
 fun TabsScreen(component: TabsComponent) {
@@ -29,8 +29,8 @@ fun TabsScreen(component: TabsComponent) {
                     icon = { Icon(Icons.Default.List, null) }
                 )
                 NavigationBarItem(
-                    selected = stack.active.instance is TabsComponent.Child.WorkoutChild,
-                    onClick = { component.onTabClicked(TabsComponent.Config.Workout) },
+                    selected = stack.active.instance is TabsComponent.Child.RoutineChild,
+                    onClick = { component.onTabClicked(TabsComponent.Config.Routine) },
                     label = { Text("Workout") },
                     icon = { Icon(Icons.Default.FitnessCenter, null) }
                 )
@@ -49,7 +49,7 @@ fun TabsScreen(component: TabsComponent) {
         ) {
             when (val child = it.instance) {
                 is TabsComponent.Child.ExercisesChild -> ExercisesScreen(child.component)
-                is TabsComponent.Child.WorkoutChild -> WorkoutSessionScreen(child.component)
+                is TabsComponent.Child.RoutineChild -> RoutineScreen(child.component)
                 is TabsComponent.Child.FoodChild -> FoodScreen(child.component)
             }
         }

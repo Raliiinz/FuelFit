@@ -6,6 +6,9 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.example.fuelfit.auth.impl.di.authModule
 import com.example.fuelfit.exercise.impl.di.exerciseModule
 import com.example.fuelfit.network.di.networkModule
+import com.example.fuelfit.routine.impl.create.di.routineCreateModule
+import com.example.fuelfit.routine.impl.details.di.routineDayModule
+import com.example.fuelfit.routine.impl.list.di.routineModule
 import com.example.fuelfit.ui.splash.di.splashModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -18,7 +21,10 @@ val appModule = module {
         networkModule,
         splashModule,
         authModule,
-        exerciseModule
+        exerciseModule,
+        routineModule,
+        routineDayModule,
+        routineCreateModule
         // другие фичи
     )
 }

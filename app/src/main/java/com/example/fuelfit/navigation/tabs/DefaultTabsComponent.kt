@@ -8,7 +8,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.example.fuelfit.exercise.impl.navigation.ExercisesTabComponent
 import com.example.fuelfit.food.impl.FoodComponent
-import com.example.fuelfit.workoutsession.impl.WorkoutSessionComponent
+import com.example.fuelfit.routine.impl.navigation.RoutineTabComponent
 
 class DefaultTabsComponent(
     componentContext: ComponentContext
@@ -20,7 +20,7 @@ class DefaultTabsComponent(
         childStack(
             source = navigation,
             serializer = TabsComponent.Config.serializer(),
-            initialStack = { listOf(TabsComponent.Config.Workout) },
+            initialStack = { listOf(TabsComponent.Config.Routine) },
             childFactory = ::createChild
         )
 
@@ -33,8 +33,8 @@ class DefaultTabsComponent(
         TabsComponent.Config.Exercises -> TabsComponent.Child.ExercisesChild(
             ExercisesTabComponent(childContext)
         )
-        TabsComponent.Config.Workout -> TabsComponent.Child.WorkoutChild(
-            WorkoutSessionComponent(childContext)
+        TabsComponent.Config.Routine -> TabsComponent.Child.RoutineChild(
+            RoutineTabComponent(childContext)
         )
         TabsComponent.Config.Food -> TabsComponent.Child.FoodChild(
             FoodComponent(childContext)

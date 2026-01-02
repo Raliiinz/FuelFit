@@ -29,9 +29,9 @@
             <option value="$PROJECT_DIR$/feature/food" />
             <option value="$PROJECT_DIR$/feature/food/api" />
             <option value="$PROJECT_DIR$/feature/food/impl" />
-            <option value="$PROJECT_DIR$/feature/workoutsession" />
-            <option value="$PROJECT_DIR$/feature/workoutsession/api" />
-            <option value="$PROJECT_DIR$/feature/workoutsession/impl" />
+            <option value="$PROJECT_DIR$/feature/routine" />
+            <option value="$PROJECT_DIR$/feature/routine/api" />
+            <option value="$PROJECT_DIR$/feature/routine/impl" />
           </set>
         </option>
       </GradleProjectSettings>
