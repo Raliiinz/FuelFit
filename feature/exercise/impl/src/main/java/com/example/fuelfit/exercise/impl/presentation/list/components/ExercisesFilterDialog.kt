@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExercisesFilterDialog(
+internal fun ExercisesFilterDialog(
     categories: List<com.example.fuelfit.exercise.api.model.ExerciseCategory>,
     selectedCategories: Set<Int>,
     onToggle: (Int, Boolean) -> Unit,

@@ -19,7 +19,7 @@ import com.example.fuelfit.utils.LaunchedEffectAndCollect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseDetailScreen(component: ExerciseDetailComponent) {
+internal fun ExerciseDetailScreen(component: ExerciseDetailComponent) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

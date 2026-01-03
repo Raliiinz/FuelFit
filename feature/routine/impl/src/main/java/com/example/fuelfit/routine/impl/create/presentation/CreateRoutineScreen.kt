@@ -13,7 +13,7 @@ import com.example.fuelfit.routine.impl.create.presentation.mvi.CreateRoutineInt
 import com.example.fuelfit.routine.impl.create.presentation.mvi.CreateRoutineState
 
 @Composable
-fun CreateRoutineScreen(
+internal fun CreateRoutineScreen(
     component: CreateRoutineComponent
 ) {
     val state by component.state.subscribeAsState()

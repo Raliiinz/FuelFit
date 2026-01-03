@@ -13,8 +13,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.example.fuelfit.utils.asValue
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 
-class RoutineDayComponent(
+internal class RoutineDayComponent(
     componentContext: ComponentContext,
     private val routineId: Int,
     private val onDayClicked: (Int) -> Unit
@@ -29,6 +31,9 @@ class RoutineDayComponent(
     private val _snackbar = MutableSharedFlow<String>()
     val snackbarFlow: SharedFlow<String> = _snackbar
 
+    private val _toast = MutableSharedFlow<String>()
+    val toastFlow: SharedFlow<String> = _toast
+
     init {
         lifecycle.doOnCreate {
             scope.launch {
@@ -36,6 +41,7 @@ class RoutineDayComponent(
                     when (it) {
                         is RoutineDayLabel.ShowError -> _snackbar.emit(it.message)
                         is RoutineDayLabel.NavigateToDayDetail -> onDayClicked(it.id)
+                        is RoutineDayLabel.ShowToast ->  _toast.emit(it.message)
                     }
                 }
             }
@@ -44,12 +50,14 @@ class RoutineDayComponent(
     }
 
     internal fun onIntent(intent: RoutineDayIntent) {
-        when (intent) {
-            is RoutineDayIntent.CreateDay -> {
-                val dayWithRoutineId = intent.day.copy(routineId = routineId)
-                store.accept(RoutineDayIntent.CreateDay(dayWithRoutineId))
-            }
-            else -> store.accept(intent)
-        }
+        store.accept(intent)
+//        when (intent) {
+//
+//            is RoutineDayIntent.CreateDay -> {
+//                val dayWithRoutineId = intent.day.copy(routineId = routineId)
+//                store.accept(RoutineDayIntent.CreateDay(dayWithRoutineId))
+//            }
+//            else ->
+//        }
     }
 }

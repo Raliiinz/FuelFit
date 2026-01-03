@@ -58,7 +58,7 @@ class ExercisesTabComponent(
     }
 
     sealed class Child {
-        data class ListChild(val component: ExercisesListComponent) : Child()
-        data class DetailChild(val component: ExerciseDetailComponent) : Child()
+        internal data class ListChild(val component: ExercisesListComponent) : Child()
+        internal data class DetailChild(val component: ExerciseDetailComponent) : Child()
     }
 }

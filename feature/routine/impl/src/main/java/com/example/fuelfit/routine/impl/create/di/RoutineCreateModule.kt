@@ -3,6 +3,7 @@ package com.example.fuelfit.routine.impl.create.di
 import com.example.fuelfit.routine.api.create.repository.CreateRoutineRepository
 import com.example.fuelfit.routine.api.create.usecase.CreateRoutineUseCase
 import com.example.fuelfit.routine.api.create.usecase.UpdateRoutineUseCase
+import com.example.fuelfit.routine.impl.common.RoutineMapper
 import com.example.fuelfit.routine.impl.create.data.CreateRoutineRepositoryImpl
 import com.example.fuelfit.routine.impl.create.data.remote.CreateRoutineApiService
 import com.example.fuelfit.routine.impl.create.domain.usecase.CreateRoutineUseCaseImpl
@@ -12,7 +13,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val routineCreateModule = module {
+internal val routineCreateModule = module {
+
+    single { RoutineMapper() }
 
     single<CreateRoutineApiService> {
         get<Retrofit>(named("mainRetrofit"))
@@ -20,7 +23,7 @@ val routineCreateModule = module {
     }
 
     single<CreateRoutineRepository> {
-        CreateRoutineRepositoryImpl(api = get())
+        CreateRoutineRepositoryImpl(api = get(), mapper = get())
     }
 
     factory<CreateRoutineUseCase> { CreateRoutineUseCaseImpl(repository = get()) }

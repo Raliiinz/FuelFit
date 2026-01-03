@@ -1,21 +1,29 @@
 package com.example.fuelfit.routine.impl.list.data
 
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.network.safeApiCall
 import com.example.fuelfit.routine.api.common.Routine
 import com.example.fuelfit.routine.api.list.repository.RoutineRepository
-import com.example.fuelfit.routine.impl.common.toDomain
+import com.example.fuelfit.routine.impl.common.RoutineMapper
 import com.example.fuelfit.routine.impl.list.data.remote.RoutineApiService
 
-class RoutineRepositoryImpl(
-    private val api: RoutineApiService
+internal class RoutineRepositoryImpl(
+    private val api: RoutineApiService,
+    private val mapper: RoutineMapper
 ) : RoutineRepository {
 
-    override suspend fun getRoutines(): List<Routine> =
-        api.getRoutines().results.map { it.toDomain() }
+    override suspend fun getRoutines(): ResultWrapper<List<Routine>> =
+        safeApiCall {
+            api.getRoutines().results.map(mapper::fromDto)
+        }
 
-    override suspend fun getRoutine(id: Int): Routine =
-        api.getRoutine(id).toDomain()
+    override suspend fun getRoutine(id: Int): ResultWrapper<Routine> =
+        safeApiCall {
+            mapper.fromDto(api.getRoutine(id))
+        }
 
-    override suspend fun deleteRoutine(id: Int) {
-        api.deleteRoutine(id)
-    }
+    override suspend fun deleteRoutine(id: Int): ResultWrapper<Unit> =
+        safeApiCall {
+            api.deleteRoutine(id)
+        }
 }

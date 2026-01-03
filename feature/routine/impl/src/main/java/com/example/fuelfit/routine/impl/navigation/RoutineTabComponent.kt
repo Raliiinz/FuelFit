@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.value.Value
 import com.example.fuelfit.routine.impl.details.presentation.RoutineDayComponent
 import com.example.fuelfit.routine.impl.create.presentation.CreateRoutineComponent
+import com.example.fuelfit.routine.impl.dayDetail.presentation.DayDetailComponent
 import com.example.fuelfit.routine.impl.list.presentation.RoutineListComponent
 import kotlinx.serialization.Serializable
 
@@ -58,7 +59,17 @@ class RoutineTabComponent(
                 componentContext = context,
                 routineId = config.routineId,
                 onDayClicked = { dayId ->
-                    // Можно сюда добавить навигацию на отдельный экран дня, если нужно
+                    navigation.pushNew(Config.DayDetail(dayId))
+                }
+            )
+        )
+
+        is Config.DayDetail -> Child.DayDetail(
+            DayDetailComponent(
+                componentContext = context,
+                dayId = config.dayId,
+                onSlotClicked = { slotId ->
+                    println("Slot clicked $slotId")
                 }
             )
         )
@@ -74,11 +85,15 @@ class RoutineTabComponent(
 
         @Serializable
         data class Detail(val routineId: Int) : Config
+
+        @Serializable
+        data class DayDetail(val dayId: Int) : Config
     }
 
     sealed class Child {
-        data class List(val component: RoutineListComponent) : Child()
-        data class Create(val component: CreateRoutineComponent) : Child()
-        data class Detail(val component: RoutineDayComponent) : Child()
+        internal data class List(val component: RoutineListComponent) : Child()
+        internal data class Create(val component: CreateRoutineComponent) : Child()
+        internal data class Detail(val component: RoutineDayComponent) : Child()
+        internal data class DayDetail(val component: DayDetailComponent) : Child()
     }
 }

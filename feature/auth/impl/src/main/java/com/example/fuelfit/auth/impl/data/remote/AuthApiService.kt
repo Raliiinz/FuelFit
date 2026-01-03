@@ -12,7 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface AuthApiService {
+internal interface AuthApiService {
 
     @POST("api/v2/login/")
     suspend fun login(@Body body: UserLoginRequest): Login

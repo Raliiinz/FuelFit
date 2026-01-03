@@ -1,13 +1,14 @@
 package com.example.fuelfit.auth.impl.presentation.login.mvi
 
-import com.arkivanov.mvikotlin.core.store.Reducer
-import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
-import com.arkivanov.mvikotlin.core.store.Store
-import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.example.fuelfit.auth.api.model.AuthTokens
 import com.example.fuelfit.auth.api.model.LoginParams
 import com.example.fuelfit.auth.api.usecase.LoginUseCase
 import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginMsg.*
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import kotlinx.coroutines.launch
 
 internal class LoginStoreFactory(
@@ -30,18 +31,10 @@ internal class LoginStoreFactory(
 
         override fun executeIntent(intent: LoginIntent) {
             when (intent) {
-                is LoginIntent.UsernameChanged ->
-                    dispatch(SetUsername(intent.value))
-
-                is LoginIntent.PasswordChanged ->
-                    dispatch(SetPassword(intent.value))
-
-                is LoginIntent.EmailChanged ->
-                    dispatch(SetEmail(intent.value))
-
-                is LoginIntent.Submit ->
-                    login()
-
+                is LoginIntent.UsernameChanged -> dispatch(SetUsername(intent.value))
+                is LoginIntent.PasswordChanged -> dispatch(SetPassword(intent.value))
+                is LoginIntent.EmailChanged -> dispatch(SetEmail(intent.value))
+                is LoginIntent.Submit -> login()
                 LoginIntent.NavigateToRegister -> publish(LoginLabel.NavigateToRegister)
             }
         }
@@ -56,24 +49,28 @@ internal class LoginStoreFactory(
                 return
             }
 
-            dispatch(LoginMsg.Loading)
+            dispatch(Loading)
 
             scope.launch {
-                try {
-                    loginUseCase(
-                        LoginParams(
-                            username = username,
-                            password = password,
-                            email = email
-                        )
+                val result: ResultWrapper<AuthTokens> = loginUseCase(
+                    LoginParams(
+                        username = username,
+                        password = password,
+                        email = email
                     )
+                )
 
-                    dispatch(LoginMsg.Success)
-                    publish(LoginLabel.NavigateToMain)
-
-                } catch (e: Exception) {
-                    dispatch(LoginMsg.Error(e.message ?: "Ошибка"))
-                    publish(LoginLabel.ShowError(e.message ?: "Ошибка"))
+                when (result) {
+                    is ResultWrapper.Success -> {
+                        dispatch(Success)
+                        publish(LoginLabel.NavigateToMain)
+                    }
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+                        dispatch(Error(message))
+                        publish(LoginLabel.ShowError(message))
+                    }
                 }
             }
         }

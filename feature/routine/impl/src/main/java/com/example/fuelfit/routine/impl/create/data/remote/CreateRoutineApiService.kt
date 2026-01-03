@@ -4,7 +4,7 @@ import com.example.fuelfit.routine.impl.common.dto.RoutineDto
 import com.example.fuelfit.routine.impl.common.dto.RoutineRequestDto
 import retrofit2.http.*
 
-interface CreateRoutineApiService {
+internal interface CreateRoutineApiService {
 
     @POST("/api/v2/routine/")
     suspend fun createRoutine(

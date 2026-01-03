@@ -2,9 +2,11 @@ package com.example.fuelfit.routine.impl.list.presentation.mvi
 
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import com.example.fuelfit.routine.api.list.usecase.DeleteRoutineUseCase
 import com.example.fuelfit.routine.api.list.usecase.GetRoutinesUseCase
-import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineLabel.*
 import kotlinx.coroutines.launch
 
 internal class RoutineStoreFactory(
@@ -27,72 +29,98 @@ internal class RoutineStoreFactory(
         CoroutineExecutor<RoutineIntent, Unit, RoutineState, RoutineMsg, RoutineLabel>() {
 
         override fun executeAction(action: Unit) {
-            load()
+            loadRoutines()
         }
 
         override fun executeIntent(intent: RoutineIntent) {
             when (intent) {
                 RoutineIntent.Load,
-                RoutineIntent.Refresh -> load()
+                RoutineIntent.Refresh -> loadRoutines()
 
                 is RoutineIntent.RoutineClicked ->
                     publish(RoutineLabel.NavigateToRoutine(intent.id))
 
+                RoutineIntent.CreateRoutineClicked ->
+                    publish(RoutineLabel.NavigateToCreateRoutine)
+
                 is RoutineIntent.DeleteRoutine ->
                     deleteRoutine(intent.id)
-
-                RoutineIntent.CreateRoutineClicked -> {
-                    publish(RoutineLabel.NavigateToCreateRoutine)
-                }
             }
         }
 
-        private fun load() {
+        private fun loadRoutines() {
             dispatch(RoutineMsg.Loading)
 
             scope.launch {
-                try {
-                    val routines = getRoutinesUseCase()
-                    dispatch(RoutineMsg.SetRoutines(routines))
-                } catch (e: Exception) {
-                    val msg = e.message ?: "Ошибка загрузки тренировок"
-                    dispatch(RoutineMsg.Error(msg))
-                    publish(ShowError(msg))
+                when (val result = getRoutinesUseCase()) {
+                    is ResultWrapper.Success -> {
+                        dispatch(RoutineMsg.SetRoutines(result.data))
+                    }
+
+                    is ResultWrapper.Error -> {
+                        val userError =
+                            mapApiErrorToUserFriendly(result.error)
+
+                        val message =
+                            getErrorMessage(userError)
+
+                        dispatch(RoutineMsg.Error(message))
+                        publish(RoutineLabel.ShowError(message))
+                    }
                 }
             }
         }
 
         private fun deleteRoutine(id: Int) {
             scope.launch {
-                try {
-                    deleteRoutineUseCase(id)
-                    dispatch(RoutineMsg.RemoveRoutine(id))
-                } catch (e: Exception) {
-                    publish(ShowError("Не удалось удалить тренировку"))
+                when (val result = deleteRoutineUseCase(id)) {
+                    is ResultWrapper.Success -> {
+                        dispatch(RoutineMsg.RemoveRoutine(id))
+                    }
+
+                    is ResultWrapper.Error -> {
+                        val userError =
+                            mapApiErrorToUserFriendly(result.error)
+
+                        val message =
+                            getErrorMessage(userError)
+
+                        publish(RoutineLabel.ShowError(message))
+                    }
                 }
             }
         }
     }
 
-    private object ReducerImpl : Reducer<RoutineState, RoutineMsg> {
-        override fun RoutineState.reduce(msg: RoutineMsg): RoutineState =
+    private object ReducerImpl :
+        Reducer<RoutineState, RoutineMsg> {
+
+        override fun RoutineState.reduce(
+            msg: RoutineMsg
+        ): RoutineState =
             when (msg) {
-                RoutineMsg.Loading -> copy(isLoading = true, error = null)
+                RoutineMsg.Loading ->
+                    copy(isLoading = true, error = null)
 
-                is RoutineMsg.Error -> copy(
-                    isLoading = false,
-                    error = msg.message
-                )
+                is RoutineMsg.SetRoutines ->
+                    copy(
+                        routines = msg.routines,
+                        isLoading = false,
+                        error = null
+                    )
 
-                is RoutineMsg.SetRoutines -> copy(
-                    routines = msg.routines,
-                    isLoading = false,
-                    error = null
-                )
+                is RoutineMsg.RemoveRoutine ->
+                    copy(
+                        routines = routines.filterNot {
+                            it.id == msg.id
+                        }
+                    )
 
-                is RoutineMsg.RemoveRoutine -> copy(
-                    routines = routines.filterNot { it.id == msg.id }
-                )
+                is RoutineMsg.Error ->
+                    copy(
+                        isLoading = false,
+                        error = msg.message
+                    )
             }
     }
 }

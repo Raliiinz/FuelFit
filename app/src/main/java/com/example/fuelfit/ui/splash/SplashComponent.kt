@@ -15,6 +15,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -37,6 +39,9 @@ class SplashComponent(
 
     val state: Value<SplashState> = store.asValue()
 
+    private val _snackbar = MutableSharedFlow<String>()
+    val snackbarFlow: SharedFlow<String> = _snackbar
+
     init {
         lifecycle.doOnCreate {
             scope.launch {
@@ -44,6 +49,7 @@ class SplashComponent(
                     when (label) {
                         SplashLabel.NavigateToMain -> onNavigateMain()
                         SplashLabel.NavigateToLogin -> onNavigateLogin()
+                        is SplashLabel.ShowError -> _snackbar.emit(label.message)
                     }
                 }
             }

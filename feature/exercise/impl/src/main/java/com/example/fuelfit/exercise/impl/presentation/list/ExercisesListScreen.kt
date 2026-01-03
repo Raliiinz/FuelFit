@@ -17,7 +17,7 @@ import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesIntent
 import com.example.fuelfit.utils.LaunchedEffectAndCollect
 
 @Composable
-fun ExercisesListScreen(component: ExercisesListComponent) {
+internal fun ExercisesListScreen(component: ExercisesListComponent) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var isFilterOpen by remember { mutableStateOf(false) }

@@ -5,7 +5,7 @@ import com.example.fuelfit.routine.impl.details.data.remote.dto.RoutineDayListRe
 import com.example.fuelfit.routine.impl.details.data.remote.dto.RoutineDayRequestDto
 import retrofit2.http.*
 
-interface RoutineDayApiService {
+internal interface RoutineDayApiService {
 
     @GET("/api/v2/day/")
     suspend fun getDays(

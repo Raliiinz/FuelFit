@@ -14,7 +14,7 @@ import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineIntent
 import com.example.fuelfit.utils.LaunchedEffectAndCollect
 
 @Composable
-fun RoutineListScreen(component: RoutineListComponent) {
+internal fun RoutineListScreen(component: RoutineListComponent) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

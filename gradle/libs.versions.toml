@@ -42,6 +42,10 @@ secretsGradlePlugin = "2.0.1"
 # Firebase
 firebase-bom = "33.3.0"
 
+# Testing
+mockk = "1.13.10"
+coroutines-test = "1.10.2"
+
 # Android SDK
 minSdk = "26"
 targetSdk = "36"
@@ -104,9 +108,11 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
-
-
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+# Unit testing
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
 #firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 #firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }

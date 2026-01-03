@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class RoutineListComponent(
+internal class RoutineListComponent(
     componentContext: ComponentContext,
     private val onRoutineClick: (Int) -> Unit,
     private val onCreateRoutineClicked: () -> Unit

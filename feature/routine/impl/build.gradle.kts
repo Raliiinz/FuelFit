@@ -38,6 +38,8 @@ android {
 dependencies {
 
     api(project(":feature:routine:api"))
+    api(project(":feature:exercise:api"))
+    api(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
     implementation(project(":core:utils"))
@@ -69,7 +71,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

@@ -1,10 +1,10 @@
 package com.example.fuelfit.exercise.api.repository
 
-import com.example.fuelfit.exercise.api.model.ExerciseCategory
-import com.example.fuelfit.exercise.api.model.ExerciseInfo
-import com.example.fuelfit.exercise.api.model.ExerciseList
+import com.example.fuelfit.exercise.api.model.*
+import com.example.fuelfit.model.ResultWrapper
 
 interface ExerciseRepository {
+
     suspend fun getExercises(
         limit: Int? = null,
         offset: Int? = null,
@@ -13,14 +13,16 @@ interface ExerciseRepository {
         musclesSecondary: List<Int>? = null,
         equipment: List<Int>? = null,
         ordering: String? = null
-    ): ExerciseList
+    ): ResultWrapper<ExerciseList>
 
-    suspend fun getExerciseById(id: Int): ExerciseInfo
+    suspend fun getExerciseById(id: Int): ResultWrapper<ExerciseInfo>
 
     suspend fun getExerciseCategories(
         limit: Int? = null,
         offset: Int? = null,
         name: String? = null,
         ordering: String? = null
-    ): List<ExerciseCategory>
+    ): ResultWrapper<List<ExerciseCategory>>
+
+    suspend fun searchExercises(term: String, language: String = "en,ru"): ResultWrapper<List<ExerciseSearchItem>>
 }

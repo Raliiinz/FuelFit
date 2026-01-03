@@ -7,6 +7,7 @@ import com.example.fuelfit.auth.api.usecase.LogoutUseCase
 import com.example.fuelfit.auth.api.usecase.RegisterUseCase
 import com.example.fuelfit.auth.api.usecase.VerifyTokenUseCase
 import com.example.fuelfit.auth.impl.data.AuthRepositoryImpl
+import com.example.fuelfit.auth.impl.data.mapper.AuthMapper
 import com.example.fuelfit.auth.impl.data.remote.AuthApiService
 import com.example.fuelfit.auth.impl.data.storage.DataStoreTokenStorage
 import com.example.fuelfit.auth.impl.data.storage.TokenRefresherImpl
@@ -25,6 +26,8 @@ import retrofit2.Retrofit
 
 val authModule = module {
 
+    single { AuthMapper() }
+
     single<TokenStorage> {
         DataStoreTokenStorage(context = get())
     }
@@ -39,7 +42,7 @@ val authModule = module {
     }
 
     single<AuthRepository> {
-        AuthRepositoryImpl(api = get(), tokenStorage = get())
+        AuthRepositoryImpl(api = get(), tokenStorage = get(), mapper = get())
     }
 
     factory<LoginUseCase> { LoginUseCaseImpl(get()) }

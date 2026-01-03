@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fuelfit.exercise.api.model.ExerciseInfo
 
 @Composable
-fun ExercisesList(
+internal fun ExercisesList(
     exercises: List<ExerciseInfo>,
     query: String,
     listState: LazyListState,

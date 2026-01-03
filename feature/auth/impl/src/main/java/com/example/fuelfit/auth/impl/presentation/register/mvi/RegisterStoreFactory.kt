@@ -1,13 +1,14 @@
 package com.example.fuelfit.auth.impl.presentation.register.mvi
 
-import com.arkivanov.mvikotlin.core.store.Reducer
-import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
-import com.arkivanov.mvikotlin.core.store.Store
-import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.example.fuelfit.auth.api.model.AuthTokens
 import com.example.fuelfit.auth.api.model.RegisterParams
 import com.example.fuelfit.auth.api.usecase.RegisterUseCase
 import com.example.fuelfit.auth.impl.presentation.register.mvi.RegisterMsg.*
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import kotlinx.coroutines.launch
 
 internal class RegisterStoreFactory(
@@ -30,19 +31,11 @@ internal class RegisterStoreFactory(
 
         override fun executeIntent(intent: RegisterIntent) {
             when (intent) {
-                is RegisterIntent.UsernameChanged ->
-                    dispatch(SetUsername(intent.value))
-
-                is RegisterIntent.EmailChanged ->
-                    dispatch(SetEmail(intent.value))
-
-                is RegisterIntent.PasswordChanged ->
-                    dispatch(SetPassword(intent.value))
-
-                is RegisterIntent.Submit ->
-                    register()
-
-                RegisterIntent.NavigateToLogin ->  publish(RegisterLabel.NavigateToLogin)
+                is RegisterIntent.UsernameChanged -> dispatch(SetUsername(intent.value))
+                is RegisterIntent.EmailChanged -> dispatch(SetEmail(intent.value))
+                is RegisterIntent.PasswordChanged -> dispatch(SetPassword(intent.value))
+                is RegisterIntent.Submit -> register()
+                RegisterIntent.NavigateToLogin -> publish(RegisterLabel.NavigateToLogin)
             }
         }
 
@@ -59,21 +52,25 @@ internal class RegisterStoreFactory(
             dispatch(Loading)
 
             scope.launch {
-                try {
-                    registerUseCase(
-                        RegisterParams(
-                            username = username,
-                            email = email,
-                            password = password
-                        )
+                val result: ResultWrapper<AuthTokens> = registerUseCase(
+                    RegisterParams(
+                        username = username,
+                        email = email,
+                        password = password
                     )
+                )
 
-                    dispatch(Success)
-                    publish(RegisterLabel.NavigateToMain)
-
-                } catch (e: Exception) {
-                    dispatch(Error(e.message ?: "Ошибка"))
-                    publish(RegisterLabel.ShowError(e.message ?: "Ошибка"))
+                when (result) {
+                    is ResultWrapper.Success -> {
+                        dispatch(Success)
+                        publish(RegisterLabel.NavigateToMain)
+                    }
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+                        dispatch(Error(message))
+                        publish(RegisterLabel.ShowError(message))
+                    }
                 }
             }
         }

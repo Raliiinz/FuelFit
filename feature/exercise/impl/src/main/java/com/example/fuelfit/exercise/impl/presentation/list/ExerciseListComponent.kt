@@ -22,7 +22,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 
-class ExercisesListComponent(
+internal class ExercisesListComponent(
     componentContext: ComponentContext,
     private val onExerciseClicked: (Int) -> Unit
 ) : ComponentContext by componentContext, KoinComponent {

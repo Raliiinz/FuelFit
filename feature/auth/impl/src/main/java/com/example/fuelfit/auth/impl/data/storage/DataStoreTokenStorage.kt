@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore("auth_tokens")
 
-class DataStoreTokenStorage(
+internal class DataStoreTokenStorage(
     private val context: Context
 ) : TokenStorage {
 

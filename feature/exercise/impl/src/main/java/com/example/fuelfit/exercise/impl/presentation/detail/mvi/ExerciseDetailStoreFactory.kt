@@ -3,6 +3,9 @@ package com.example.fuelfit.exercise.impl.presentation.detail.mvi
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.exercise.api.usecase.GetExerciseByIdUseCase
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import kotlinx.coroutines.launch
 
 internal class ExerciseDetailStoreFactory(
@@ -38,12 +41,15 @@ internal class ExerciseDetailStoreFactory(
         private fun loadDetail() {
             dispatch(ExerciseDetailMsg.Loading)
             scope.launch {
-                try {
-                    val detail = getExerciseDetailUseCase(exerciseId)
-                    dispatch(ExerciseDetailMsg.Loaded(detail))
-                } catch (e: Exception) {
-                    dispatch(ExerciseDetailMsg.Error(e.message ?: "Ошибка загрузки"))
-                    publish(ExerciseDetailLabel.ShowError(e.message ?: "Ошибка загрузки"))
+                val result = getExerciseDetailUseCase(exerciseId)
+                when (result) {
+                    is ResultWrapper.Success -> dispatch(ExerciseDetailMsg.Loaded(result.data))
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+                        dispatch(ExerciseDetailMsg.Error(message))
+                        publish(ExerciseDetailLabel.ShowError(message))
+                    }
                 }
             }
         }

@@ -7,26 +7,29 @@ import com.example.fuelfit.routine.impl.common.dto.RoutineRequestDto
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
-fun RoutineDto.toDomain(): Routine =
-    Routine(
-        id = id,
-        name = name,
-        description = description,
-        created = OffsetDateTime.parse(created),
-        start = LocalDate.parse(start),
-        end = LocalDate.parse(end),
-        fitInWeek = fitInWeek,
-        isTemplate = isTemplate,
-        isPublic = isPublic
-    )
+internal class RoutineMapper {
 
-fun RoutineRequest.toDto() =
-    RoutineRequestDto(
-        name = name,
-        description = description,
-        start = start.toString(),
-        end = end.toString(),
-        fitInWeek = fitInWeek,
-        isTemplate = isTemplate,
-        isPublic = isPublic
-    )
+    fun fromDto(dto: RoutineDto): Routine =
+        Routine(
+            id = dto.id,
+            name = dto.name,
+            description = dto.description,
+            created = OffsetDateTime.parse(dto.created),
+            start = LocalDate.parse(dto.start),
+            end = LocalDate.parse(dto.end),
+            fitInWeek = dto.fitInWeek,
+            isTemplate = dto.isTemplate,
+            isPublic = dto.isPublic
+        )
+
+    fun toDto(request: RoutineRequest): RoutineRequestDto =
+        RoutineRequestDto(
+            name = request.name,
+            description = request.description,
+            start = request.start.toString(),
+            end = request.end.toString(),
+            fitInWeek = request.fitInWeek,
+            isTemplate = request.isTemplate,
+            isPublic = request.isPublic
+        )
+}

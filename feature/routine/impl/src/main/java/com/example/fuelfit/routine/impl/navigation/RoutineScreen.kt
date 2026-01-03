@@ -6,6 +6,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.routine.impl.details.presentation.RoutineDayScreen
 import com.example.fuelfit.routine.impl.create.presentation.CreateRoutineScreen
+import com.example.fuelfit.routine.impl.dayDetail.presentation.DayDetailScreen
 import com.example.fuelfit.routine.impl.list.presentation.RoutineListScreen
 
 @Composable
@@ -22,6 +23,9 @@ fun RoutineScreen(component: RoutineTabComponent) {
 
             is RoutineTabComponent.Child.Detail ->
                 RoutineDayScreen(child.component)
+
+            is RoutineTabComponent.Child.DayDetail ->
+                DayDetailScreen(child.component)
         }
     }
 }

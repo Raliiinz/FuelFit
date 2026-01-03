@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fuelfit.routine.api.details.model.RoutineDay
 
 @Composable
-fun RoutineDayItem(
+internal fun RoutineDayItem(
     day: RoutineDay,
     onClick: () -> Unit,
     onEdit: () -> Unit,

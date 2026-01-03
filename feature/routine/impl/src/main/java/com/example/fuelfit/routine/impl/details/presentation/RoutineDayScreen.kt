@@ -1,24 +1,25 @@
 package com.example.fuelfit.routine.impl.details.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.routine.api.details.model.RoutineDay
-import com.example.fuelfit.routine.impl.details.data.mapper.RoutineDayMapper.toRoutineDay
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayDialog
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayItem
 import com.example.fuelfit.routine.impl.details.presentation.mvi.RoutineDayIntent
 import com.example.fuelfit.utils.LaunchedEffectAndCollect
 
 @Composable
-fun RoutineDayScreen(component: RoutineDayComponent) {
+internal fun RoutineDayScreen(component: RoutineDayComponent) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
@@ -29,6 +30,17 @@ fun RoutineDayScreen(component: RoutineDayComponent) {
     LaunchedEffectAndCollect(component.snackbarFlow, component.lifecycle) { msg ->
         snackbarHostState.showSnackbar(msg)
     }
+
+    val context = LocalContext.current
+
+    LaunchedEffectAndCollect(
+        component.toastFlow,
+        component.lifecycle
+    ) { message ->
+        Toast.makeText(context, message, Toast.LENGTH_SHORT)
+            .show()
+    }
+
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Дни рутины", style = MaterialTheme.typography.titleLarge)
@@ -46,7 +58,7 @@ fun RoutineDayScreen(component: RoutineDayComponent) {
                     val day = state.days[index]
                     RoutineDayItem(
                         day = day,
-                        onClick = { component.onIntent(RoutineDayIntent.DayClicked(day.id)) },
+                        onClick = { component.onIntent(RoutineDayIntent.DayClicked(day)) },
                         onEdit = {
                             editingDay = day
                             isDialogOpen = true
@@ -65,18 +77,12 @@ fun RoutineDayScreen(component: RoutineDayComponent) {
             onSave = { dayRequest ->
                 if (editingDay != null) {
                     // Конвертируем в RoutineDay для UpdateDay
-                    val updatedDay = dayRequest.toRoutineDay(editingDay!!.id)
-                    component.onIntent(RoutineDayIntent.UpdateDay(updatedDay, editingDay!!.id))
+//                    val updatedDay = dayRequest.toRoutineDay(editingDay!!.id)
+                    component.onIntent(RoutineDayIntent.UpdateDay(dayRequest, editingDay!!.id))
                 } else {
                     // Просто создаём новый день
                     component.onIntent(RoutineDayIntent.CreateDay(dayRequest))
                 }
-
-//                if (editingDay != null) {
-//                    component.onIntent(RoutineDayIntent.UpdateDay(dayRequest, editingDay!!.id))
-//                } else {
-//                    component.onIntent(RoutineDayIntent.CreateDay(dayRequest))
-//                }
                 isDialogOpen = false
                 editingDay = null
             }

@@ -3,11 +3,12 @@ package com.example.fuelfit.exercise.impl.data.remote
 import com.example.fuelfit.exercise.impl.data.remote.dto.CategoryListResponseDto
 import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoDto
 import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoListResponseDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseSearchResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ExerciseApiService {
+internal interface ExerciseApiService {
 
     @GET("api/v2/exerciseinfo/")
     suspend fun getExercisesInfo(
@@ -45,4 +46,10 @@ interface ExerciseApiService {
         @Query("name") name: String? = null,
         @Query("ordering") ordering: String? = null
     ): CategoryListResponseDto
+
+    @GET("/api/v2/exercise/search/")
+    suspend fun searchExercises(
+        @Query("term") term: String,
+        @Query("language") language: String = "en"
+    ): ExerciseSearchResponseDto
 }

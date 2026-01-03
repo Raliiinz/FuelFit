@@ -11,5 +11,6 @@ data class SlotEntry(
     val weightRounding: String?,
     val order: Int,
     val comment: String?,
-    val config: String?
+    val config: String?,
 )
+

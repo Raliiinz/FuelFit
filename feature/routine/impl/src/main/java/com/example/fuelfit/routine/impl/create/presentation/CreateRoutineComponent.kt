@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class CreateRoutineComponent(
+internal class CreateRoutineComponent(
     componentContext: ComponentContext,
     private val onClose: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {

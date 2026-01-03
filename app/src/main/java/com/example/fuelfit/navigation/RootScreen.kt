@@ -17,7 +17,7 @@ fun RootScreen(component: RootComponent) {
 
     Children(stack = stack, modifier = Modifier.fillMaxSize()) {
         when (val child = it.instance) {
-            is RootComponent.Child.SplashChild -> SplashScreen(modifier = Modifier.fillMaxSize())
+            is RootComponent.Child.SplashChild -> SplashScreen(child.component, modifier = Modifier.fillMaxSize())
             is RootComponent.Child.LoginChild -> LoginScreen(child.component)
             is RootComponent.Child.RegisterChild -> RegisterScreen(child.component)
             is RootComponent.Child.TabsChild -> TabsScreen(child.component)

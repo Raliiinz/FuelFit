@@ -5,6 +5,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.exercise.api.model.ExerciseList
 import com.example.fuelfit.exercise.api.usecase.GetExerciseCategoriesUseCase
 import com.example.fuelfit.exercise.api.usecase.GetExercisesUseCase
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import kotlinx.coroutines.launch
 
 internal class ExercisesStoreFactory(
@@ -55,33 +58,39 @@ internal class ExercisesStoreFactory(
             dispatch(ExercisesMsg.Loading)
 
             scope.launch {
-                try {
-                    val result: ExerciseList = getExercisesUseCase(
-                        limit = 20,
-                        offset = if (reset) 0 else state().offset,
-                        categories = state().selectedCategories.toList()
-                    )
+                val result = getExercisesUseCase(
+                    limit = 20,
+                    offset = if (reset) 0 else state().offset,
+                    categories = state().selectedCategories.toList()
+                )
 
-                    dispatch(
-                        ExercisesMsg.AppendExercises(
-                            exerciseList = result
-                        )
-                    )
-                } catch (e: Exception) {
-                    dispatch(ExercisesMsg.Error(e.message ?: "Ошибка загрузки"))
-                    publish(ExercisesLabel.ShowError(e.message ?: "Ошибка загрузки"))
+                when (result) {
+                    is ResultWrapper.Success -> {
+                        val exerciseList = result.data
+                        dispatch(ExercisesMsg.AppendExercises(exerciseList))
+                    }
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+                        dispatch(ExercisesMsg.Error(message))
+                        publish(ExercisesLabel.ShowError(message))
+                    }
                 }
             }
         }
 
         private fun loadCategories() {
             scope.launch {
-                try {
-                    val categories = getExerciseCategoriesUseCase()
-                    dispatch(ExercisesMsg.SetCategories(categories))
-                } catch (e: Exception) {
-                    dispatch(ExercisesMsg.Error(e.message ?: "Ошибка загрузки категорий"))
-                    publish(ExercisesLabel.ShowError(e.message ?: "Ошибка загрузки категорий"))
+                val result = getExerciseCategoriesUseCase()
+
+                when (result) {
+                    is ResultWrapper.Success -> dispatch(ExercisesMsg.SetCategories(result.data))
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+                        dispatch(ExercisesMsg.Error(message))
+                        publish(ExercisesLabel.ShowError(message))
+                    }
                 }
             }
         }

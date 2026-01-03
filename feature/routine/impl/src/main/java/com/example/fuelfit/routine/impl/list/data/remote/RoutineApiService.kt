@@ -4,10 +4,12 @@ import com.example.fuelfit.routine.impl.common.dto.PaginatedResponseDto
 import com.example.fuelfit.routine.impl.common.dto.RoutineDto
 import retrofit2.http.*
 
-interface RoutineApiService {
+internal interface RoutineApiService {
 
     @GET("/api/v2/routine/")
-    suspend fun getRoutines(): PaginatedResponseDto<RoutineDto>
+    suspend fun getRoutines(
+        @Query("is_public") isPublic: Boolean? = false
+    ): PaginatedResponseDto<RoutineDto>
 
     @GET("/api/v2/routine/{id}/")
     suspend fun getRoutine(@Path("id") id: Int): RoutineDto

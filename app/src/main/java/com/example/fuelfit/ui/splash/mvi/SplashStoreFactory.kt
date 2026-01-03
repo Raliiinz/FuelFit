@@ -3,6 +3,9 @@ package com.example.fuelfit.ui.splash.mvi
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.auth.api.usecase.IsAuthorizedUseCase
+import com.example.fuelfit.model.ResultWrapper
+import com.example.fuelfit.model.getErrorMessage
+import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import kotlinx.coroutines.launch
 
 class SplashStoreFactory(
@@ -15,32 +18,59 @@ class SplashStoreFactory(
             Store<SplashIntent, SplashState, SplashLabel> by storeFactory.create(
                 name = "SplashStore",
                 initialState = SplashState(),
-                bootstrapper = SimpleBootstrapper(SplashAction.Load),
-                executorFactory = { ExecutorImpl() },
+                bootstrapper = SimpleBootstrapper(
+                    SplashAction.Load
+                ),
+                executorFactory = { Executor() },
                 reducer = ReducerImpl
             ) {}
 
-    private inner class ExecutorImpl :
-        CoroutineExecutor<SplashIntent, SplashAction, SplashState, SplashMsg, SplashLabel>() {
+    private inner class Executor :
+        CoroutineExecutor<
+                SplashIntent,
+                SplashAction,
+                SplashState,
+                SplashMsg,
+                SplashLabel>() {
 
         override fun executeAction(action: SplashAction) {
-            scope.launch {
-                val isAuthorized = try {
-                    isAuthorizedUseCase()
-                } catch (e: Exception) {
-                    false
-                }
+            if (action is SplashAction.Load) {
+                checkAuthorization()
+            }
+        }
 
-                if (isAuthorized) {
-                    publish(SplashLabel.NavigateToMain)
-                } else {
-                    publish(SplashLabel.NavigateToLogin)
+        private fun checkAuthorization() {
+            scope.launch {
+                when (
+                    val result =
+                        isAuthorizedUseCase()
+                ) {
+                    is ResultWrapper.Success -> {
+                        if (result.data) {
+                            publish(SplashLabel.NavigateToMain)
+                        } else {
+                            publish(SplashLabel.NavigateToLogin)
+                        }
+                    }
+
+                    is ResultWrapper.Error -> {
+                        val userError = mapApiErrorToUserFriendly(result.error)
+                        val message = getErrorMessage(userError)
+
+                        publish(SplashLabel.ShowError(message))
+                        publish(SplashLabel.NavigateToLogin)
+                    }
                 }
             }
         }
     }
 
-    private object ReducerImpl : Reducer<SplashState, SplashMsg> {
-        override fun SplashState.reduce(msg: SplashMsg): SplashState = this
+    private object ReducerImpl :
+        Reducer<SplashState, SplashMsg> {
+
+        override fun SplashState.reduce(
+            msg: SplashMsg
+        ): SplashState =
+            this
     }
 }

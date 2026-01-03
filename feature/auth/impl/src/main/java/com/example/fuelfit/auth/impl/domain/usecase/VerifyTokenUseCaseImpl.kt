@@ -2,11 +2,12 @@ package com.example.fuelfit.auth.impl.domain.usecase
 
 import com.example.fuelfit.auth.api.repository.AuthRepository
 import com.example.fuelfit.auth.api.usecase.VerifyTokenUseCase
+import com.example.fuelfit.model.ResultWrapper
 
-class VerifyTokenUseCaseImpl internal constructor(
+internal class VerifyTokenUseCaseImpl internal constructor(
     private val repository: AuthRepository
 ) : VerifyTokenUseCase {
-    override suspend fun invoke(token: String): Boolean {
+    override suspend fun invoke(token: String): ResultWrapper<Boolean> {
         return repository.verifyToken(token)
     }
 }

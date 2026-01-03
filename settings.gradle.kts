@@ -21,7 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "FuelFit"
 include(":app")
-include(":core:model")
 include(":core:utils")
 include(":core:designsystem")
 include(":core:navigation")
@@ -36,3 +35,4 @@ include(":feature:food:api")
 include(":feature:food:impl")
 include(":feature:routine:impl")
 include(":feature:routine:api")
+include(":core:model")

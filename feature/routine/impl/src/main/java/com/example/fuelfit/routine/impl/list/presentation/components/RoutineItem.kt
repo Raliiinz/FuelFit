@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fuelfit.routine.api.common.Routine
 
 @Composable
-fun RoutineItem(
+internal fun RoutineItem(
     routine: Routine,
     onClick: () -> Unit,
     onDelete: () -> Unit

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchAndFilterBar(
+internal fun SearchAndFilterBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onFilterClick: () -> Unit

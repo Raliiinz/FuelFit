@@ -12,7 +12,7 @@ import com.example.fuelfit.routine.api.details.model.RoutineDayRequest
 import com.example.fuelfit.routine.api.details.model.RoutineDayType
 
 @Composable
-fun RoutineDayDialog(
+internal fun RoutineDayDialog(
     day: RoutineDay? = null,
     onDismiss: () -> Unit,
     onSave: (RoutineDayRequest) -> Unit
@@ -121,7 +121,7 @@ private fun DropdownMenuBox(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            RoutineDayType.values().forEach { type ->
+            RoutineDayType.entries.forEach { type ->
                 DropdownMenuItem(
                     text = { Text(type.name) },
                     onClick = {

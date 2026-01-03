@@ -36,6 +36,7 @@ android {
 
 dependencies {
     api(project(":feature:auth:api"))
+    api(project(":core:model"))
     implementation(project(":core:network"))
     implementation(project(":core:utils"))
 

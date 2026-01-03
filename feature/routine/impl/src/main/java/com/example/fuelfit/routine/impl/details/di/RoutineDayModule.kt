@@ -7,6 +7,7 @@ import com.example.fuelfit.routine.api.details.usecase.GetRoutineDayUseCase
 import com.example.fuelfit.routine.api.details.usecase.GetRoutineDaysUseCase
 import com.example.fuelfit.routine.api.details.usecase.UpdateRoutineDayUseCase
 import com.example.fuelfit.routine.impl.details.data.RoutineDayRepositoryImpl
+import com.example.fuelfit.routine.impl.details.data.mapper.RoutineDayMapper
 import com.example.fuelfit.routine.impl.details.data.remote.RoutineDayApiService
 import com.example.fuelfit.routine.impl.details.domain.usecase.CreateRoutineDayUseCaseImpl
 import com.example.fuelfit.routine.impl.details.domain.usecase.DeleteRoutineDayUseCaseImpl
@@ -18,7 +19,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val routineDayModule = module {
+internal val routineDayModule = module {
+
+    single { RoutineDayMapper() }
 
     single<RoutineDayApiService> {
         get<Retrofit>(named("mainRetrofit"))
@@ -26,7 +29,7 @@ val routineDayModule = module {
     }
 
     single<RoutineDayRepository> {
-        RoutineDayRepositoryImpl(api = get())
+        RoutineDayRepositoryImpl(api = get(), mapper = get())
     }
 
     factory<CreateRoutineDayUseCase> { CreateRoutineDayUseCaseImpl(repository = get()) }
