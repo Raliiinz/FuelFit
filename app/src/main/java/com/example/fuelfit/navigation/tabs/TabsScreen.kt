@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.exercise.impl.navigation.ExercisesScreen
-import com.example.fuelfit.food.impl.FoodScreen
+import com.example.fuelfit.profile.impl.presentation.UserProfileScreen
 import com.example.fuelfit.routine.impl.navigation.RoutineScreen
 
 @Composable
@@ -35,8 +35,8 @@ fun TabsScreen(component: TabsComponent) {
                     icon = { Icon(Icons.Default.FitnessCenter, null) }
                 )
                 NavigationBarItem(
-                    selected = stack.active.instance is TabsComponent.Child.FoodChild,
-                    onClick = { component.onTabClicked(TabsComponent.Config.Food) },
+                    selected = stack.active.instance is TabsComponent.Child.UserProfileChild,
+                    onClick = { component.onTabClicked(TabsComponent.Config.UserProfile) },
                     label = { Text("Food") },
                     icon = { Icon(Icons.Default.Fastfood, null) }
                 )
@@ -50,7 +50,7 @@ fun TabsScreen(component: TabsComponent) {
             when (val child = it.instance) {
                 is TabsComponent.Child.ExercisesChild -> ExercisesScreen(child.component)
                 is TabsComponent.Child.RoutineChild -> RoutineScreen(child.component)
-                is TabsComponent.Child.FoodChild -> FoodScreen(child.component)
+                is TabsComponent.Child.UserProfileChild -> UserProfileScreen(child.component)
             }
         }
     }

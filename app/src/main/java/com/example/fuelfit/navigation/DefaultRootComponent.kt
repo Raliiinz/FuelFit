@@ -71,7 +71,10 @@ class DefaultRootComponent(
 
             Config.Tabs ->
                 RootComponent.Child.TabsChild(
-                    DefaultTabsComponent(childContext)
+                    DefaultTabsComponent(
+                        childContext,
+                        onLogout = { navigation.replaceAll(Config.Login) }
+                    )
                 )
         }
 

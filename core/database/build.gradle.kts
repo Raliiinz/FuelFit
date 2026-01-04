@@ -15,10 +15,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        defaultConfig {
-            buildConfigField("String", "FITNESS_API_URL", "\"https://shmr-finance.ru/api/v1/\"")
-        }
-
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
             vectorDrawables.useSupportLibrary = true
@@ -58,4 +54,8 @@ dependencies {
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.android.compose)
 }

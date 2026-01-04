@@ -7,11 +7,12 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.example.fuelfit.exercise.impl.navigation.ExercisesTabComponent
-import com.example.fuelfit.food.impl.FoodComponent
+import com.example.fuelfit.profile.impl.presentation.UserProfileComponent
 import com.example.fuelfit.routine.impl.navigation.RoutineTabComponent
 
 class DefaultTabsComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    private val onLogout: () -> Unit
 ) : TabsComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<TabsComponent.Config>()
@@ -36,8 +37,11 @@ class DefaultTabsComponent(
         TabsComponent.Config.Routine -> TabsComponent.Child.RoutineChild(
             RoutineTabComponent(childContext)
         )
-        TabsComponent.Config.Food -> TabsComponent.Child.FoodChild(
-            FoodComponent(childContext)
+        TabsComponent.Config.UserProfile -> TabsComponent.Child.UserProfileChild(
+            UserProfileComponent(
+                componentContext = childContext,
+                onLogout = { onLogout() }
+            )
         )
     }
 

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -50,7 +51,7 @@ dependencies {
     implementation(project(":feature:auth:impl"))
     implementation(project(":feature:exercise:impl"))
     implementation(project(":feature:routine:impl"))
-    implementation(project(":feature:food:impl"))
+    implementation(project(":feature:profile:impl"))
 
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
@@ -80,4 +81,7 @@ dependencies {
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)
     implementation(libs.mvikotlin.extensions.coroutines)
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    ksp(libs.room.ksp)
 }

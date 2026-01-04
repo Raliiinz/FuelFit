@@ -1,6 +1,6 @@
 [versions]
 agp = "8.12.3"
-kotlin = "2.2.10"
+kotlin = "2.0.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -17,7 +17,8 @@ serialization = "1.7.3"
 
 # DI
 koin = "4.1.1"
-ksp = "2.2.10-2.0.2"
+ksp = "2.0.21-1.0.27"
+#ksp = "2.2.10-2.0.2"
 
 # Architecture
 mvikotlin = "4.0.0"
