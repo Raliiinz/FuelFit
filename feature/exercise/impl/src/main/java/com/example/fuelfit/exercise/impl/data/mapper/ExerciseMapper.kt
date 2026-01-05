@@ -3,6 +3,7 @@ package com.example.fuelfit.exercise.impl.data.mapper
 import com.example.fuelfit.exercise.api.model.*
 import com.example.fuelfit.exercise.impl.data.remote.dto.*
 import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.*
+import com.example.fuelfit.utils.stripHtml
 
 internal class ExerciseMapper {
 
@@ -72,7 +73,7 @@ internal class ExerciseMapper {
         uuid = dto.uuid,
         name = dto.name,
         exercise = dto.exercise,
-        description = dto.description,
+        description = dto.description.stripHtml(),
         created = dto.created,
         language = dto.language,
         aliases = dto.aliases.map { mapAlias(it) },

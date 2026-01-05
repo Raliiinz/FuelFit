@@ -12,4 +12,3 @@ data class LicenseDto(
     val shortName: String,
     val url: String?
 )
-

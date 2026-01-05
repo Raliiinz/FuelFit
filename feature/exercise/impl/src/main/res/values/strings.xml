@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exercises_search_hint">Поиск упражнений</string>
+    <string name="exercises_filter">Фильтр</string>
+    <string name="filters_title">Фильтры</string>
+    <string name="filters_categories">Категории</string>
+    <string name="filters_done">Готово</string>
+    <string name="filters_cancel">Отмена</string>
+    <string name="exercise_no_name">Без названия</string>
+
+    <string name="no_name">No name</string>
+    <string name="exercise_category">Category: %1$s</string>
+    <string name="exercise_muscles">Muscles: %1$s</string>
+    <string name="exercise_secondary_muscles">Secondary Muscles: %1$s</string>
+    <string name="exercise_equipment">Equipment: %1$s</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="video_url">Video URL: %1$s</string>
+</resources>

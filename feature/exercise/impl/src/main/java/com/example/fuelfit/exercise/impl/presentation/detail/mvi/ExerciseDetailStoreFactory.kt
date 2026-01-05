@@ -42,7 +42,6 @@ internal class ExerciseDetailStoreFactory(
             dispatch(ExerciseDetailMsg.Loading)
             scope.launch {
                 val result = getExerciseDetailUseCase(exerciseId)
-                testCrash()
                 when (result) {
                     is ResultWrapper.Success -> dispatch(ExerciseDetailMsg.Loaded(result.data))
                     is ResultWrapper.Error -> {
@@ -64,8 +63,4 @@ internal class ExerciseDetailStoreFactory(
                 is ExerciseDetailMsg.Loaded -> copy(isLoading = false, detail = msg.detail, error = null)
             }
     }
-}
-fun testCrash() {
-//    FirebaseCrashlytics.getInstance().log("Test crash from app")
-    throw RuntimeException("Test Crash for Firebase")
 }

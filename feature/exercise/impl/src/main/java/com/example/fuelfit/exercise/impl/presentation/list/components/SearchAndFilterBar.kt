@@ -1,15 +1,13 @@
 package com.example.fuelfit.exercise.impl.presentation.list.components
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.fuelfit.designsystem.components.FuelFitSearchBar
+import com.example.fuelfit.exercise.impl.R
 
 @Composable
 internal fun SearchAndFilterBar(
@@ -17,18 +15,17 @@ internal fun SearchAndFilterBar(
     onQueryChange: (String) -> Unit,
     onFilterClick: () -> Unit
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        TextField(
-            value = query,
-            onValueChange = onQueryChange,
-            label = { Text("Поиск") },
-            modifier = Modifier.weight(1f)
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Button(onClick = onFilterClick) {
-            Text("Фильтр")
-        }
-    }
+    FuelFitSearchBar(
+        query = query,
+        onQueryChange = onQueryChange,
+        trailingIcon = {
+            IconButton(onClick = onFilterClick) {
+                Icon(
+                    imageVector = Icons.Default.Tune,
+                    contentDescription = stringResource(R.string.exercises_filter)
+                )
+            }
+        },
+        placeholder = stringResource(R.string.exercises_search_hint),
+    )
 }

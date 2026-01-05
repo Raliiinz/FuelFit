@@ -28,7 +28,7 @@ internal interface ExerciseApiService {
         @Query("muscles_secondary__in") musclesSecondaryIn: List<Int>? = null,
 
         @Query("name__search") nameSearch: String? = null,
-        @Query("language__code") languageCode: String? = null,
+        @Query("language__code") languageCode: String? = "en",
 
         @Query("ordering") ordering: String? = null,
         @Query("id") id: Int? = null,

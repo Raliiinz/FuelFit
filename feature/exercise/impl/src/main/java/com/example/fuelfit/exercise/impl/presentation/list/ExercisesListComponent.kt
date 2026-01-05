@@ -39,7 +39,6 @@ internal class ExercisesListComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
-        throw RuntimeException("Test Crash for Firebase")
         analytics.screenOpened(Screen.EXERCISES)
 
         lifecycle.doOnCreate {
