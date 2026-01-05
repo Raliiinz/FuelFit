@@ -1,140 +1,124 @@
 package com.example.fuelfit.profile.impl.presentation
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
+import com.example.fuelfit.designsystem.components.FuelFitCard
+import com.example.fuelfit.designsystem.components.FuelFitText
+import com.example.fuelfit.profile.impl.R
+import com.example.fuelfit.profile.impl.presentation.components.UserProfileForm
 import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileIntent
+import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileState
 import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserProfileScreen(component: UserProfileComponent) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        component.onIntent(UserProfileIntent.LoadProfile)
+    }
 
     LaunchedEffectAndCollect(
         flow = component.snackbarFlow,
         lifecycle = component.lifecycle
     ) { snackbarHostState.showSnackbar(it) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Profile") },
-                actions = {
-                    IconButton(onClick = { component.onIntent(UserProfileIntent.LogoutClicked) }) {
-                        Text("Logout")
-//                        Icon(Icons.Default.Logout, contentDescription = "Logout")
-                    }
-                }
+    Box(modifier = Modifier.fillMaxSize()) {
+        when {
+            state.isLoading -> LoadingContent()
+            state.error != null -> ErrorContent(
+                message = state.error!!,
+                onRetry = { component.onIntent(UserProfileIntent.Refresh) }
+            )
+            state.profile != null -> UserProfileContent(
+                state = state,
+                onIntent = component::onIntent
             )
         }
-    ) { innerPadding ->
-        Column(
+
+        SnackbarHost(
+            hostState = snackbarHostState,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            when {
-                state.isLoading -> LoadingContent()
-                state.error != null -> ErrorContent(
-                    message = state.error!!,
-                    onRetry = { component.onIntent(UserProfileIntent.Refresh) }
-                )
-                state.profile != null -> {
-                    // Верхняя часть: username и email
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "Username: ${state.profile!!.username}",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "Email: ${state.profile!!.email}",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    UserProfileForm(
-                        weight = state.weightInput,
-                        onWeightChange = { component.onIntent(UserProfileIntent.WeightChanged(it)) },
-                        height = state.heightInput,
-                        onHeightChange = { component.onIntent(UserProfileIntent.HeightChanged(it)) },
-                        age = state.ageInput,
-                        onAgeChange = { component.onIntent(UserProfileIntent.AgeChanged(it)) },
-                        onSave = { component.onIntent(UserProfileIntent.SaveClicked) },
-                        isSaving = state.isSaving,
-                    )
-                }
-            }
-        }
-
-        SnackbarHost(snackbarHostState)
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp)
+        )
     }
 }
 
 @Composable
-fun UserProfileForm(
-    weight: String,
-    onWeightChange: (String) -> Unit,
-    height: String,
-    onHeightChange: (String) -> Unit,
-    age: String,
-    onAgeChange: (String) -> Unit,
-    onSave: () -> Unit,
-    isSaving: Boolean,
+private fun UserProfileContent(
+    state: UserProfileState,
+    onIntent: (UserProfileIntent) -> Unit
 ) {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(4.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp)
+            .padding(vertical = 16.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            OutlinedTextField(
-                value = weight,
-                onValueChange = onWeightChange,
-                label = { Text("Weight (kg)") },
-                modifier = Modifier.fillMaxWidth()
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FuelFitText.HeadlineLarge(text = stringResource(R.string.profile_title))
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = height,
-                onValueChange = onHeightChange,
-                label = { Text("Height (cm)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = age,
-                onValueChange = onAgeChange,
-                label = { Text("Age") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = onSave,
-                enabled = !isSaving,
-                modifier = Modifier.fillMaxWidth()
+            IconButton(
+                onClick = { onIntent(UserProfileIntent.LogoutClicked) }
             ) {
-                Text("Save")
+                Icon(
+                    imageVector = Icons.Default.ExitToApp,
+                    contentDescription = stringResource(R.string.logout_button),
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
             }
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        FuelFitCard.FuelFitOutlinedCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FuelFitText.BodyMedium("Username: ${state.profile!!.username}")
+                FuelFitText.BodyMedium("Email: ${state.profile.email}")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        UserProfileForm(
+            weight = state.weightInput,
+            onWeightChange = { onIntent(UserProfileIntent.WeightChanged(it)) },
+            height = state.heightInput,
+            onHeightChange = { onIntent(UserProfileIntent.HeightChanged(it)) },
+            age = state.ageInput,
+            onAgeChange = { onIntent(UserProfileIntent.AgeChanged(it)) },
+            onSave = { onIntent(UserProfileIntent.SaveClicked) },
+            isSaving = state.isSaving,
+            heightError = state.heightError,
+            ageError = state.ageError
+        )
     }
 }

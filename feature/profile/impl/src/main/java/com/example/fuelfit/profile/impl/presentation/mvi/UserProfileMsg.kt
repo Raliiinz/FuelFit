@@ -11,6 +11,8 @@ internal sealed interface UserProfileMsg {
     data class HeightChanged(val value: String) : UserProfileMsg
     data class AgeChanged(val value: String) : UserProfileMsg
 
+    data class HeightChangedError(val isError: Boolean, val message: String? = null) : UserProfileMsg
+    data class AgeChangedError(val isError: Boolean, val message: String? = null) : UserProfileMsg
     object Saving : UserProfileMsg
     object Saved : UserProfileMsg
 }

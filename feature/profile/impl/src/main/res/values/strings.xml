@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title">Profile</string>
+    <string name="logout_button">Logout</string>
+    <string name="weight_label">Weight (kg)</string>
+    <string name="height_label">Height (cm)</string>
+    <string name="age_label">Age</string>
+    <string name="save_button">Save</string>
+    <string name="saving_text">Saving...</string>
+    <string name="label_username">Username: %1$s</string>
+    <string name="label_email">Email: %1$s</string>
+    <string name="error_height_min">Рост должен быть от 140 см</string>
+    <string name="error_age_min">Возраст должен быть от 10 лет</string>
+</resources>
+

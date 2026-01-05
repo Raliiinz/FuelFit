@@ -47,9 +47,6 @@ class UserProfileComponent(
                         is UserProfileLabel.ShowError ->
                             _snackbar.emit(label.message)
 
-                        UserProfileLabel.ShowProfileSaved ->
-                            _snackbar.emit("Профиль сохранён")
-
                         UserProfileLabel.LoggedOut -> onLogout()
                     }
                 }

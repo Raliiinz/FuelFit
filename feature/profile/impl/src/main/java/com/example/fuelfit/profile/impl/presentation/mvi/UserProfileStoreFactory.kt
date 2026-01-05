@@ -78,6 +78,27 @@ internal class UserProfileStoreFactory(
         private fun saveProfile() {
             if (state().isSaving) return
 
+            val height = state().heightInput.toIntOrNull()
+            val age = state().ageInput.toIntOrNull()
+
+            var hasError = false
+
+            if (height == null || height < 140) {
+                dispatch(UserProfileMsg.HeightChangedError(isError = true))
+                hasError = true
+            } else {
+                dispatch(UserProfileMsg.HeightChangedError(isError = false))
+            }
+
+            if (age == null || age < 10) {
+                dispatch(UserProfileMsg.AgeChangedError(isError = true))
+                hasError = true
+            } else {
+                dispatch(UserProfileMsg.AgeChangedError(isError = false))
+            }
+
+            if (hasError) return
+
             dispatch(UserProfileMsg.Saving)
 
             val weight = state().weightInput
@@ -85,26 +106,18 @@ internal class UserProfileStoreFactory(
                 ?.toFloatOrNull()
                 ?.let { String.format("%.2f", it) }
 
-            val height = state().heightInput.toIntOrNull()
-            val age = state().ageInput.toIntOrNull()
-
             scope.launch {
-                when (
-                    val result = updateCurrentUserProfileUseCase(
-                        weight = weight,
-                        height = height,
-                        age = age
-                    )
-                ) {
+                when (val result = updateCurrentUserProfileUseCase(
+                    weight = weight,
+                    height = height,
+                    age = age
+                )) {
                     is ResultWrapper.Success -> {
                         dispatch(UserProfileMsg.Saved)
                         dispatch(UserProfileMsg.ProfileLoaded(result.data))
-                        publish(UserProfileLabel.ShowProfileSaved)
                     }
                     is ResultWrapper.Error -> {
-                        val msg = getErrorMessage(
-                            mapApiErrorToUserFriendly(result.error)
-                        )
+                        val msg = getErrorMessage(mapApiErrorToUserFriendly(result.error))
                         dispatch(UserProfileMsg.Error(msg))
                         publish(UserProfileLabel.ShowError(msg))
                     }
@@ -139,6 +152,8 @@ internal class UserProfileStoreFactory(
                     weightInput = msg.profile.weightRounding.orEmpty(),
                     heightInput = msg.profile.height?.toString().orEmpty(),
                     ageInput = msg.profile.age?.toString().orEmpty(),
+                    heightError = false,
+                    ageError = false,
                     isLoading = false,
                     isSaving = false,
                     error = null
@@ -146,6 +161,8 @@ internal class UserProfileStoreFactory(
                 is UserProfileMsg.WeightChanged -> copy(weightInput = msg.value)
                 is UserProfileMsg.HeightChanged -> copy(heightInput = msg.value)
                 is UserProfileMsg.AgeChanged -> copy(ageInput = msg.value)
+                is UserProfileMsg.HeightChangedError -> copy(heightError = msg.isError)
+                is UserProfileMsg.AgeChangedError -> copy(ageError = msg.isError)
                 UserProfileMsg.Saving -> copy(isSaving = true)
                 UserProfileMsg.Saved -> copy(isSaving = false)
             }
