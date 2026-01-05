@@ -10,7 +10,6 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): ResultWrapper<T> {
         val result = apiCall()
         ResultWrapper.Success(result)
     } catch (e: HttpException) {
-        // Обрабатываем ошибки сервера 4xx, 5xx
         val code = e.code()
         val message = when (code) {
             in 400..499 -> "Ошибка запроса: ${e.message()}"
@@ -19,10 +18,8 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): ResultWrapper<T> {
         }
         ResultWrapper.Error(ApiError(code, message))
     } catch (e: IOException) {
-        // Ошибки сети
         ResultWrapper.Error(ApiError(-1, "Нет подключения к интернету"))
     } catch (e: Exception) {
-        // Прочие ошибки
         ResultWrapper.Error(ApiError(-2, e.localizedMessage ?: "Неизвестная ошибка"))
     }
 }

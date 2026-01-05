@@ -20,11 +20,11 @@ fun mapApiErrorToUserFriendly(error: ApiError): UserFriendlyError = when (error.
 }
 
 fun getErrorMessage(error: UserFriendlyError): String = when (error) {
-    UserFriendlyError.Network -> "Ошибка сети. Проверьте соединение"
-    UserFriendlyError.Unauthorized -> "Необходимо войти в аккаунт"
-    UserFriendlyError.Forbidden -> "Доступ к данным запрещён"
-    UserFriendlyError.NotFound -> "Данные не найдены"
-    UserFriendlyError.ClientError -> "Ошибка запроса. Попробуйте снова"
-    UserFriendlyError.Server -> "Сервер временно недоступен"
-    UserFriendlyError.Unknown -> "Произошла неизвестная ошибка"
+    UserFriendlyError.Network -> ErrorMessages.NETWORK
+    UserFriendlyError.Unauthorized -> ErrorMessages.UNAUTHORIZED
+    UserFriendlyError.Forbidden -> ErrorMessages.FORBIDDEN
+    UserFriendlyError.NotFound -> ErrorMessages.NOT_FOUND
+    UserFriendlyError.ClientError -> ErrorMessages.CLIENT_ERROR
+    UserFriendlyError.Server -> ErrorMessages.SERVER_ERROR
+    UserFriendlyError.Unknown -> ErrorMessages.UNKNOWN
 }

@@ -5,4 +5,3 @@ data class LoginParams(
     val password: String,
     val email: String
 )
-

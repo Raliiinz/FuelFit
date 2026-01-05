@@ -3,7 +3,7 @@ package com.example.fuelfit.profile.impl.data.mapper
 import com.example.fuelfit.profile.api.model.UserProfileInfo
 import com.example.fuelfit.profile.impl.data.local.entity.UserProfileEntity
 import com.example.fuelfit.profile.impl.data.remote.dto.UserProfileInfoDto
-import com.example.fuelfit.utils.toOffsetDateTime
+import com.example.fuelfit.utils.datetime.toOffsetDateTime
 import java.time.LocalDate
 
 internal class UserProfileMapper {

@@ -37,6 +37,7 @@ android {
 dependencies {
     api(project(":feature:auth:api"))
     api(project(":core:model"))
+    implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
     implementation(project(":core:utils"))
 
@@ -62,6 +63,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.compose.icons)
     implementation(libs.material)
     implementation(libs.material3)
     testImplementation(libs.junit)

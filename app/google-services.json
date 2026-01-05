@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "405926695178",
+    "project_id": "fuelfit-3a32c",
+    "storage_bucket": "fuelfit-3a32c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405926695178:android:04a64120e35a6e06bdeaf3",
+        "android_client_info": {
+          "package_name": "com.example.fuelfit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrjan7tVgw9GZ2HUvgNM5e_4QDYRwZ8bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

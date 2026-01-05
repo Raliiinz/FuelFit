@@ -11,7 +11,9 @@ import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineLabel
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineState
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineStore
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
+import com.example.fuelfit.utils.mvi.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -28,6 +30,7 @@ internal class RoutineListComponent(
     private val onCreateRoutineClicked: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val factory: RoutineStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val store: RoutineStore = instanceKeeper.getStore { factory.create() }
@@ -38,6 +41,8 @@ internal class RoutineListComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
+        analytics.screenOpened(Screen.ROUTINES_LIST)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect {

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">FuelFit</string>
+    <string name="login_subtitle">Становитесь лучше каждый день!</string>
+    <string name="register_subtitle">Начните улучшать себя каждый день!</string>
+
+    <string name="label_username">Имя пользователя</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Пароль</string>
+
+    <string name="btn_login">Войти</string>
+    <string name="btn_loading">Загрузка...</string>
+    <string name="btn_register">Зарегистрироваться</string>
+    <string name="btn_yet_not_registered">Еще не зарегистрированы?</string>
+    <string name="btn_already_have_account">Уже есть аккаунт?</string>
+    <string name="error_empty_fields">Введите логин, email и пароль</string>
+    <string name="error_fill_field">Заполните поле</string>
+    <string name="error_email_format">Некорректный формат почты</string>
+    <string name="error_password_requirement">Пароль должен быть не менее 8 символов и содержать буквы и цифры</string>
+</resources>

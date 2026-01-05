@@ -16,4 +16,3 @@ object RetrofitProvider {
             .client(okHttpClient)
             .build()
 }
-

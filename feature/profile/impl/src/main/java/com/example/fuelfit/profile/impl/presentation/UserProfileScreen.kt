@@ -12,7 +12,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

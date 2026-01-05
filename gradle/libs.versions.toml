@@ -41,7 +41,14 @@ datastore = "1.2.0"
 secretsGradlePlugin = "2.0.1"
 
 # Firebase
-firebase-bom = "33.3.0"
+firebase-messaging = "24.1.1"
+firebase-crashlytics = "19.4.3"
+firebase-analytics = "22.4.0"
+firebase-remote-config = "22.1.2"
+firebase-perfomance = "21.0.4"
+crashlytics-plugin = "3.0.3"
+perfomance-plugin = "1.4.2"
+google-services = "4.4.2"
 
 # Testing
 mockk = "1.13.10"
@@ -74,6 +81,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+androidx-compose-icons = { group = "androidx.compose.material", name ="material-icons-extended", version.ref ="compose" }
 
 # DI / Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -115,10 +123,14 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
-#firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
-#firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
-#firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-#firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
+
+# Firebase
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
+firebase-crashlytics =  { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebase-analytics" }
+firebase-remote-config =  { group = "com.google.firebase", name = "firebase-config", version.ref = "firebase-remote-config" }
+firebase-perfomance = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase-perfomance" }
+
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
@@ -133,3 +145,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 
+# Google / Firebase плагины
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services"}
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin"}
+perfomance = { id = "com.google.firebase.firebase-perf", version.ref = "perfomance-plugin" }

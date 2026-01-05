@@ -15,7 +15,7 @@ import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.exercise.api.model.ExerciseInfo
 import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

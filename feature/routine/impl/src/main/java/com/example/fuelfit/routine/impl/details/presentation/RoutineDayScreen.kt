@@ -16,7 +16,7 @@ import com.example.fuelfit.routine.api.details.model.RoutineDay
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayDialog
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayItem
 import com.example.fuelfit.routine.impl.details.presentation.mvi.RoutineDayIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @Composable
 internal fun RoutineDayScreen(component: RoutineDayComponent) {

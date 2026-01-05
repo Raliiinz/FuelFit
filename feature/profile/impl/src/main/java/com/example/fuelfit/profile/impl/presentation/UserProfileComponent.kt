@@ -11,7 +11,9 @@ import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileLabel
 import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileState
 import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileStore
 import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
+import com.example.fuelfit.utils.mvi.asValue
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,6 +25,7 @@ class UserProfileComponent(
     private val onLogout: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val storeFactory: UserProfileStoreFactory by inject()
     private val store: UserProfileStore =
         instanceKeeper.getStore { storeFactory.create() }
@@ -35,6 +38,8 @@ class UserProfileComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
+        analytics.screenOpened(Screen.PROFILE)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect { label ->

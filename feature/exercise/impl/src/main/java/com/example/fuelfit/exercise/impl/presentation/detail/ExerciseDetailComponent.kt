@@ -11,7 +11,9 @@ import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailL
 import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailState
 import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailStore
 import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
+import com.example.fuelfit.utils.mvi.asValue
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +31,7 @@ internal class ExerciseDetailComponent(
     val onBack: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val storeFactory: ExerciseDetailStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val store: ExerciseDetailStore = instanceKeeper.getStore { storeFactory.create(exerciseId) }
@@ -38,6 +41,8 @@ internal class ExerciseDetailComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
+        analytics.screenOpened(Screen.EXERCISE_DETAIL)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect { label ->

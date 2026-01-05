@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import com.example.fuelfit.utils.asValue
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.map
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
+import com.example.fuelfit.utils.mvi.asValue
 
 internal class RoutineDayComponent(
     componentContext: ComponentContext,
@@ -22,6 +22,7 @@ internal class RoutineDayComponent(
     private val onDayClicked: (Int) -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val factory: RoutineDayStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val store: RoutineDayStore = instanceKeeper.getStore { factory.create(routineId) }
@@ -35,6 +36,8 @@ internal class RoutineDayComponent(
     val toastFlow: SharedFlow<String> = _toast
 
     init {
+        analytics.screenOpened(Screen.ROUTINE_DETAILS)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect {

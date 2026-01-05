@@ -1,15 +1,16 @@
 package com.example.fuelfit.auth.impl.data
 
-import com.example.fuelfit.auth.api.model.AuthTokens
+import com.example.fuelfit.auth.api.model.AuthToken
 import com.example.fuelfit.auth.api.model.LoginParams
 import com.example.fuelfit.auth.api.model.RegisterParams
 import com.example.fuelfit.auth.api.repository.AuthRepository
 import com.example.fuelfit.auth.impl.data.mapper.AuthMapper
 import com.example.fuelfit.auth.impl.data.remote.AuthApiService
-import com.example.fuelfit.auth.impl.data.remote.dto.*
-import com.example.fuelfit.model.ResultWrapper
-import com.example.fuelfit.network.safeApiCall
+import com.example.fuelfit.auth.impl.data.remote.dto.UserLoginRequest
+import com.example.fuelfit.auth.impl.data.remote.dto.UserRegistrationRequest
 import com.example.fuelfit.network.auth.TokenStorage
+import com.example.fuelfit.network.safeApiCall
+import com.example.fuelfit.model.ResultWrapper
 
 internal class AuthRepositoryImpl(
     private val api: AuthApiService,
@@ -17,7 +18,7 @@ internal class AuthRepositoryImpl(
     private val mapper: AuthMapper
 ) : AuthRepository {
 
-    override suspend fun login(request: LoginParams): ResultWrapper<AuthTokens> =
+    override suspend fun login(request: LoginParams): ResultWrapper<AuthToken> =
         safeApiCall {
             val dto = api.login(
                 UserLoginRequest(
@@ -26,12 +27,12 @@ internal class AuthRepositoryImpl(
                     email = request.email
                 )
             )
-            val tokens = mapper.mapLoginToDomain(dto)
-            tokenStorage.saveAccessToken(tokens.access)
-            tokens
+            val token = mapper.mapLoginToDomain(dto)
+            tokenStorage.saveToken(token.token)
+            token
         }
 
-    override suspend fun register(request: RegisterParams): ResultWrapper<AuthTokens> =
+    override suspend fun register(request: RegisterParams): ResultWrapper<AuthToken> =
         safeApiCall {
             val dto = api.register(
                 UserRegistrationRequest(
@@ -40,28 +41,14 @@ internal class AuthRepositoryImpl(
                     password = request.password
                 )
             )
-            val tokens = mapper.mapLoginToDomain(dto)
-            tokenStorage.saveAccessToken(tokens.access)
-            tokens
-        }
-
-    override suspend fun refreshToken(refresh: String): ResultWrapper<AuthTokens> =
-        safeApiCall {
-            val dto = api.refresh(TokenRefreshRequest(refresh))
-            val tokens = mapper.mapTokenRefreshToDomain(dto, refresh)
-            tokenStorage.saveTokens(tokens.access, tokens.refresh ?: "")
-            tokens
-        }
-
-    override suspend fun verifyToken(token: String): ResultWrapper<Boolean> =
-        safeApiCall {
-            api.verify(TokenVerifyRequest(token))
-            true
+            val token = mapper.mapLoginToDomain(dto)
+            tokenStorage.saveToken(token.token)
+            token
         }
 
     override suspend fun isAuthorized(): ResultWrapper<Boolean> =
         safeApiCall {
-            tokenStorage.getAccessToken() != null
+            tokenStorage.getToken() != null
         }
 
     override suspend fun logout(): ResultWrapper<Unit> =

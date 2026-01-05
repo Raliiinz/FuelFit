@@ -9,12 +9,11 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
-import com.example.fuelfit.exercise.impl.presentation.detail.mvi.ExerciseDetailIntent
 import com.example.fuelfit.exercise.impl.presentation.list.components.ExercisesFilterDialog
 import com.example.fuelfit.exercise.impl.presentation.list.components.ExercisesList
 import com.example.fuelfit.exercise.impl.presentation.list.components.SearchAndFilterBar
 import com.example.fuelfit.exercise.impl.presentation.list.mvi.ExercisesIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @Composable
 internal fun ExercisesListScreen(component: ExercisesListComponent) {

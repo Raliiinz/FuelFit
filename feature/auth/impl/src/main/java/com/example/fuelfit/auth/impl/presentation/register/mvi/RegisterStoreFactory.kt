@@ -2,13 +2,14 @@ package com.example.fuelfit.auth.impl.presentation.register.mvi
 
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.example.fuelfit.auth.api.model.AuthTokens
+import com.example.fuelfit.auth.api.model.AuthToken
 import com.example.fuelfit.auth.api.model.RegisterParams
 import com.example.fuelfit.auth.api.usecase.RegisterUseCase
 import com.example.fuelfit.auth.impl.presentation.register.mvi.RegisterMsg.*
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.model.getErrorMessage
 import com.example.fuelfit.model.mapApiErrorToUserFriendly
+import com.example.fuelfit.utils.validation.Validators
 import kotlinx.coroutines.launch
 
 internal class RegisterStoreFactory(
@@ -44,20 +45,34 @@ internal class RegisterStoreFactory(
             val email = state().email
             val password = state().password
 
-            if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                publish(RegisterLabel.ShowError("Введите логин, email и пароль"))
-                return
+            var hasError = false
+
+            if (username.isBlank()) {
+                dispatch(SetUsernameError(true))
+                hasError = true
+            } else dispatch(SetUsernameError(false))
+
+            if (!Validators.isValidEmail(email)) {
+                dispatch(SetEmailError(true))
+                hasError = true
+            } else {
+                dispatch(SetEmailError(false))
             }
+
+            if (!Validators.isValidPassword(password)) {
+                dispatch(SetPasswordError(true))
+                hasError = true
+            } else {
+                dispatch(SetPasswordError(false))
+            }
+
+            if (hasError) return
 
             dispatch(Loading)
 
             scope.launch {
-                val result: ResultWrapper<AuthTokens> = registerUseCase(
-                    RegisterParams(
-                        username = username,
-                        email = email,
-                        password = password
-                    )
+                val result: ResultWrapper<AuthToken> = registerUseCase(
+                    RegisterParams(username, email, password)
                 )
 
                 when (result) {
@@ -65,6 +80,7 @@ internal class RegisterStoreFactory(
                         dispatch(Success)
                         publish(RegisterLabel.NavigateToMain)
                     }
+
                     is ResultWrapper.Error -> {
                         val userError = mapApiErrorToUserFriendly(result.error)
                         val message = getErrorMessage(userError)
@@ -82,6 +98,9 @@ internal class RegisterStoreFactory(
                 is SetUsername -> copy(username = msg.value)
                 is SetEmail -> copy(email = msg.value)
                 is SetPassword -> copy(password = msg.value)
+                is SetUsernameError -> copy(usernameError = msg.isError)
+                is SetEmailError -> copy(emailError = msg.isError)
+                is SetPasswordError -> copy(passwordError = msg.isError)
                 Loading -> copy(isLoading = true, error = null)
                 Success -> copy(isLoading = false, error = null)
                 is Error -> copy(isLoading = false, error = msg.message)

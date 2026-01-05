@@ -4,6 +4,9 @@ internal sealed interface LoginMsg {
     data class SetUsername(val value: String) : LoginMsg
     data class SetPassword(val value: String) : LoginMsg
     data class SetEmail(val value: String) : LoginMsg
+    data class SetUsernameError(val isError: Boolean) : LoginMsg
+    data class SetEmailError(val isError: Boolean) : LoginMsg
+    data class SetPasswordError(val isError: Boolean) : LoginMsg
     data object Loading : LoginMsg
     data object Success : LoginMsg
     data class Error(val message: String) : LoginMsg

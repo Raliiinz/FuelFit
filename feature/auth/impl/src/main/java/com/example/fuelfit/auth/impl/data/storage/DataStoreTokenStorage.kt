@@ -8,40 +8,25 @@ import com.example.fuelfit.network.auth.TokenStorage
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore by preferencesDataStore("auth_tokens")
+private val Context.dataStore by preferencesDataStore(name = DataStoreTokenStorage.DATASTORE_NAME)
 
 internal class DataStoreTokenStorage(
     private val context: Context
 ) : TokenStorage {
 
-    private val ACCESS = stringPreferencesKey("access_token")
-    private val REFRESH = stringPreferencesKey("refresh_token")
+    override suspend fun getToken(): String? =
+        context.dataStore.data.map { it[TOKEN_KEY] }.first()
 
-    override suspend fun getAccessToken(): String? =
-        context.dataStore.data.map { it[ACCESS] }.first()
-
-    override suspend fun getRefreshToken(): String? =
-        context.dataStore.data.map { it[REFRESH] }.first()
-
-    override suspend fun saveAccessToken(token: String) {
-        context.dataStore.edit { it[ACCESS] = token }
-    }
-
-    override suspend fun saveRefreshToken(token: String) {
-        context.dataStore.edit { it[REFRESH] = token }
+    override suspend fun saveToken(token: String) {
+        context.dataStore.edit { it[TOKEN_KEY] = token }
     }
 
     override suspend fun clear() {
-        context.dataStore.edit {
-            it.remove(ACCESS)
-            it.remove(REFRESH)
-        }
+        context.dataStore.edit { it.remove(TOKEN_KEY) }
     }
 
-    override suspend fun saveTokens(access: String, refresh: String) {
-        context.dataStore.edit {
-            it[ACCESS] = access
-            it[REFRESH] = refresh
-        }
+    companion object {
+        const val DATASTORE_NAME = "auth_token"
+        val TOKEN_KEY = stringPreferencesKey("token")
     }
 }

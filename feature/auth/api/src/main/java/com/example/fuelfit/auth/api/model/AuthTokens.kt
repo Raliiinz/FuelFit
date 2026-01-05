@@ -1,7 +1,5 @@
 package com.example.fuelfit.auth.api.model
 
-data class AuthTokens(
-    val access: String,
-    val refresh: String
+data class AuthToken(
+    val token: String
 )
-

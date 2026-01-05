@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+//    alias(libs.plugins.crashlytics)
+//    alias(libs.plugins.perfomance)
 }
 
 android {
@@ -42,18 +45,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
     implementation(project(":core:network"))
     implementation(project(":core:database"))
     implementation(project(":core:utils"))
-    implementation(project(":core:navigation"))
 
     implementation(project(":feature:auth:impl"))
     implementation(project(":feature:exercise:impl"))
     implementation(project(":feature:routine:impl"))
     implementation(project(":feature:profile:impl"))
-
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -73,6 +72,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.koin.android)
     implementation(libs.koin.android.compose)
+    implementation(libs.androidx.compose.icons)
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
     implementation(libs.arch.decompose)
@@ -84,4 +84,8 @@ dependencies {
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
+
+    implementation(libs.firebase.analytics)
+//    implementation(libs.firebase.crashlytics)
+//    implementation(libs.firebase.perfomance)
 }

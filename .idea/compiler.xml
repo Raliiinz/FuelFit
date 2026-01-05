@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="FuelFit.core.navigation" target="21" />
+      <module name="FuelFit.core.ui" target="21" />
       <module name="FuelFit.feature.food.impl" target="21" />
       <module name="FuelFit.feature.workoutsession.impl" target="21" />
     </bytecodeTargetLevel>

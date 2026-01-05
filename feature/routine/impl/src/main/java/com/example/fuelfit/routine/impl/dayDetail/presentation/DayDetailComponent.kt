@@ -16,7 +16,9 @@ import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailLabe
 import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailState
 import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailStore
 import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
+import com.example.fuelfit.utils.mvi.asValue
 import kotlin.getValue
 
 internal class DayDetailComponent(
@@ -25,6 +27,7 @@ internal class DayDetailComponent(
     private val onSlotClicked: (Int) -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val factory: DayDetailStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val store: DayDetailStore = instanceKeeper.getStore { factory.create(dayId) }
@@ -35,6 +38,8 @@ internal class DayDetailComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
+        analytics.screenOpened(Screen.ROUTINE_DAY_DETAIL)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect {

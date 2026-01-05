@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.fuelfit.profile.impl.data.local.entity.UserProfileEntity
 
 @Dao
-internal interface UserProfileDao {
+interface UserProfileDao {
 
     @Query("SELECT * FROM user_profiles LIMIT 1")
     suspend fun getCurrentProfile(): UserProfileEntity?

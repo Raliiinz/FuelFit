@@ -23,7 +23,9 @@ class MainActivity : ComponentActivity() {
         val rootComponent = DefaultRootComponent(defaultComponentContext())
 
         setContent {
-            RootScreen(rootComponent)
+            FuelFitTheme {
+                RootScreen(rootComponent)
+            }
         }
     }
 }

@@ -11,13 +11,10 @@ import retrofit2.Retrofit
 
 val networkModule = module {
 
-    // -------------------------------
-    // Retrofit без авторизации для Auth API
-    // -------------------------------
     single<OkHttpClient>(named("authOkHttp")) {
         OkHttpClient.Builder()
             .addInterceptor(LoggingInterceptor())
-            .build() // обычный OkHttp, без TokenInterceptor
+            .build()
     }
 
     single<Retrofit>(named("authRetrofit")) {
@@ -27,13 +24,10 @@ val networkModule = module {
         )
     }
 
-    // -------------------------------
-    // Retrofit с авторизацией для основного API
-    // -------------------------------
+
     single<OkHttpClient>(named("mainOkHttp")) {
         OkHttpProvider.create(
-            tokenStorage = get(),
-            tokenRefresher = get()
+            tokenStorage = get()
         )
     }
 

@@ -10,6 +10,9 @@ import com.example.fuelfit.network.di.networkModule
 import com.example.fuelfit.profile.impl.di.userProfileModule
 import com.example.fuelfit.routine.impl.common.di.routineModule
 import com.example.fuelfit.ui.splash.di.splashModule
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.FirebaseAnalyticsTracker
+import com.google.firebase.analytics.FirebaseAnalytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
@@ -27,6 +30,12 @@ val appModule = module {
         userProfileModule
         // другие фичи
     )
+
+    single { FirebaseAnalytics.getInstance(androidContext()) }
+
+    single<AnalyticsTracker> {
+        FirebaseAnalyticsTracker(get())
+    }
 }
 
 fun Application.initKoin() {

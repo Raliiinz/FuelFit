@@ -10,12 +10,14 @@ import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginLabel
 import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginState
 import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginStore
 import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.mvi.asValue
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.example.fuelfit.utils.analytics.AnalyticsTracker
+import com.example.fuelfit.utils.analytics.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,6 +30,7 @@ class LoginComponent(
     private val onNavigateRegister: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
+    private val analytics: AnalyticsTracker by inject()
     private val storeFactory: LoginStoreFactory by inject()
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -37,7 +40,12 @@ class LoginComponent(
 
     internal val state: Value<LoginState> = store.asValue()
 
+    private val _snackbar = MutableSharedFlow<String>()
+    val snackbarFlow: SharedFlow<String> = _snackbar
+
     init {
+        analytics.screenOpened(Screen.LOGIN)
+
         lifecycle.doOnCreate {
             scope.launch {
                 store.labels.collect { label ->
@@ -46,15 +54,13 @@ class LoginComponent(
                         is LoginLabel.ShowError -> _snackbar.emit(label.message)
                         LoginLabel.NavigateToRegister -> onNavigateRegister()
                     }
+
                 }
             }
         }
 
         lifecycle.doOnDestroy { scope.cancel() }
     }
-
-    private val _snackbar = MutableSharedFlow<String>()
-    val snackbarFlow: SharedFlow<String> = _snackbar
 
     internal fun onIntent(intent: LoginIntent) {
         store.accept(intent)

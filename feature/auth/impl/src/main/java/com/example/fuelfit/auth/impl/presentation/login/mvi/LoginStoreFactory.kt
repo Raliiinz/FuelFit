@@ -2,7 +2,7 @@ package com.example.fuelfit.auth.impl.presentation.login.mvi
 
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.example.fuelfit.auth.api.model.AuthTokens
+import com.example.fuelfit.auth.api.model.AuthToken
 import com.example.fuelfit.auth.api.model.LoginParams
 import com.example.fuelfit.auth.api.usecase.LoginUseCase
 import com.example.fuelfit.auth.impl.presentation.login.mvi.LoginMsg.*
@@ -44,15 +44,35 @@ internal class LoginStoreFactory(
             val password = state().password
             val email = state().email
 
-            if (username.isBlank() || password.isBlank() || email.isBlank()) {
-                publish(LoginLabel.ShowError("Введите логин, email и пароль"))
-                return
+            var hasError = false
+
+            if (username.isBlank()) {
+                dispatch(SetUsernameError(true))
+                hasError = true
+            } else {
+                dispatch(SetUsernameError(false))
             }
+
+            if (email.isBlank()) {
+                dispatch(SetEmailError(true))
+                hasError = true
+            } else {
+                dispatch(SetEmailError(false))
+            }
+
+            if (password.isBlank()) {
+                dispatch(SetPasswordError(true))
+                hasError = true
+            } else {
+                dispatch(SetPasswordError(false))
+            }
+
+            if (hasError) return
 
             dispatch(Loading)
 
             scope.launch {
-                val result: ResultWrapper<AuthTokens> = loginUseCase(
+                val result: ResultWrapper<AuthToken> = loginUseCase(
                     LoginParams(
                         username = username,
                         password = password,
@@ -65,6 +85,7 @@ internal class LoginStoreFactory(
                         dispatch(Success)
                         publish(LoginLabel.NavigateToMain)
                     }
+
                     is ResultWrapper.Error -> {
                         val userError = mapApiErrorToUserFriendly(result.error)
                         val message = getErrorMessage(userError)
@@ -80,8 +101,11 @@ internal class LoginStoreFactory(
         override fun LoginState.reduce(msg: LoginMsg): LoginState =
             when (msg) {
                 is SetUsername -> copy(username = msg.value)
-                is SetPassword -> copy(password = msg.value)
                 is SetEmail -> copy(email = msg.value)
+                is SetPassword -> copy(password = msg.value)
+                is SetUsernameError -> copy(usernameError = msg.isError)
+                is SetEmailError -> copy(emailError = msg.isError)
+                is SetPasswordError -> copy(passwordError = msg.isError)
                 Loading -> copy(isLoading = true, error = null)
                 Success -> copy(isLoading = false, error = null)
                 is Error -> copy(isLoading = false, error = msg.message)

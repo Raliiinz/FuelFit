@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.routine.impl.list.presentation.components.RoutineItem
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutineIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @Composable
 internal fun RoutineListScreen(component: RoutineListComponent) {

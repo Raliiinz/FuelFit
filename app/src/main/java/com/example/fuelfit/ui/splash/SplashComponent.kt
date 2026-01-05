@@ -10,7 +10,7 @@ import com.example.fuelfit.ui.splash.mvi.SplashLabel
 import com.example.fuelfit.ui.splash.mvi.SplashState
 import com.example.fuelfit.ui.splash.mvi.SplashStore
 import com.example.fuelfit.ui.splash.mvi.SplashStoreFactory
-import com.example.fuelfit.utils.asValue
+import com.example.fuelfit.utils.mvi.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

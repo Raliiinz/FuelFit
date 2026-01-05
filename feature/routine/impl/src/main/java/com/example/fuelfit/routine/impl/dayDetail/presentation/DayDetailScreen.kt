@@ -13,7 +13,7 @@ import com.example.fuelfit.routine.api.dayDetail.model.SlotRequest
 import com.example.fuelfit.routine.impl.dayDetail.presentation.components.ExerciseSearchSheet
 import com.example.fuelfit.routine.impl.dayDetail.presentation.components.SlotsList
 import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailIntent
-import com.example.fuelfit.utils.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

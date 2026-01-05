@@ -2,16 +2,18 @@ package com.example.fuelfit.designsystem
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.fuelfit.designsystem.components.FuelFitButton
+import com.example.fuelfit.designsystem.components.FuelFitText
 
 @Composable
 fun ErrorContent(
@@ -23,14 +25,16 @@ fun ErrorContent(
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
+            FuelFitText.BodyMedium(
                 text = message,
                 color = MaterialTheme.colorScheme.error
             )
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = onRetry) {
-                Text("Повторить")
-            }
+            Spacer(modifier = Modifier.height(16.dp))
+            FuelFitButton.Primary(
+                text = stringResource(R.string.btn_retry),
+                onClick = onRetry,
+                contentPadding = PaddingValues(vertical = 12.dp)
+            )
         }
     }
 }
