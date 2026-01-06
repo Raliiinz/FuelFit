@@ -32,5 +32,7 @@ internal val routineCreateModule = module {
     factory { (CreateRoutineStoreFactory(
         storeFactory = get(),
         createRoutineUseCase = get(),
+        updateRoutineUseCase = get(),
+        getRoutineByIdUseCase = get()
     )) }
 }

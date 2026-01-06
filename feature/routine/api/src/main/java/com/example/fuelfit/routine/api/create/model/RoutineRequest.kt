@@ -1,4 +1,4 @@
-package com.example.fuelfit.routine.api.common
+package com.example.fuelfit.routine.api.create.model
 
 import java.time.LocalDate
 

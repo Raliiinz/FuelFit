@@ -3,7 +3,7 @@ package com.example.fuelfit.routine.api.list.repository
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.routine.api.common.Routine
 
-interface RoutineRepository {
+interface RoutinesRepository {
 
     suspend fun getRoutines(): ResultWrapper<List<Routine>>
 

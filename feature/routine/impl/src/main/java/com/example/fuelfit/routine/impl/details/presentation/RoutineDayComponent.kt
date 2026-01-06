@@ -19,7 +19,8 @@ import com.example.fuelfit.utils.mvi.asValue
 internal class RoutineDayComponent(
     componentContext: ComponentContext,
     private val routineId: Int,
-    private val onDayClicked: (Int) -> Unit
+    private val onDayClicked: (Int) -> Unit,
+    private val onBack: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val analytics: AnalyticsTracker by inject()
@@ -32,9 +33,6 @@ internal class RoutineDayComponent(
     private val _snackbar = MutableSharedFlow<String>()
     val snackbarFlow: SharedFlow<String> = _snackbar
 
-    private val _toast = MutableSharedFlow<String>()
-    val toastFlow: SharedFlow<String> = _toast
-
     init {
         analytics.screenOpened(Screen.ROUTINE_DETAILS)
 
@@ -44,7 +42,7 @@ internal class RoutineDayComponent(
                     when (it) {
                         is RoutineDayLabel.ShowError -> _snackbar.emit(it.message)
                         is RoutineDayLabel.NavigateToDayDetail -> onDayClicked(it.id)
-                        is RoutineDayLabel.ShowToast ->  _toast.emit(it.message)
+                        RoutineDayLabel.NavigateBack -> onBack()
                     }
                 }
             }
@@ -54,13 +52,5 @@ internal class RoutineDayComponent(
 
     internal fun onIntent(intent: RoutineDayIntent) {
         store.accept(intent)
-//        when (intent) {
-//
-//            is RoutineDayIntent.CreateDay -> {
-//                val dayWithRoutineId = intent.day.copy(routineId = routineId)
-//                store.accept(RoutineDayIntent.CreateDay(dayWithRoutineId))
-//            }
-//            else ->
-//        }
     }
 }

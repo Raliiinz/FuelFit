@@ -1,5 +1,6 @@
 package com.example.fuelfit.designsystem.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -12,16 +13,15 @@ import androidx.compose.ui.unit.dp
 fun FuelFitLazyColumn(
     modifier: Modifier = Modifier,
     state: LazyListState,
-    contentPadding: PaddingValues = PaddingValues(
-        horizontal = 8.dp,
-        vertical = 4.dp
-    ),
+    contentPadding: PaddingValues = PaddingValues(vertical = 4.dp),
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(12.dp),
     content: LazyListScope.() -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         state = state,
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
+        verticalArrangement = verticalArrangement
     ) {
         content()
     }

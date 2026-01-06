@@ -2,7 +2,7 @@ package com.example.fuelfit.routine.impl.list.domain.usecase
 
 import com.example.fuelfit.model.ApiError
 import com.example.fuelfit.model.ResultWrapper
-import com.example.fuelfit.routine.api.list.repository.RoutineRepository
+import com.example.fuelfit.routine.api.list.repository.RoutinesRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,7 +17,7 @@ import org.junit.Test
 class DeleteRoutineUseCaseImplTest {
 
     @MockK
-    lateinit var repository: RoutineRepository
+    lateinit var repository: RoutinesRepository
 
     private lateinit var useCase: DeleteRoutineUseCaseImpl
 

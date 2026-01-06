@@ -17,4 +17,3 @@ interface RoutineDayRepository {
 
     suspend fun deleteDay(id: Int): ResultWrapper<Unit>
 }
-

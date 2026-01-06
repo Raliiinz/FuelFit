@@ -9,4 +9,5 @@ internal sealed interface CreateRoutineIntent {
     data class EndDateChanged(val date: LocalDate) : CreateRoutineIntent
     data class FitInWeekChanged(val value: Boolean) : CreateRoutineIntent
     object Save : CreateRoutineIntent
+    object BackClicked : CreateRoutineIntent
 }

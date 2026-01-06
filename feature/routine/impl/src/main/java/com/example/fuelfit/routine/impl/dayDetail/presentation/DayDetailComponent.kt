@@ -24,7 +24,8 @@ import kotlin.getValue
 internal class DayDetailComponent(
     componentContext: ComponentContext,
     private val dayId: Int,
-    private val onSlotClicked: (Int) -> Unit
+    private val onSlotClicked: (Int) -> Unit,
+    private val onBack: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val analytics: AnalyticsTracker by inject()
@@ -49,6 +50,7 @@ internal class DayDetailComponent(
                             // Тут можно открыть детали слота или прокрутить LazyColumn
                             println("Slot clicked: ${it.slotId}")
                         }
+                        DayDetailLabel.NavigateBack -> onBack()
                     }
                 }
             }
@@ -58,13 +60,5 @@ internal class DayDetailComponent(
 
     internal fun onIntent(intent: DayDetailIntent) {
         store.accept(intent)
-//        when (intent) {
-//            is DayDetailIntent.CreateSlot -> {
-//                // Автоматически ставим dayId через компонент
-//                val requestWithDay = intent.request.copy(dayId = dayId)
-//                store.accept(DayDetailIntent.CreateSlot(requestWithDay))
-//            }
-//            else ->
-//        }
     }
 }

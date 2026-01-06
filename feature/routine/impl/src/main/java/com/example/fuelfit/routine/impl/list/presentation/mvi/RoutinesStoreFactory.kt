@@ -9,63 +9,63 @@ import com.example.fuelfit.routine.api.list.usecase.DeleteRoutineUseCase
 import com.example.fuelfit.routine.api.list.usecase.GetRoutinesUseCase
 import kotlinx.coroutines.launch
 
-internal class RoutineStoreFactory(
+internal class RoutinesStoreFactory(
     private val storeFactory: StoreFactory,
     private val getRoutinesUseCase: GetRoutinesUseCase,
     private val deleteRoutineUseCase: DeleteRoutineUseCase
-) : RoutineStore.Factory {
+) : RoutinesStore.Factory {
 
-    override fun create(): RoutineStore =
-        object : RoutineStore,
-            Store<RoutineIntent, RoutineState, RoutineLabel> by storeFactory.create(
+    override fun create(): RoutinesStore =
+        object : RoutinesStore,
+            Store<RoutinesIntent, RoutinesState, RoutinesLabel> by storeFactory.create(
                 name = "RoutineStore",
-                initialState = RoutineState(),
+                initialState = RoutinesState(),
                 bootstrapper = SimpleBootstrapper(Unit),
                 executorFactory = { Executor() },
                 reducer = ReducerImpl
             ) {}
 
     private inner class Executor :
-        CoroutineExecutor<RoutineIntent, Unit, RoutineState, RoutineMsg, RoutineLabel>() {
+        CoroutineExecutor<RoutinesIntent, Unit, RoutinesState, RoutinesMsg, RoutinesLabel>() {
 
         override fun executeAction(action: Unit) {
             loadRoutines()
         }
 
-        override fun executeIntent(intent: RoutineIntent) {
+        override fun executeIntent(intent: RoutinesIntent) {
             when (intent) {
-                RoutineIntent.Load,
-                RoutineIntent.Refresh -> loadRoutines()
+                RoutinesIntent.Load,
+                RoutinesIntent.Retry -> loadRoutines()
 
-                is RoutineIntent.RoutineClicked ->
-                    publish(RoutineLabel.NavigateToRoutine(intent.id))
+                is RoutinesIntent.RoutineClicked ->
+                    publish(RoutinesLabel.NavigateToRoutine(intent.id))
 
-                RoutineIntent.CreateRoutineClicked ->
-                    publish(RoutineLabel.NavigateToCreateRoutine)
+                RoutinesIntent.CreateRoutineClicked ->
+                    publish(RoutinesLabel.NavigateToCreateRoutine)
 
-                is RoutineIntent.DeleteRoutine ->
+                is RoutinesIntent.DeleteRoutine ->
                     deleteRoutine(intent.id)
+
+                is RoutinesIntent.EditRoutine -> publish(RoutinesLabel.NavigateToEditRoutine(intent.id))
             }
         }
 
         private fun loadRoutines() {
-            dispatch(RoutineMsg.Loading)
+            dispatch(RoutinesMsg.Loading)
 
             scope.launch {
                 when (val result = getRoutinesUseCase()) {
                     is ResultWrapper.Success -> {
-                        dispatch(RoutineMsg.SetRoutines(result.data))
+                        dispatch(RoutinesMsg.SetRoutines(result.data))
                     }
 
                     is ResultWrapper.Error -> {
-                        val userError =
-                            mapApiErrorToUserFriendly(result.error)
+                        val userError = mapApiErrorToUserFriendly(result.error)
 
-                        val message =
-                            getErrorMessage(userError)
+                        val message = getErrorMessage(userError)
 
-                        dispatch(RoutineMsg.Error(message))
-                        publish(RoutineLabel.ShowError(message))
+                        dispatch(RoutinesMsg.Error(message))
+                        publish(RoutinesLabel.ShowError(message))
                     }
                 }
             }
@@ -75,17 +75,15 @@ internal class RoutineStoreFactory(
             scope.launch {
                 when (val result = deleteRoutineUseCase(id)) {
                     is ResultWrapper.Success -> {
-                        dispatch(RoutineMsg.RemoveRoutine(id))
+                        dispatch(RoutinesMsg.RemoveRoutine(id))
                     }
 
                     is ResultWrapper.Error -> {
-                        val userError =
-                            mapApiErrorToUserFriendly(result.error)
+                        val userError = mapApiErrorToUserFriendly(result.error)
 
-                        val message =
-                            getErrorMessage(userError)
+                        val message = getErrorMessage(userError)
 
-                        publish(RoutineLabel.ShowError(message))
+                        publish(RoutinesLabel.ShowError(message))
                     }
                 }
             }
@@ -93,30 +91,30 @@ internal class RoutineStoreFactory(
     }
 
     private object ReducerImpl :
-        Reducer<RoutineState, RoutineMsg> {
+        Reducer<RoutinesState, RoutinesMsg> {
 
-        override fun RoutineState.reduce(
-            msg: RoutineMsg
-        ): RoutineState =
+        override fun RoutinesState.reduce(
+            msg: RoutinesMsg
+        ): RoutinesState =
             when (msg) {
-                RoutineMsg.Loading ->
+                RoutinesMsg.Loading ->
                     copy(isLoading = true, error = null)
 
-                is RoutineMsg.SetRoutines ->
+                is RoutinesMsg.SetRoutines ->
                     copy(
                         routines = msg.routines,
                         isLoading = false,
                         error = null
                     )
 
-                is RoutineMsg.RemoveRoutine ->
+                is RoutinesMsg.RemoveRoutine ->
                     copy(
                         routines = routines.filterNot {
                             it.id == msg.id
                         }
                     )
 
-                is RoutineMsg.Error ->
+                is RoutinesMsg.Error ->
                     copy(
                         isLoading = false,
                         error = msg.message

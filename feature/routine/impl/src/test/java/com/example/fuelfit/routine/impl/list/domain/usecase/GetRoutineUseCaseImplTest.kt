@@ -3,7 +3,7 @@ package com.example.fuelfit.routine.impl.list.domain.usecase
 import com.example.fuelfit.model.ApiError
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.routine.api.common.Routine
-import com.example.fuelfit.routine.api.list.repository.RoutineRepository
+import com.example.fuelfit.routine.api.list.repository.RoutinesRepository
 import com.example.fuelfit.routine.impl.testutils.RoutineTestData.makeRoutine
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -16,13 +16,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.time.OffsetDateTime
-import java.time.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetRoutineUseCaseImplTest {
 
     @MockK
-    lateinit var repository: RoutineRepository
+    lateinit var repository: RoutinesRepository
 
     private lateinit var useCase: GetRoutineUseCaseImpl
 

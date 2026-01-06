@@ -1,15 +1,18 @@
 package com.example.fuelfit.routine.impl.details.presentation.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import com.example.fuelfit.routine.api.details.model.RoutineDay
 import com.example.fuelfit.routine.api.details.model.RoutineDayRequest
-import com.example.fuelfit.routine.api.details.model.RoutineDayType
+import com.example.fuelfit.designsystem.components.FuelFitFilterDialog
+import com.example.fuelfit.designsystem.components.FuelFitText
+import com.example.fuelfit.designsystem.components.FuelFitTextField
+import com.example.fuelfit.routine.impl.R
 
 @Composable
 internal fun RoutineDayDialog(
@@ -19,116 +22,61 @@ internal fun RoutineDayDialog(
 ) {
     var name by remember { mutableStateOf(day?.name.orEmpty()) }
     var description by remember { mutableStateOf(day?.description.orEmpty()) }
-    var order by remember { mutableStateOf(day?.order?.toString() ?: "0") }
+    var order by remember { mutableStateOf(day?.order?.toString().orEmpty()) }
     var isRest by remember { mutableStateOf(day?.isRest ?: false) }
-    var needLogs by remember { mutableStateOf(day?.needLogsToAdvance ?: false) }
-    var type by remember { mutableStateOf(day?.type ?: RoutineDayType.CUSTOM) }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(if (day == null) "Создать день" else "Редактировать день") },
-        text = {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { if (it.length <= 20) name = it },
-                    label = { Text("Имя") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+    val isSaveEnabled = name.isNotBlank() && description.isNotBlank() && order.isNotBlank() && order.all { it.isDigit() }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { if (it.length <= 1000) description = it },
-                    label = { Text("Описание") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = order,
-                    onValueChange = { if (it.all { c -> c.isDigit() }) order = it },
-                    label = { Text("Порядок") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row {
-                        Checkbox(checked = isRest, onCheckedChange = { isRest = it })
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Отдых")
-                    }
-
-                    Row {
-                        Checkbox(checked = needLogs, onCheckedChange = { needLogs = it })
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Нужны логи для продвижения")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                DropdownMenuBox(
-                    selectedType = type,
-                    onTypeSelected = { type = it }
-                )
-            }
+    FuelFitFilterDialog(
+        title = if (day == null) stringResource(R.string.create_day) else stringResource(R.string.edit_day),
+        confirmText = stringResource(R.string.save),
+        dismissText = stringResource(R.string.cancel),
+        onDismiss = onDismiss,
+        onConfirm = {
+            val dayRequest = RoutineDayRequest(
+                routineId = day?.routineId ?: 0,
+                order = order.toIntOrNull() ?: 0,
+                name = name,
+                description = description.takeIf { it.isNotBlank() },
+                isRest = isRest
+            )
+            onSave(dayRequest)
         },
-        confirmButton = {
-            Button(onClick = {
-                val dayRequest = RoutineDayRequest(
-                    routineId = day?.routineId ?: 0,
-                    order = order.toIntOrNull() ?: 0,
-                    name = name,
-                    description = description.takeIf { it.isNotBlank() },
-                    isRest = isRest,
-                    needLogsToAdvance = needLogs,
-                    type = type,
-                    config = null
-                )
-                onSave(dayRequest)
-            }) {
-                Text("Сохранить")
-            }
-        },
-        dismissButton = {
-            OutlinedButton(onClick = onDismiss) {
-                Text("Отмена")
-            }
-        }
-    )
-}
-
-@Composable
-private fun DropdownMenuBox(
-    selectedType: RoutineDayType,
-    onTypeSelected: (RoutineDayType) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Box {
-        OutlinedButton(onClick = { expanded = true }) {
-            Text(selectedType.name)
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+        confirmEnabled = isSaveEnabled
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            RoutineDayType.entries.forEach { type ->
-                DropdownMenuItem(
-                    text = { Text(type.name) },
-                    onClick = {
-                        onTypeSelected(type)
-                        expanded = false
-                    }
+            FuelFitTextField.Outlined(
+                value = name,
+                onValueChange = { if (it.length <= 20) name = it },
+                label = stringResource(R.string.name)
+            )
+
+            FuelFitTextField.Outlined(
+                value = description,
+                onValueChange = { if (it.length <= 1000) description = it },
+                label = stringResource(R.string.description)
+            )
+
+            FuelFitTextField.Outlined(
+                value = order,
+                onValueChange = { if (it.all { c -> c.isDigit() }) order = it },
+                label = stringResource(R.string.order)
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = isRest,
+                    onCheckedChange = { isRest = it }
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+                FuelFitText.BodyMedium(text = stringResource(R.string.rest))
             }
         }
     }

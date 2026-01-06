@@ -1,73 +1,87 @@
 package com.example.fuelfit.routine.impl.details.presentation
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.routine.api.details.model.RoutineDay
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayDialog
-import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayItem
+import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayListContent
 import com.example.fuelfit.routine.impl.details.presentation.mvi.RoutineDayIntent
-import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
+import com.example.fuelfit.routine.impl.R
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollectAlways
 
 @Composable
-internal fun RoutineDayScreen(component: RoutineDayComponent) {
+internal fun RoutineDayScreen(
+    component: RoutineDayComponent
+) {
     val state by component.state.subscribeAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
-
     var isDialogOpen by remember { mutableStateOf(false) }
-    var editingDay: RoutineDay? by remember { mutableStateOf(null) }
+    var editingDay by remember { mutableStateOf<RoutineDay?>(null) }
 
-    LaunchedEffectAndCollect(component.snackbarFlow, component.lifecycle) { msg ->
+    LaunchedEffectAndCollectAlways(
+        flow = component.snackbarFlow,
+        lifecycle = component.lifecycle
+    ) { msg ->
+        snackbarHostState.currentSnackbarData?.dismiss()
         snackbarHostState.showSnackbar(msg)
     }
 
-    val context = LocalContext.current
-
-    LaunchedEffectAndCollect(
-        component.toastFlow,
-        component.lifecycle
-    ) { message ->
-        Toast.makeText(context, message, Toast.LENGTH_SHORT)
-            .show()
-    }
-
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Дни рутины", style = MaterialTheme.typography.titleLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+    Box(modifier = Modifier.fillMaxSize()) {
         when {
             state.isLoading -> LoadingContent()
             state.error != null -> ErrorContent(
-                state.error!!,
+                message = state.error!!,
                 onRetry = { component.onIntent(RoutineDayIntent.Refresh) }
             )
-            else -> LazyColumn(state = listState) {
-                items(state.days.size) { index ->
-                    val day = state.days[index]
-                    RoutineDayItem(
-                        day = day,
-                        onClick = { component.onIntent(RoutineDayIntent.DayClicked(day)) },
-                        onEdit = {
-                            editingDay = day
-                            isDialogOpen = true
-                        },
-                        onDelete = { component.onIntent(RoutineDayIntent.DeleteDay(day.id)) }
-                    )
-                }
+            else -> {
+                RoutineDayListContent(
+                    days = state.days,
+                    listState = listState,
+                    onIntent = component::onIntent,
+                    onEdit = { day ->
+                        editingDay = day
+                        isDialogOpen = true
+                    },
+                    onBackClicked = {
+                        component.onIntent(RoutineDayIntent.BackClicked)
+                    }
+                )
             }
         }
+
+        FloatingActionButton(
+            onClick = {
+                editingDay = null
+                isDialogOpen = true
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_day)
+            )
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp)
+        )
     }
 
     if (isDialogOpen) {
@@ -76,11 +90,8 @@ internal fun RoutineDayScreen(component: RoutineDayComponent) {
             onDismiss = { isDialogOpen = false },
             onSave = { dayRequest ->
                 if (editingDay != null) {
-                    // Конвертируем в RoutineDay для UpdateDay
-//                    val updatedDay = dayRequest.toRoutineDay(editingDay!!.id)
                     component.onIntent(RoutineDayIntent.UpdateDay(dayRequest, editingDay!!.id))
                 } else {
-                    // Просто создаём новый день
                     component.onIntent(RoutineDayIntent.CreateDay(dayRequest))
                 }
                 isDialogOpen = false
@@ -88,16 +99,4 @@ internal fun RoutineDayScreen(component: RoutineDayComponent) {
             }
         )
     }
-
-    FloatingActionButton(
-        onClick = {
-            editingDay = null
-            isDialogOpen = true
-        },
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text("+")
-    }
-
-    SnackbarHost(snackbarHostState)
 }

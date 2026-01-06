@@ -2,7 +2,7 @@ package com.example.fuelfit.routine.impl.create.data
 
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.network.safeApiCall
-import com.example.fuelfit.routine.api.common.RoutineRequest
+import com.example.fuelfit.routine.api.create.model.RoutineRequest
 import com.example.fuelfit.routine.api.common.Routine
 import com.example.fuelfit.routine.api.create.repository.CreateRoutineRepository
 import com.example.fuelfit.routine.impl.common.RoutineMapper

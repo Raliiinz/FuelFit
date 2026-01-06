@@ -11,6 +11,7 @@ internal sealed interface DayDetailMsg {
         val slots: List<Slot>,
         val entries: Map<Int, List<SlotEntry>>
     ) : DayDetailMsg
+    data class ExerciseNameMapped(val exerciseId: Int, val name: String) : DayDetailMsg
 
     data class SlotCreated(val slot: Slot) : DayDetailMsg
     data class SlotUpdated(val slot: Slot) : DayDetailMsg

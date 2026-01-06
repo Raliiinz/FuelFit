@@ -35,6 +35,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core:utils"))
+    
     implementation(libs.coil.compose)
     implementation(libs.androidx.compose.icons)
     implementation(libs.androidx.core.ktx)

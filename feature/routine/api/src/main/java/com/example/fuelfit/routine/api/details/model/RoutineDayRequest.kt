@@ -6,7 +6,7 @@ data class RoutineDayRequest(
     val name: String,
     val description: String?,
     val isRest: Boolean,
-    val needLogsToAdvance: Boolean,
-    val type: RoutineDayType,
-    val config: String?
+    val needLogsToAdvance: Boolean = false,
+    val type: RoutineDayType = RoutineDayType.CUSTOM,
+    val config: String? = null
 )

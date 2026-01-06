@@ -14,4 +14,3 @@ data class SlotEntryRequest(
     val comment: String = "",
     val config: String? = null
 )
-

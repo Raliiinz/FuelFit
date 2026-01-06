@@ -7,6 +7,7 @@ internal data class DayDetailState(
     val dayId: Int,
     val slots: List<Slot> = emptyList(),
     val entriesBySlot: Map<Int, List<SlotEntry>> = emptyMap(),
+    val exerciseNamesById: Map<Int, String> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
 

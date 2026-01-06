@@ -26,6 +26,7 @@ import org.koin.core.component.inject
 
 internal class CreateRoutineComponent(
     componentContext: ComponentContext,
+    private val routineId: Int? = null,
     private val onClose: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 
@@ -33,7 +34,7 @@ internal class CreateRoutineComponent(
     private val factory: CreateRoutineStoreFactory by inject()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val store: CreateRoutineStore =
-        instanceKeeper.getStore { factory.create() }
+        instanceKeeper.getStore { factory.create(routineId) }
 
     internal val state: Value<CreateRoutineState> = store.asValue()
 
@@ -41,7 +42,9 @@ internal class CreateRoutineComponent(
     val snackbarFlow: SharedFlow<String> = _snackbar
 
     init {
-        analytics.screenOpened(Screen.CREATE_ROUTINE)
+        analytics.screenOpened(
+            if (routineId == null) Screen.CREATE_ROUTINE else Screen.EDIT_ROUTINE
+        )
 
         lifecycle.doOnCreate {
             scope.launch {

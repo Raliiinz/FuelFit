@@ -6,6 +6,7 @@ enum class Screen(val screenName: String) {
     EXERCISES("exercises"),
     EXERCISE_DETAIL("exercise_detail"),
     CREATE_ROUTINE("create_routine"),
+    EDIT_ROUTINE("edit_routine"),
     ROUTINES_LIST("routines_list"),
     ROUTINE_DETAILS("routine_details"),
     ROUTINE_DAY_DETAIL("routine_day_detail"),

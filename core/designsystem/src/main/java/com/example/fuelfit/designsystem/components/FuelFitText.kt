@@ -1,5 +1,7 @@
 package com.example.fuelfit.designsystem.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -7,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 
 object FuelFitText {
 
@@ -197,12 +202,34 @@ object FuelFitText {
         modifier = modifier,
         color = color
     )
+
+    @Composable
+    fun EditableUnderline(
+        text: String,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier,
+        color: Color = MaterialTheme.colorScheme.primary,
+        fontSize: Int = 18,
+        textAlign: TextAlign? = null
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(
+                color = color,
+                fontSize = fontSize.sp,
+                textDecoration = TextDecoration.Underline
+            ),
+            modifier = modifier
+                .clickable { onClick() },
+            textAlign = textAlign
+        )
+    }
 }
 
 @Composable
 private fun FuelFitBaseText(
     text: AnnotatedString,
-    style: androidx.compose.ui.text.TextStyle,
+    style: TextStyle,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
     textAlign: TextAlign? = null,

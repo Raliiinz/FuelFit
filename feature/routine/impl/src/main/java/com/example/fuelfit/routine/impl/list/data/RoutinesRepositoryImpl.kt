@@ -3,14 +3,14 @@ package com.example.fuelfit.routine.impl.list.data
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.network.safeApiCall
 import com.example.fuelfit.routine.api.common.Routine
-import com.example.fuelfit.routine.api.list.repository.RoutineRepository
+import com.example.fuelfit.routine.api.list.repository.RoutinesRepository
 import com.example.fuelfit.routine.impl.common.RoutineMapper
-import com.example.fuelfit.routine.impl.list.data.remote.RoutineApiService
+import com.example.fuelfit.routine.impl.list.data.remote.RoutinesApiService
 
-internal class RoutineRepositoryImpl(
-    private val api: RoutineApiService,
+internal class RoutinesRepositoryImpl(
+    private val api: RoutinesApiService,
     private val mapper: RoutineMapper
-) : RoutineRepository {
+) : RoutinesRepository {
 
     override suspend fun getRoutines(): ResultWrapper<List<Routine>> =
         safeApiCall {

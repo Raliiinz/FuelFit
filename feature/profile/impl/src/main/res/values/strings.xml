@@ -9,7 +9,7 @@
     <string name="saving_text">Saving...</string>
     <string name="label_username">Username: %1$s</string>
     <string name="label_email">Email: %1$s</string>
-    <string name="error_height_min">Рост должен быть от 140 см</string>
-    <string name="error_age_min">Возраст должен быть от 10 лет</string>
+    <string name="error_height_min">Height must be at least 140 cm</string>
+    <string name="error_age_min">Age must be at least 10 years</string>
 </resources>
 

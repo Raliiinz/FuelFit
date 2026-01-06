@@ -1,31 +1,31 @@
 package com.example.fuelfit.routine.impl.dayDetail.presentation.components
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
+import com.example.fuelfit.designsystem.components.FuelFitButton
+import com.example.fuelfit.designsystem.components.FuelFitLazyColumn
+import com.example.fuelfit.designsystem.components.FuelFitSwipeToDeleteListCard
+import com.example.fuelfit.designsystem.components.FuelFitText
+import com.example.fuelfit.designsystem.components.FuelFitTextField
 import com.example.fuelfit.routine.api.dayDetail.model.*
+import com.example.fuelfit.routine.impl.R
 
 @Composable
 internal fun SlotsList(
     slots: List<Slot>,
     entriesBySlot: Map<Int, List<SlotEntry>>,
+    exerciseNamesById: Map<Int, String>,
+    onBackClicked: () -> Unit,
     onDeleteSlot: (Int) -> Unit,
     onAddExercise: (Int) -> Unit,
     onDeleteEntry: (Int) -> Unit,
@@ -33,223 +33,168 @@ internal fun SlotsList(
     onUpdateSlot: (Int, SlotRequest) -> Unit,
     onUpdateEntry: (Int, SlotEntryRequest) -> Unit
 ) {
-    LazyColumn {
-        items(slots, key = { it.id }) { slot ->
-            val entries = entriesBySlot[slot.id].orEmpty()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
 
-            SwipeableSlotCard(
-                slot = slot,
-                entries = entries,
-                onDeleteSlot = { onDeleteSlot(slot.id) },
-                onAddExercise = { onAddExercise(slot.id) },
-                onDeleteEntry = onDeleteEntry,
-                onUpdateSlot = onUpdateSlot,
-                onUpdateEntry = onUpdateEntry
+        // ───── Заголовок экрана ─────
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = onBackClicked,
+                modifier = Modifier.offset(x = (-8).dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            FuelFitText.HeadlineMedium(
+                text = stringResource(R.string.screen_exercises_title)
             )
         }
 
-        item {
-            Spacer(Modifier.height(16.dp))
-            Button(
-                onClick = onCreateSlot,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // ───── Контент ─────
+        if (slots.isEmpty()) {
+            EmptyDayView(onCreateSlot = onCreateSlot, modifier = Modifier.fillMaxSize())
+        } else {
+            val listState = rememberLazyListState()
+
+            FuelFitLazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState
             ) {
-                Text("Создать новый блок упражнений")
+                items(slots, key = { it.id }) { slot ->
+                    val entries = entriesBySlot[slot.id].orEmpty()
+
+                    FuelFitSwipeToDeleteListCard(
+                        onDelete = { onDeleteSlot(slot.id) }
+                    ) {
+                        SwipeableSlotCardContent(
+                            slot = slot,
+                            entries = entries,
+                            onAddExercise = { onAddExercise(slot.id) },
+                            onDeleteEntry = onDeleteEntry,
+                            onUpdateSlot = onUpdateSlot,
+                            onUpdateEntry = onUpdateEntry,
+                            exerciseNamesById = exerciseNamesById
+                        )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    FuelFitButton.Primary(
+                        text = stringResource(R.string.create_new_slot),
+                        onClick = onCreateSlot,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun SwipeableSlotCard(
+private fun SwipeableSlotCardContent(
     slot: Slot,
+    exerciseNamesById: Map<Int, String>,
     entries: List<SlotEntry>,
-    onDeleteSlot: () -> Unit,
     onAddExercise: () -> Unit,
     onDeleteEntry: (Int) -> Unit,
     onUpdateSlot: (Int, SlotRequest) -> Unit,
     onUpdateEntry: (Int, SlotEntryRequest) -> Unit
 ) {
-    val offsetX = remember { Animatable(0f) }
-    val scope = rememberCoroutineScope()
-    val maxSwipe = -200f
-
     var expandedEntryId by remember { mutableStateOf<Int?>(null) }
     var isEditingTitle by remember { mutableStateOf(false) }
     var title by remember { mutableStateOf(slot.comment ?: "") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(Color.Red, RoundedCornerShape(8.dp)),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            Text("delete")
-//            Icon(Icons.Default.Delete, null, tint = Color.White)
+    Column(Modifier.padding(12.dp)) {
+        if (isEditingTitle) {
+            FuelFitTextField.Outlined(
+                value = title,
+                onValueChange = { title = it },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            isEditingTitle = false
+                            onUpdateSlot(
+                                slot.id,
+                                SlotRequest(
+                                    dayId = slot.dayId,
+                                    order = slot.order,
+                                    comment = title
+                                )
+                            )
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Save",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        } else {
+            FuelFitText.EditableUnderline(
+                text = title.ifBlank { stringResource(R.string.slot_default_title) },
+                onClick = { isEditingTitle = true }
+            )
         }
 
-        Card(
-            modifier = Modifier
-                .offset { IntOffset(offsetX.value.toInt(), 0) }
-                .clip(RoundedCornerShape(8.dp))
-                .pointerInput(Unit) {
-                    detectHorizontalDragGestures(
-                        onDragEnd = {
-                            scope.launch {
-                                if (offsetX.value <= maxSwipe / 2) {
-                                    offsetX.animateTo(maxSwipe, tween(200))
-                                    onDeleteSlot()
-                                } else {
-                                    offsetX.animateTo(0f, tween(200))
-                                }
-                            }
-                        },
-                        onHorizontalDrag = { _, dragAmount ->
-                            scope.launch {
-                                val newOffset = offsetX.value + dragAmount
-                                if (newOffset <= 0f) offsetX.snapTo(newOffset)
-                            }
-                        }
-                    )
-                }
-        ) {
-            Column(Modifier.padding(12.dp)) {
+        Spacer(Modifier.height(8.dp))
 
-                // ───── Заголовок блока ─────
-                if (isEditingTitle) {
-                    TextField(
-                        value = title,
-                        onValueChange = { title = it },
-                        singleLine = true,
-                        trailingIcon = {
-                            TextButton(
-                                onClick = {
-                                    isEditingTitle = false
-                                    onUpdateSlot(
-                                        slot.id,
-                                        SlotRequest(
-                                            dayId = slot.dayId,
-                                            order = slot.order,
-                                            comment = title
-                                        )
-                                    )
-                                }
-                            ) {
-                                Text("Сохранить")
-                            }
-                        }
-                    )
-                } else {
-                    Text(
-                        text = title.ifBlank { "Блок упражнений" },
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.clickable { isEditingTitle = true }
-                    )
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                // ───── Упражнения ─────
-                entries.forEach { entry ->
-                    ExpandableEntryItem(
-                        entry = entry,
-                        isExpanded = expandedEntryId == entry.id,
-                        onExpand = { expandedEntryId = entry.id },
-                        onCollapse = { expandedEntryId = null },
-                        onSave = { request ->
-                            onUpdateEntry(entry.id, request)
-                            expandedEntryId = null
-                        },
-                        onDelete = { onDeleteEntry(entry.id) }
-                    )
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                Button(onClick = onAddExercise, modifier = Modifier.fillMaxWidth()) {
-                    Text("Добавить упражнение")
-                }
-            }
+        entries.forEach { entry ->
+            ExpandableEntryItem(
+                entry = entry,
+                exerciseNamesById = exerciseNamesById,
+                isExpanded = expandedEntryId == entry.id,
+                onExpand = { expandedEntryId = entry.id },
+                onCollapse = { expandedEntryId = null },
+                onSave = { request ->
+                    onUpdateEntry(entry.id, request)
+                    expandedEntryId = null
+                },
+                onDelete = { onDeleteEntry(entry.id) }
+            )
         }
+
+        Spacer(Modifier.height(8.dp))
+
+        FuelFitButton.Secondary(
+            text = stringResource(R.string.add_exercise),
+            onClick = onAddExercise,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
 @Composable
-private fun ExpandableEntryItem(
-    entry: SlotEntry,
-    isExpanded: Boolean,
-    onExpand: () -> Unit,
-    onCollapse: () -> Unit,
-    onSave: (SlotEntryRequest) -> Unit,
-    onDelete: () -> Unit
-) {
-
-    var sets by remember { mutableStateOf(entry.repetitionUnit?.toString().orEmpty()) }
-    var reps by remember { mutableStateOf(entry.repetitionRounding.orEmpty()) }
-    var weight by remember { mutableStateOf(entry.weightUnit?.toString().orEmpty()) }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .animateContentSize()
-            .clickable { onExpand() }
+private fun EmptyDayView(onCreateSlot: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Column(Modifier.padding(8.dp)) {
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Упражнение ${entry.exerciseId}")
-
-                Row {
-                    IconButton(onClick = onExpand) {
-                        Text("Edit")
-//                        Icon(Icons.Default.Edit, null)
-                    }
-                    IconButton(onClick = onDelete) {
-                        Text("Delete")
-//                        Icon(Icons.Default.Delete, null)
-                    }
-                }
-            }
-
-            if (isExpanded) {
-                Spacer(Modifier.height(8.dp))
-
-                OutlinedTextField(sets, { sets = it }, label = { Text("Подходы") })
-                OutlinedTextField(reps, { reps = it }, label = { Text("Повторения") })
-                OutlinedTextField(weight, { weight = it }, label = { Text("Вес") })
-
-                Spacer(Modifier.height(8.dp))
-
-                Button(
-                    onClick = {
-                        onSave(
-                            SlotEntryRequest(
-                                slotId = entry.slotId,
-                                exerciseId = entry.exerciseId,
-                                type = entry.type,
-                                repetitionUnit = sets.toIntOrNull(),
-                                repetitionRounding = reps.ifBlank { null },
-                                weightUnit = weight.toIntOrNull(),
-                                order = entry.order,
-                            )
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Сохранить")
-                }
-            }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            FuelFitText.BodyLarge(
+                text = stringResource(R.string.empty_day_message)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            FuelFitButton.Primary(
+                text = stringResource(R.string.create_slot),
+                onClick = onCreateSlot,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

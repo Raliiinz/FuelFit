@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Create routine -->
+    <string name="create_routine_title">Create workout</string>
+    <string name="routine_name_label">Name</string>
+    <string name="routine_description_label">Description</string>
+    <string name="routine_start_date">Start date</string>
+    <string name="routine_end_date">End date</string>
+    <string name="routine_pick_date">Pick date</string>
+    <string name="routine_fit_in_week">Fit in week — weekly repetition</string>
+    <string name="routine_save">Save</string>
+    <string name="back">Back</string>
+
+    <!-- Routines list -->
+    <string name="routines_title">My routines</string>
+    <string name="routines_empty">You don’t have any routines yet</string>
+    <string name="create_routine">Create routine</string>
+    <string name="delete_routine">Delete routine</string>
+    <string name="edit_routine">Edit routine</string>
+
+    <!-- Routine days -->
+    <string name="routine_days">Routine Days</string>
+    <string name="add_day">Add Day</string>
+    <string name="edit_day">Edit Day</string>
+    <string name="create_day">Create Day</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="order">Order</string>
+    <string name="rest">Rest</string>
+    <string name="logs_required">Logs required to advance</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="active">Active</string>
+    <string name="add_workout_or_rest_day">Add a workout or rest day</string>
+
+    <!-- Routine day -->
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="screen_exercises_title">Exercises</string>
+    <string name="slot_default_title">Exercise block</string>
+    <string name="create_slot">Create exercise block</string>
+    <string name="create_new_slot">Create new exercise block</string>
+    <string name="empty_day_message">You can create a new exercise block</string>
+    <string name="add_exercise">Add exercise</string>
+    <string name="label_sets">Sets</string>
+    <string name="label_reps">Reps</string>
+    <string name="label_weight">Weight</string>
+    <string name="exercise_search_title">Search exercise</string>
+    <string name="exercise_search_placeholder">Enter name</string>
+    <string name="exercise_search_empty">No results found</string>
+    <string name="exercise_item_title">Exercise %s</string>
+</resources>

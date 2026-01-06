@@ -70,7 +70,7 @@ private fun ExerciseDetailContent(detail: ExerciseInfo, modifier: Modifier = Mod
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        FuelFitText.HeadlineLarge(
+        FuelFitText.HeadlineMedium(
             text = detail.translations.firstOrNull()?.name ?: stringResource(R.string.no_name),
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )

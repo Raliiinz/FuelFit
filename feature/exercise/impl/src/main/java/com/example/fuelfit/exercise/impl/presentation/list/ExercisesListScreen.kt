@@ -52,7 +52,7 @@ internal fun ExercisesListScreen(component: ExercisesListComponent) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 8.dp),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SearchAndFilterBar(

@@ -49,8 +49,6 @@ internal fun ExercisesList(
                 ex = exercise,
                 onClick = { onExerciseClick(exercise.id) }
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

@@ -7,7 +7,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.routine.impl.details.presentation.RoutineDayScreen
 import com.example.fuelfit.routine.impl.create.presentation.CreateRoutineScreen
 import com.example.fuelfit.routine.impl.dayDetail.presentation.DayDetailScreen
-import com.example.fuelfit.routine.impl.list.presentation.RoutineListScreen
+import com.example.fuelfit.routine.impl.list.presentation.RoutinesListScreen
 
 @Composable
 fun RoutineScreen(component: RoutineTabComponent) {
@@ -16,7 +16,7 @@ fun RoutineScreen(component: RoutineTabComponent) {
     Children(stack = stack) {
         when (val child = it.instance) {
             is RoutineTabComponent.Child.List ->
-                RoutineListScreen(child.component)
+                RoutinesListScreen(child.component)
 
             is RoutineTabComponent.Child.Create ->
                 CreateRoutineScreen(child.component)

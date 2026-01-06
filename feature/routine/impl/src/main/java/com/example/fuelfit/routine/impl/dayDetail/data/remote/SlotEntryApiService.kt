@@ -17,11 +17,6 @@ internal interface SlotEntryApiService {
         @Query("ordering") ordering: String? = null
     ): PaginatedResponseDto<SlotEntryDto>
 
-    @GET("/api/v2/slot-entry/{id}/")
-    suspend fun getSlotEntry(
-        @Path("id") id: Int
-    ): SlotEntryDto
-
     @POST("/api/v2/slot-entry/")
     suspend fun createSlotEntry(
         @Body body: SlotEntryRequestDto
@@ -29,12 +24,6 @@ internal interface SlotEntryApiService {
 
     @PUT("/api/v2/slot-entry/{id}/")
     suspend fun updateSlotEntry(
-        @Path("id") id: Int,
-        @Body body: SlotEntryRequestDto
-    ): SlotEntryDto
-
-    @PATCH("/api/v2/slot-entry/{id}/")
-    suspend fun patchSlotEntry(
         @Path("id") id: Int,
         @Body body: SlotEntryRequestDto
     ): SlotEntryDto

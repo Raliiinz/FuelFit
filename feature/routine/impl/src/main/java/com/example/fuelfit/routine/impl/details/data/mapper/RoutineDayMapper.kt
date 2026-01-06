@@ -48,16 +48,4 @@ internal class RoutineDayMapper {
 
     private fun RoutineDayType.toDto(): RoutineDayTypeDto =
         RoutineDayTypeDto.valueOf(name)
-
-    fun RoutineDayRequest.toRoutineDay(id: Int): RoutineDay = RoutineDay(
-        id = id,
-        routineId = this.routineId,
-        order = this.order,
-        name = this.name,
-        description = this.description,
-        isRest = this.isRest,
-        needLogsToAdvance = this.needLogsToAdvance,
-        type = this.type,
-        config = this.config
-    )
 }

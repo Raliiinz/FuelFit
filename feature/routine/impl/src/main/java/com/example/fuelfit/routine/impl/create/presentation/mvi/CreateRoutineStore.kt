@@ -6,6 +6,6 @@ internal interface CreateRoutineStore :
     Store<CreateRoutineIntent, CreateRoutineState, CreateRoutineLabel> {
 
     interface Factory {
-        fun create(): CreateRoutineStore
+        fun create(routineId: Int? = null): CreateRoutineStore
     }
 }

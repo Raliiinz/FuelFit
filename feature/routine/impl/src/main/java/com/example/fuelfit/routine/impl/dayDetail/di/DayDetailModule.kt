@@ -66,5 +66,6 @@ internal val dayDetailModule = module {
         updateSlotEntryUseCase = get(),
         deleteSlotEntryUseCase = get(),
         searchExercisesUseCase = get(),
+        getExerciseByIdUseCase = get(),
     )) }
 }

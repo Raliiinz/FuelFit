@@ -1,6 +1,7 @@
 package com.example.fuelfit.routine.impl.dayDetail.presentation.mvi
 
 import com.example.fuelfit.routine.api.dayDetail.model.*
+import com.example.fuelfit.routine.impl.details.presentation.mvi.RoutineDayIntent
 
 internal sealed interface DayDetailIntent {
 
@@ -12,17 +13,16 @@ internal sealed interface DayDetailIntent {
     data class SearchExercises(val query: String) : DayDetailIntent
     data class SelectExercise(
         val slotId: Int,
-        val exerciseId: Int
+        val exerciseId: Int,
+        val exerciseName: String
     ) : DayDetailIntent
 
-    // SLOT
     data class CreateSlot(val request: SlotRequest) : DayDetailIntent
     data class UpdateSlot(val id: Int, val request: SlotRequest) : DayDetailIntent
     data class DeleteSlot(val id: Int) : DayDetailIntent
     data class SlotClicked(val id: Int) : DayDetailIntent
-
-    // SLOT ENTRY
     data class CreateEntry(val request: SlotEntryRequest) : DayDetailIntent
     data class UpdateEntry(val id: Int, val request: SlotEntryRequest) : DayDetailIntent
     data class DeleteEntry(val id: Int) : DayDetailIntent
+    object BackClicked : DayDetailIntent
 }

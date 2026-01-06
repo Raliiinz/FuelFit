@@ -1,24 +1,24 @@
 package com.example.fuelfit.routine.impl.dayDetail.presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.fuelfit.designsystem.LoadingContent
+import com.example.fuelfit.designsystem.components.FuelFitLazyColumn
+import com.example.fuelfit.designsystem.components.FuelFitListCard
+import com.example.fuelfit.designsystem.components.FuelFitSearchBar
+import com.example.fuelfit.designsystem.components.FuelFitText
 import com.example.fuelfit.exercise.api.model.ExerciseSearchItem
+import com.example.fuelfit.routine.impl.R
 
 @Composable
 internal fun ExerciseSearchSheet(
@@ -28,54 +28,61 @@ internal fun ExerciseSearchSheet(
     onQueryChange: (String) -> Unit,
     onExerciseClick: (ExerciseSearchItem) -> Unit
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
 
-        Text(
-            text = "Поиск упражнения",
-            style = MaterialTheme.typography.titleLarge
+        FuelFitText.HeadlineMedium(
+            text = stringResource(R.string.exercise_search_title)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        OutlinedTextField(
-            value = query,
-            onValueChange = onQueryChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Введите название") }
+        FuelFitSearchBar(
+            query = query,
+            onQueryChange = onQueryChange,
+            placeholder = stringResource(R.string.exercise_search_placeholder)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         when {
             isSearching -> {
-                CircularProgressIndicator()
+                LoadingContent()
             }
 
             results.isEmpty() && query.isNotBlank() -> {
-                Text(
-                    "Ничего не найдено",
-                    style = MaterialTheme.typography.bodyMedium
+                FuelFitText.BodyMedium(
+                    text = stringResource(R.string.exercise_search_empty)
                 )
             }
 
             results.isNotEmpty() -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight()
+                val listState = rememberLazyListState()
+
+                FuelFitLazyColumn(
+                    modifier = Modifier.fillMaxHeight(),
+                    state = listState
                 ) {
-                    items(results.withIndex().toList(), key = { "${it.index}_${it.value.id}_${it.value.baseId}" }) { indexedExercise ->
+                    items(
+                        items = results.withIndex().toList(),
+                        key = { "${it.index}_${it.value.id}_${it.value.baseId}" }
+                    ) { indexedExercise ->
                         val exercise = indexedExercise.value
-                        ListItem(
-                            headlineContent = { Text(exercise.name) },
-                            supportingContent = { Text(exercise.category) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onExerciseClick(exercise) }
-                        )
-                        Divider()
+
+                        FuelFitListCard(
+                            onClick = { onExerciseClick(exercise) }
+                        ) {
+                            FuelFitText.BodyLarge(
+                                text = exercise.name
+                            )
+                            FuelFitText.BodySmall(
+                                text = exercise.category
+                            )
+                        }
                     }
                 }
             }

@@ -10,7 +10,7 @@ import com.arkivanov.decompose.value.Value
 import com.example.fuelfit.routine.impl.details.presentation.RoutineDayComponent
 import com.example.fuelfit.routine.impl.create.presentation.CreateRoutineComponent
 import com.example.fuelfit.routine.impl.dayDetail.presentation.DayDetailComponent
-import com.example.fuelfit.routine.impl.list.presentation.RoutineListComponent
+import com.example.fuelfit.routine.impl.list.presentation.RoutinesListComponent
 import kotlinx.serialization.Serializable
 
 class RoutineTabComponent(
@@ -34,23 +34,19 @@ class RoutineTabComponent(
     ): Child = when (config) {
 
         Config.List -> Child.List(
-            RoutineListComponent(
+            RoutinesListComponent(
                 componentContext = context,
-                onRoutineClick = { id ->
-                    navigation.pushNew(Config.Detail(id))
-                },
-                onCreateRoutineClicked = {
-                    navigation.pushNew(Config.Create)
-                }
+                onRoutineClick = { id -> navigation.pushNew(Config.Detail(id)) },
+                onCreateRoutineClicked = { navigation.pushNew(Config.Create(null)) },
+                onEditRoutineClicked = { id -> navigation.pushNew(Config.Create(id)) }
             )
         )
 
-        Config.Create -> Child.Create(
+        is Config.Create -> Child.Create(
             CreateRoutineComponent(
                 componentContext = context,
-                onClose = {
-                    navigation.pop()
-                }
+                routineId = config.routineId,
+                onClose = { navigation.pop() }
             )
         )
 
@@ -60,6 +56,9 @@ class RoutineTabComponent(
                 routineId = config.routineId,
                 onDayClicked = { dayId ->
                     navigation.pushNew(Config.DayDetail(dayId))
+                },
+                onBack = {
+                    navigation.pop()
                 }
             )
         )
@@ -70,6 +69,9 @@ class RoutineTabComponent(
                 dayId = config.dayId,
                 onSlotClicked = { slotId ->
                     println("Slot clicked $slotId")
+                },
+                onBack = {
+                    navigation.pop()
                 }
             )
         )
@@ -81,7 +83,7 @@ class RoutineTabComponent(
         data object List : Config
 
         @Serializable
-        data object Create : Config
+        data class Create(val routineId: Int? = null) : Config
 
         @Serializable
         data class Detail(val routineId: Int) : Config
@@ -91,7 +93,7 @@ class RoutineTabComponent(
     }
 
     sealed class Child {
-        internal data class List(val component: RoutineListComponent) : Child()
+        internal data class List(val component: RoutinesListComponent) : Child()
         internal data class Create(val component: CreateRoutineComponent) : Child()
         internal data class Detail(val component: RoutineDayComponent) : Child()
         internal data class DayDetail(val component: DayDetailComponent) : Child()

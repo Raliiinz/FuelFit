@@ -3,17 +3,17 @@ package com.example.fuelfit.routine.impl.dayDetail.presentation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
-import com.example.fuelfit.routine.api.dayDetail.model.SlotEntry
 import com.example.fuelfit.routine.api.dayDetail.model.SlotRequest
 import com.example.fuelfit.routine.impl.dayDetail.presentation.components.ExerciseSearchSheet
 import com.example.fuelfit.routine.impl.dayDetail.presentation.components.SlotsList
 import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailIntent
-import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
+import com.example.fuelfit.utils.flow.LaunchedEffectAndCollectAlways
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,26 +22,29 @@ internal fun DayDetailScreen(component: DayDetailComponent) {
     val snackbarHostState = remember { SnackbarHostState() }
     var searchSlotId by remember { mutableStateOf<Int?>(null) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var editingEntry by remember { mutableStateOf<Pair<SlotEntry?, Int>?>(null) }
 
-    LaunchedEffectAndCollect(component.snackbarFlow, component.lifecycle) {
-        snackbarHostState.showSnackbar(it)
+    LaunchedEffectAndCollectAlways(
+        flow = component.snackbarFlow,
+        lifecycle = component.lifecycle
+    ) { msg ->
+        snackbarHostState.currentSnackbarData?.dismiss()
+        snackbarHostState.showSnackbar(msg)
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->
-        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Column(modifier = Modifier.fillMaxSize()) {
             when {
                 state.isLoading -> LoadingContent()
-                state.error != null -> ErrorContent(state.error!!) { component.onIntent(DayDetailIntent.Refresh) }
-                state.slots.isEmpty() -> EmptyDayView(
-                    onCreateSlot = {
-                        val request = SlotRequest(dayId = state.dayId, order = 0)
-                        component.onIntent(DayDetailIntent.CreateSlot(request))
-                    }
+                state.error != null -> ErrorContent(
+                    message = state.error!!,
+                    onRetry = { component.onIntent(DayDetailIntent.Refresh) },
                 )
                 else -> SlotsList(
                     slots = state.slots.sortedBy { it.order },
                     entriesBySlot = state.entriesBySlot,
+                    exerciseNamesById = state.exerciseNamesById,
+                    onBackClicked = { component.onIntent(DayDetailIntent.BackClicked) },
                     onDeleteSlot = { component.onIntent(DayDetailIntent.DeleteSlot(it)) },
                     onAddExercise = { searchSlotId = it },
                     onDeleteEntry = { component.onIntent(DayDetailIntent.DeleteEntry(it)) },
@@ -53,18 +56,26 @@ internal fun DayDetailScreen(component: DayDetailComponent) {
                         component.onIntent(DayDetailIntent.UpdateSlot(slotId, request))
                     },
                     onUpdateEntry = { entryId, request ->
-                        component.onIntent(
-                            DayDetailIntent.UpdateEntry(entryId, request)
-                        )
-                    }
+                        component.onIntent(DayDetailIntent.UpdateEntry(entryId, request))
+                    },
                 )
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp)
+        )
     }
 
-    // Bottom sheet поиска упражнения
     if (searchSlotId != null) {
-        ModalBottomSheet(onDismissRequest = { searchSlotId = null }, sheetState = sheetState) {
+        ModalBottomSheet(
+            onDismissRequest = { searchSlotId = null },
+            sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+        ) {
             ExerciseSearchSheet(
                 query = state.searchQuery,
                 isSearching = state.isSearching,
@@ -74,23 +85,13 @@ internal fun DayDetailScreen(component: DayDetailComponent) {
                     component.onIntent(
                         DayDetailIntent.SelectExercise(
                             slotId = searchSlotId!!,
-                            exerciseId = exercise.baseId
+                            exerciseId = exercise.baseId,
+                            exerciseName = exercise.name
                         )
                     )
                     searchSlotId = null
                 }
             )
-        }
-    }
-}
-
-@Composable
-private fun EmptyDayView(onCreateSlot: () -> Unit) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Вы можете создать новый блок упражнений", style = MaterialTheme.typography.bodyLarge)
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = onCreateSlot, modifier = Modifier.fillMaxWidth()) {
-            Text("Создать блок упражнений")
         }
     }
 }

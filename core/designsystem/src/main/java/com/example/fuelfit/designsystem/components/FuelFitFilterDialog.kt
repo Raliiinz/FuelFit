@@ -12,6 +12,7 @@ fun FuelFitFilterDialog(
     dismissText: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
+    confirmEnabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     AlertDialog(
@@ -28,7 +29,8 @@ fun FuelFitFilterDialog(
         confirmButton = {
             FuelFitButton.Primary(
                 text = confirmText,
-                onClick = onConfirm
+                onClick = onConfirm,
+                enabled = confirmEnabled
             )
         },
         dismissButton = {

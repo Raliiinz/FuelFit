@@ -25,23 +25,14 @@ internal class RoutineDayStoreFactory(
         object : RoutineDayStore,
             Store<RoutineDayIntent, RoutineDayState, RoutineDayLabel> by storeFactory.create(
                 name = "RoutineDayStore",
-                initialState = RoutineDayState(
-                    routineId = routineId
-                ),
-                bootstrapper = SimpleBootstrapper(
-                    RoutineDayAction.Init
-                ),
+                initialState = RoutineDayState(routineId = routineId),
+                bootstrapper = SimpleBootstrapper(RoutineDayAction.Init),
                 executorFactory = { Executor() },
                 reducer = ReducerImpl
             ) {}
 
     private inner class Executor :
-        CoroutineExecutor<
-                RoutineDayIntent,
-                RoutineDayAction,
-                RoutineDayState,
-                RoutineDayMsg,
-                RoutineDayLabel>() {
+        CoroutineExecutor<RoutineDayIntent, RoutineDayAction, RoutineDayState, RoutineDayMsg, RoutineDayLabel>() {
 
         override fun executeAction(action: RoutineDayAction) {
             if (action is RoutineDayAction.Init) {
@@ -53,28 +44,17 @@ internal class RoutineDayStoreFactory(
             when (intent) {
                 RoutineDayIntent.Init,
                 RoutineDayIntent.Refresh -> loadDays()
-
                 is RoutineDayIntent.CreateDay -> createDay(intent.day)
-
                 is RoutineDayIntent.UpdateDay -> updateDay(intent.dayRequest, intent.id)
-
                 is RoutineDayIntent.DeleteDay -> deleteDay(intent.id)
-
                 is RoutineDayIntent.DayClicked -> {
-                    if (intent.day.isRest) {
+                    if (!intent.day.isRest) {
                         publish(
-                            RoutineDayLabel.ShowToast(
-                                "Это день отдыха"
-                            )
-                        )
-                    } else {
-                        publish(
-                            RoutineDayLabel.NavigateToDayDetail(
-                                intent.day.id
-                            )
+                            RoutineDayLabel.NavigateToDayDetail(intent.day.id)
                         )
                     }
                 }
+                RoutineDayIntent.BackClicked -> publish(RoutineDayLabel.NavigateBack)
             }
         }
 
@@ -91,88 +71,44 @@ internal class RoutineDayStoreFactory(
                         )
 
                     is ResultWrapper.Error ->
-                        handleError(result.error,"Ошибка загрузки дней")
+                        handleError(result.error)
                 }
             }
         }
 
         private fun createDay(day: RoutineDayRequest) {
             dispatch(RoutineDayMsg.Loading)
-
             scope.launch {
                 val request = day.copy(routineId = state().routineId)
-
-                when (
-                    val result = createRoutineDayUseCase(request)
-                ) {
-                    is ResultWrapper.Success ->
-                        dispatch(
-                            RoutineDayMsg.DayCreated(
-                                result.data
-                            )
-                        )
-
-                    is ResultWrapper.Error ->
-                        handleError(
-                            result.error,
-                            "Ошибка создания дня"
-                        )
+                when (val result = createRoutineDayUseCase(request)) {
+                    is ResultWrapper.Success -> dispatch(RoutineDayMsg.DayCreated(result.data))
+                    is ResultWrapper.Error -> handleError(result.error)
                 }
             }
         }
 
-        private fun updateDay(
-            dayRequest: RoutineDayRequest,
-            id: Int
-        ) {
+        private fun updateDay(dayRequest: RoutineDayRequest, id: Int) {
             dispatch(RoutineDayMsg.Loading)
-
             scope.launch {
-                when (
-                    val result = updateRoutineDayUseCase(dayRequest, id)
-                ) {
-                    is ResultWrapper.Success ->
-                        dispatch(
-                            RoutineDayMsg.DayUpdated(
-                                result.data
-                            )
-                        )
-
-                    is ResultWrapper.Error ->
-                        handleError(
-                            result.error,
-                            "Ошибка обновления дня"
-                        )
+                when (val result = updateRoutineDayUseCase(dayRequest, id)) {
+                    is ResultWrapper.Success -> dispatch(RoutineDayMsg.DayUpdated(result.data))
+                    is ResultWrapper.Error -> handleError(result.error)
                 }
             }
         }
 
         private fun deleteDay(id: Int) {
             dispatch(RoutineDayMsg.Loading)
-
             scope.launch {
-                when (
-                    val result = deleteRoutineDayUseCase(id)
-                ) {
-                    is ResultWrapper.Success ->
-                        dispatch(
-                            RoutineDayMsg.DayDeleted(
-                                id
-                            )
-                        )
-
-                    is ResultWrapper.Error ->
-                        handleError(
-                            result.error,
-                            "Ошибка удаления дня"
-                        )
+                when (val result = deleteRoutineDayUseCase(id)) {
+                    is ResultWrapper.Success -> dispatch(RoutineDayMsg.DayDeleted(id))
+                    is ResultWrapper.Error -> handleError(result.error)
                 }
             }
         }
 
         private fun handleError(
-            error: ApiError,
-            fallback: String
+            error: ApiError
         ) {
             val userError = mapApiErrorToUserFriendly(error)
             val message = getErrorMessage(userError)
@@ -181,60 +117,19 @@ internal class RoutineDayStoreFactory(
         }
     }
 
-    private object ReducerImpl :
-        Reducer<RoutineDayState, RoutineDayMsg> {
-
-        override fun RoutineDayState.reduce(
-            msg: RoutineDayMsg
-        ): RoutineDayState =
+    private object ReducerImpl : Reducer<RoutineDayState, RoutineDayMsg> {
+        override fun RoutineDayState.reduce(msg: RoutineDayMsg): RoutineDayState =
             when (msg) {
-                RoutineDayMsg.Loading ->
-                    copy(
-                        isLoading = true,
-                        error = null
-                    )
-
-                is RoutineDayMsg.SetDays ->
-                    copy(
-                        days = msg.days,
-                        isLoading = false,
-                        error = null
-                    )
-
-                is RoutineDayMsg.DayCreated ->
-                    copy(
-                        days = days + msg.day,
-                        isLoading = false,
-                        error = null
-                    )
-
-                is RoutineDayMsg.DayUpdated ->
-                    copy(
-                        days =
-                            days.map {
-                                if (it.id == msg.day.id)
-                                    msg.day
-                                else it
-                            },
-                        isLoading = false,
-                        error = null
-                    )
-
-                is RoutineDayMsg.DayDeleted ->
-                    copy(
-                        days =
-                            days.filterNot {
-                                it.id == msg.id
-                            },
-                        isLoading = false,
-                        error = null
-                    )
-
-                is RoutineDayMsg.Error ->
-                    copy(
-                        isLoading = false,
-                        error = msg.message
-                    )
+                RoutineDayMsg.Loading -> copy(isLoading = true, error = null)
+                is RoutineDayMsg.SetDays -> copy(days = msg.days, isLoading = false, error = null)
+                is RoutineDayMsg.DayCreated -> copy(days = days + msg.day, isLoading = false, error = null)
+                is RoutineDayMsg.DayUpdated -> copy(
+                    days = days.map { if (it.id == msg.day.id) msg.day else it },
+                    isLoading = false,
+                    error = null
+                )
+                is RoutineDayMsg.DayDeleted -> copy(days = days.filterNot { it.id == msg.id }, isLoading = false, error = null)
+                is RoutineDayMsg.Error -> copy(isLoading = false, error = msg.message)
             }
     }
 }

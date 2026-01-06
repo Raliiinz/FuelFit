@@ -1,9 +1,9 @@
 package com.example.fuelfit.routine.impl.common
 
 import com.example.fuelfit.routine.api.common.Routine
-import com.example.fuelfit.routine.api.common.RoutineRequest
+import com.example.fuelfit.routine.api.create.model.RoutineRequest
 import com.example.fuelfit.routine.impl.common.dto.RoutineDto
-import com.example.fuelfit.routine.impl.common.dto.RoutineRequestDto
+import com.example.fuelfit.routine.impl.create.data.remote.dto.RoutineRequestDto
 import java.time.LocalDate
 import java.time.OffsetDateTime
 

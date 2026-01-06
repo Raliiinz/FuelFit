@@ -1,4 +1,4 @@
-package com.example.fuelfit.routine.impl.common.dto
+package com.example.fuelfit.routine.impl.create.data.remote.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

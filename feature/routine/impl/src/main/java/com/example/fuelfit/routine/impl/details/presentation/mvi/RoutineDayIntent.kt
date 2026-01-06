@@ -10,4 +10,5 @@ internal sealed interface RoutineDayIntent {
     data class UpdateDay(val dayRequest: RoutineDayRequest, val id: Int) : RoutineDayIntent
     data class DeleteDay(val id: Int) : RoutineDayIntent
     data class DayClicked(val day: RoutineDay) : RoutineDayIntent
+    object BackClicked : RoutineDayIntent
 }

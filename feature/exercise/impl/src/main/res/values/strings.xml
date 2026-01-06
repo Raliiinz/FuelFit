@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="exercises_search_hint">Поиск упражнений</string>
-    <string name="exercises_filter">Фильтр</string>
-    <string name="filters_title">Фильтры</string>
-    <string name="filters_categories">Категории</string>
-    <string name="filters_done">Готово</string>
-    <string name="filters_cancel">Отмена</string>
-    <string name="exercise_no_name">Без названия</string>
+    <string name="exercises_search_hint">Search exercises</string>
+    <string name="exercises_filter">Filter</string>
+    <string name="filters_title">Filters</string>
+    <string name="filters_categories">Categories</string>
+    <string name="filters_done">Done</string>
+    <string name="filters_cancel">Cancel</string>
+    <string name="exercise_no_name">No name</string>
 
     <string name="no_name">No name</string>
     <string name="exercise_category">Category: %1$s</string>

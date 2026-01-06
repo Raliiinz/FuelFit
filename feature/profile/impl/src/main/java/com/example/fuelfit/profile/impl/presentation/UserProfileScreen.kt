@@ -78,7 +78,7 @@ private fun UserProfileContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FuelFitText.HeadlineLarge(text = stringResource(R.string.profile_title))
+            FuelFitText.HeadlineMedium(text = stringResource(R.string.profile_title))
 
             IconButton(
                 onClick = { onIntent(UserProfileIntent.LogoutClicked) }

@@ -13,4 +13,3 @@ data class SlotEntry(
     val comment: String?,
     val config: String?,
 )
-

@@ -4,7 +4,7 @@ import com.example.fuelfit.routine.impl.common.dto.PaginatedResponseDto
 import com.example.fuelfit.routine.impl.common.dto.RoutineDto
 import retrofit2.http.*
 
-internal interface RoutineApiService {
+internal interface RoutinesApiService {
 
     @GET("/api/v2/routine/")
     suspend fun getRoutines(

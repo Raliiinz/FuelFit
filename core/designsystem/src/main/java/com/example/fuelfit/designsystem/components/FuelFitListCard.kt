@@ -7,12 +7,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun FuelFitListCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    elevation: Dp = 2.dp,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
@@ -26,13 +28,12 @@ fun FuelFitListCard(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = elevation
         ),
         shape = MaterialTheme.shapes.large
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
             content = content
         )
