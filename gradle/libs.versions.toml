@@ -63,6 +63,7 @@ firebase-perfomance = "21.0.4"
 crashlytics-plugin = "3.0.3"
 perfomance-plugin = "1.4.2"
 google-services = "4.4.2"
+firebase-app-distribution = "3.0.3"
 
 # Testing
 junit = "4.13.2"
@@ -178,6 +179,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 perfomance = { id = "com.google.firebase.firebase-perf", version.ref = "perfomance-plugin" }
+firebase-app-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-app-distribution" }
 
 # Security / Secrets
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }

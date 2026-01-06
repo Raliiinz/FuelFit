@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.ktlint)
 //    alias(libs.plugins.crashlytics)
 //    alias(libs.plugins.perfomance)
+    alias(libs.plugins.firebase.app.distribution)
 }
 
 android {
