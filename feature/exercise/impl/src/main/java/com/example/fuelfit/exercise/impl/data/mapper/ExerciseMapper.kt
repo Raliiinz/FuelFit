@@ -1,10 +1,32 @@
 package com.example.fuelfit.exercise.impl.data.mapper
 
-import com.example.fuelfit.exercise.api.model.*
-import com.example.fuelfit.exercise.impl.data.remote.dto.*
-import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.*
+import com.example.fuelfit.exercise.api.model.Equipment
+import com.example.fuelfit.exercise.api.model.ExerciseAlias
+import com.example.fuelfit.exercise.api.model.ExerciseCategory
+import com.example.fuelfit.exercise.api.model.ExerciseImage
+import com.example.fuelfit.exercise.api.model.ExerciseInfo
+import com.example.fuelfit.exercise.api.model.ExerciseList
+import com.example.fuelfit.exercise.api.model.ExerciseNote
+import com.example.fuelfit.exercise.api.model.ExerciseSearchItem
+import com.example.fuelfit.exercise.api.model.ExerciseTranslation
+import com.example.fuelfit.exercise.api.model.ExerciseVideo
+import com.example.fuelfit.exercise.api.model.License
+import com.example.fuelfit.exercise.api.model.Muscle
+import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseInfoListResponseDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.ExerciseSearchItemDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.AliasDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.CategoryDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.EquipmentDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.ImageDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.LicenseDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.MuscleDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.NoteDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.TranslationDto
+import com.example.fuelfit.exercise.impl.data.remote.dto.exercise.VideoDto
 import com.example.fuelfit.utils.stripHtml
 
+@Suppress("TooManyFunctions")
 internal class ExerciseMapper {
 
     fun mapExerciseList(dto: ExerciseInfoListResponseDto): ExerciseList =

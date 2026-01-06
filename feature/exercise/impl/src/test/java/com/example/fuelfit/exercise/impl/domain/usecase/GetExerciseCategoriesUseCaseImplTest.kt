@@ -35,7 +35,9 @@ class GetExerciseCategoriesUseCaseImplTest {
             ExerciseCategory(1, "Strength"),
             ExerciseCategory(2, "Cardio")
         )
-        coEvery { repository.getExerciseCategories(limit = 10, offset = 0, name = null, ordering = null) } returns ResultWrapper.Success(categories)
+        coEvery {
+            repository.getExerciseCategories(limit = 10, offset = 0, name = null, ordering = null)
+        } returns ResultWrapper.Success(categories)
 
         val result = useCase.invoke(limit = 10, offset = 0, name = null, ordering = null)
 
@@ -49,7 +51,14 @@ class GetExerciseCategoriesUseCaseImplTest {
     @Test
     fun `when repository returns Error then use case returns same Error`() = runTest {
         val error = ResultWrapper.Error(ApiError(404, "Not Found"))
-        coEvery { repository.getExerciseCategories(limit = null, offset = null, name = null, ordering = null) } returns error
+        coEvery {
+            repository.getExerciseCategories(
+                limit = null,
+                offset = null,
+                name = null,
+                ordering = null
+            )
+        } returns error
 
         val result = useCase.invoke(limit = null, offset = null, name = null, ordering = null)
 

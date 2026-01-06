@@ -1,6 +1,9 @@
 package com.example.fuelfit.routine.impl.dayDetail.presentation.mvi
 
-import com.arkivanov.mvikotlin.core.store.*
+import com.arkivanov.mvikotlin.core.store.Reducer
+import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
+import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.exercise.api.usecase.GetExerciseByIdUseCase
 import com.example.fuelfit.exercise.api.usecase.SearchExercisesUseCase
@@ -46,6 +49,7 @@ internal class DayDetailStoreFactory(
                 reducer = ReducerImpl
             ) {}
 
+    @Suppress("TooManyFunctions")
     private inner class Executor(
         private val dayId: Int
     ) : CoroutineExecutor<DayDetailIntent, DayDetailAction, DayDetailState, DayDetailMsg, DayDetailLabel>() {
@@ -69,9 +73,13 @@ internal class DayDetailStoreFactory(
                 is DayDetailIntent.UpdateEntry -> updateEntry(intent.id, intent.request)
                 is DayDetailIntent.DeleteEntry -> deleteEntry(intent.id)
 
-                is DayDetailIntent.SlotClicked -> publish(DayDetailLabel.ShowSlotDetails(intent.id))
+                is DayDetailIntent.SlotClicked -> publish(
+                    DayDetailLabel.ShowSlotDetails(intent.id)
+                )
                 is DayDetailIntent.SearchExercises -> searchExercises(intent.query)
-                is DayDetailIntent.SelectExercise -> selectExercise(intent.slotId, intent.exerciseId, intent.exerciseName)
+                is DayDetailIntent.SelectExercise -> selectExercise(
+                    intent.slotId, intent.exerciseId, intent.exerciseName
+                )
                 is DayDetailIntent.OpenSearch -> dispatch(DayDetailMsg.SearchOpened(intent.slotId))
                 DayDetailIntent.CloseSearch -> dispatch(DayDetailMsg.SearchClosed)
 
@@ -94,38 +102,34 @@ internal class DayDetailStoreFactory(
             val entriesBySlot = mutableMapOf<Int, List<SlotEntry>>()
             val namesById = mutableMapOf<Int, String>()
 
-            for (slot in slots) {
-                when (val result = getSlotEntriesUseCase(slot.id)) {
-                    is ResultWrapper.Success -> {
-                        entriesBySlot[slot.id] = result.data
+            slots.forEach { slot ->
+                val slotEntriesResult = getSlotEntriesUseCase(slot.id)
+                if (slotEntriesResult is ResultWrapper.Error) {
+                    handleError(slotEntriesResult.error)
+                    return
+                }
 
-                        for (entry in result.data) {
-                            if (!namesById.containsKey(entry.exerciseId)) {
-                                when (val exerciseResult = getExerciseByIdUseCase(entry.exerciseId)) {
-                                    is ResultWrapper.Success -> {
-                                        val exerciseInfo = exerciseResult.data
-                                        val name = exerciseInfo.translations.firstOrNull()?.name
-                                            ?: "Exercise #${entry.exerciseId}"
-                                        namesById[entry.exerciseId] = name
-                                    }
-                                    is ResultWrapper.Error -> {
-                                        namesById[entry.exerciseId] = "Exercise #${entry.exerciseId}"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    is ResultWrapper.Error -> {
-                        handleError(result.error)
-                        return
+                val slotEntries = (slotEntriesResult as ResultWrapper.Success).data
+                entriesBySlot[slot.id] = slotEntries
+
+                slotEntries.forEach { entry ->
+                    if (entry.exerciseId !in namesById) {
+                        namesById[entry.exerciseId] = getExerciseName(entry.exerciseId)
                     }
                 }
             }
 
             dispatch(DayDetailMsg.SetSlots(slots, entriesBySlot))
-
             namesById.forEach { (id, name) ->
                 dispatch(DayDetailMsg.ExerciseNameMapped(id, name))
+            }
+        }
+
+        private suspend fun getExerciseName(exerciseId: Int): String {
+            return when (val exerciseResult = getExerciseByIdUseCase(exerciseId)) {
+                is ResultWrapper.Success -> exerciseResult.data.translations.firstOrNull()?.name
+                    ?: "Exercise #$exerciseId"
+                is ResultWrapper.Error -> "Exercise #$exerciseId"
             }
         }
 
@@ -161,23 +165,16 @@ internal class DayDetailStoreFactory(
 
         private fun createEntry(request: SlotEntryRequest) {
             dispatch(DayDetailMsg.Loading)
+
             scope.launch {
                 when (val result = createSlotEntryUseCase(request)) {
                     is ResultWrapper.Success -> {
                         dispatch(DayDetailMsg.EntryCreated(result.data))
 
-                        scope.launch {
-                            val exerciseId = result.data.exerciseId
-                            if (exerciseId !in state().exerciseNamesById) {
-                                val exerciseResult = getExerciseByIdUseCase(exerciseId)
-                                val name = if (exerciseResult is ResultWrapper.Success) {
-                                    exerciseResult.data.translations.firstOrNull()?.name
-                                        ?: "Exercise #$exerciseId"
-                                } else {
-                                    "Exercise #$exerciseId"
-                                }
-                                dispatch(DayDetailMsg.ExerciseNameMapped(exerciseId, name))
-                            }
+                        val exerciseId = result.data.exerciseId
+                        if (exerciseId !in state().exerciseNamesById) {
+                            val name = getExerciseName(exerciseId)
+                            dispatch(DayDetailMsg.ExerciseNameMapped(exerciseId, name))
                         }
                     }
                     is ResultWrapper.Error -> handleError(result.error)
@@ -236,27 +233,50 @@ internal class DayDetailStoreFactory(
     private object ReducerImpl : Reducer<DayDetailState, DayDetailMsg> {
         override fun DayDetailState.reduce(msg: DayDetailMsg): DayDetailState = when (msg) {
             DayDetailMsg.Loading -> copy(isLoading = true, error = null)
-            is DayDetailMsg.SetSlots -> copy(slots = msg.slots, entriesBySlot = msg.entries, isLoading = false)
-            is DayDetailMsg.SlotCreated -> copy(slots = slots + msg.slot, isLoading = false)
-            is DayDetailMsg.SlotUpdated -> copy(slots = slots.map { if (it.id == msg.slot.id) msg.slot else it }, isLoading = false)
+            is DayDetailMsg.SetSlots -> copy(
+                slots = msg.slots, entriesBySlot = msg.entries, isLoading = false
+            )
+            is DayDetailMsg.SlotCreated -> copy(
+                slots = slots + msg.slot, isLoading = false
+            )
+            is DayDetailMsg.SlotUpdated -> copy(
+                slots = slots.map { if (it.id == msg.slot.id) msg.slot else it },
+                isLoading = false
+            )
             is DayDetailMsg.SlotDeleted -> copy(slots = slots.filterNot { it.id == msg.id }, isLoading = false)
             is DayDetailMsg.EntryCreated -> copy(
-                entriesBySlot = entriesBySlot + (msg.entry.slotId to (entriesBySlot[msg.entry.slotId].orEmpty() + msg.entry)),
+                entriesBySlot = entriesBySlot + (
+                        msg.entry.slotId to (entriesBySlot[msg.entry.slotId].orEmpty() + msg.entry)
+                ),
                 isLoading = false
             )
             is DayDetailMsg.EntryUpdated -> copy(
-                entriesBySlot = entriesBySlot.mapValues { (_, list) -> list.map { if (it.id == msg.entry.id) msg.entry else it } },
+                entriesBySlot = entriesBySlot.mapValues {
+                    (_, list) -> list.map {
+                        if (it.id == msg.entry.id) msg.entry else it
+                    }
+                },
                 isLoading = false
             )
             is DayDetailMsg.EntryDeleted -> copy(
                 entriesBySlot = entriesBySlot.mapValues { (_, list) -> list.filterNot { it.id == msg.id } },
                 isLoading = false
             )
-            is DayDetailMsg.SearchStarted -> copy(searchQuery = msg.query, isSearching = true, searchResults = emptyList())
-            is DayDetailMsg.SearchSuccess -> copy(searchResults = msg.result, isSearching = false)
-            is DayDetailMsg.SearchOpened -> copy(searchSlotId = msg.slotId, searchQuery = "", searchResults = emptyList())
-            DayDetailMsg.SearchClosed -> copy(searchSlotId = null, searchQuery = "", searchResults = emptyList(), isSearching = false)
-            is DayDetailMsg.Error -> copy(isLoading = false, error = msg.message)
+            is DayDetailMsg.SearchStarted -> copy(
+                searchQuery = msg.query, isSearching = true, searchResults = emptyList()
+            )
+            is DayDetailMsg.SearchSuccess -> copy(
+                searchResults = msg.result, isSearching = false
+            )
+            is DayDetailMsg.SearchOpened -> copy(
+                searchSlotId = msg.slotId, searchQuery = "", searchResults = emptyList()
+            )
+            DayDetailMsg.SearchClosed -> copy(
+                searchSlotId = null, searchQuery = "", searchResults = emptyList(), isSearching = false
+            )
+            is DayDetailMsg.Error -> copy(
+                isLoading = false, error = msg.message
+            )
             is DayDetailMsg.ExerciseNameMapped -> copy(
                 exerciseNamesById = exerciseNamesById + (msg.exerciseId to msg.name)
             )

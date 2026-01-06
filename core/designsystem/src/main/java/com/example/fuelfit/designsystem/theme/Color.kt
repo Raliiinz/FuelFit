@@ -1,4 +1,4 @@
-package com.example.fuelfit.ui.theme
+package com.example.fuelfit.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

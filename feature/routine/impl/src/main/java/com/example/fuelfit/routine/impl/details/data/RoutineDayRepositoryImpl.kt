@@ -2,7 +2,8 @@ package com.example.fuelfit.routine.impl.details.data
 
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.network.safeApiCall
-import com.example.fuelfit.routine.api.details.model.*
+import com.example.fuelfit.routine.api.details.model.RoutineDay
+import com.example.fuelfit.routine.api.details.model.RoutineDayRequest
 import com.example.fuelfit.routine.api.details.repository.RoutineDayRepository
 import com.example.fuelfit.routine.impl.details.data.mapper.RoutineDayMapper
 import com.example.fuelfit.routine.impl.details.data.remote.RoutineDayApiService

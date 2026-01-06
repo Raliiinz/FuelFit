@@ -2,7 +2,10 @@ package com.example.fuelfit.routine.impl.dayDetail.data
 
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.network.safeApiCall
-import com.example.fuelfit.routine.api.dayDetail.model.*
+import com.example.fuelfit.routine.api.dayDetail.model.Slot
+import com.example.fuelfit.routine.api.dayDetail.model.SlotEntry
+import com.example.fuelfit.routine.api.dayDetail.model.SlotEntryRequest
+import com.example.fuelfit.routine.api.dayDetail.model.SlotRequest
 import com.example.fuelfit.routine.api.dayDetail.repository.DayDetailRepository
 import com.example.fuelfit.routine.impl.dayDetail.data.mapper.SlotMapper
 import com.example.fuelfit.routine.impl.dayDetail.data.remote.SlotApiService

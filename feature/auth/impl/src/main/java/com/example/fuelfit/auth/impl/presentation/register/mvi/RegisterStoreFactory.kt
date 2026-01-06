@@ -1,11 +1,13 @@
 package com.example.fuelfit.auth.impl.presentation.register.mvi
 
-import com.arkivanov.mvikotlin.core.store.*
+import com.arkivanov.mvikotlin.core.store.Reducer
+import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
+import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.auth.api.model.AuthToken
 import com.example.fuelfit.auth.api.model.RegisterParams
 import com.example.fuelfit.auth.api.usecase.RegisterUseCase
-import com.example.fuelfit.auth.impl.presentation.register.mvi.RegisterMsg.*
 import com.example.fuelfit.model.ResultWrapper
 import com.example.fuelfit.model.getErrorMessage
 import com.example.fuelfit.model.mapApiErrorToUserFriendly
@@ -32,9 +34,9 @@ internal class RegisterStoreFactory(
 
         override fun executeIntent(intent: RegisterIntent) {
             when (intent) {
-                is RegisterIntent.UsernameChanged -> dispatch(SetUsername(intent.value))
-                is RegisterIntent.EmailChanged -> dispatch(SetEmail(intent.value))
-                is RegisterIntent.PasswordChanged -> dispatch(SetPassword(intent.value))
+                is RegisterIntent.UsernameChanged -> dispatch(RegisterMsg.SetUsername(intent.value))
+                is RegisterIntent.EmailChanged -> dispatch(RegisterMsg.SetEmail(intent.value))
+                is RegisterIntent.PasswordChanged -> dispatch(RegisterMsg.SetPassword(intent.value))
                 is RegisterIntent.Submit -> register()
                 RegisterIntent.NavigateToLogin -> publish(RegisterLabel.NavigateToLogin)
             }
@@ -48,27 +50,27 @@ internal class RegisterStoreFactory(
             var hasError = false
 
             if (username.isBlank()) {
-                dispatch(SetUsernameError(true))
+                dispatch(RegisterMsg.SetUsernameError(true))
                 hasError = true
-            } else dispatch(SetUsernameError(false))
+            } else dispatch(RegisterMsg.SetUsernameError(false))
 
             if (!Validators.isValidEmail(email)) {
-                dispatch(SetEmailError(true))
+                dispatch(RegisterMsg.SetEmailError(true))
                 hasError = true
             } else {
-                dispatch(SetEmailError(false))
+                dispatch(RegisterMsg.SetEmailError(false))
             }
 
             if (!Validators.isValidPassword(password)) {
-                dispatch(SetPasswordError(true))
+                dispatch(RegisterMsg.SetPasswordError(true))
                 hasError = true
             } else {
-                dispatch(SetPasswordError(false))
+                dispatch(RegisterMsg.SetPasswordError(false))
             }
 
             if (hasError) return
 
-            dispatch(Loading)
+            dispatch(RegisterMsg.Loading)
 
             scope.launch {
                 val result: ResultWrapper<AuthToken> = registerUseCase(
@@ -77,14 +79,14 @@ internal class RegisterStoreFactory(
 
                 when (result) {
                     is ResultWrapper.Success -> {
-                        dispatch(Success)
+                        dispatch(RegisterMsg.Success)
                         publish(RegisterLabel.NavigateToMain)
                     }
 
                     is ResultWrapper.Error -> {
                         val userError = mapApiErrorToUserFriendly(result.error)
                         val message = getErrorMessage(userError)
-                        dispatch(Error(message))
+                        dispatch(RegisterMsg.Error(message))
                         publish(RegisterLabel.ShowError(message))
                     }
                 }
@@ -95,15 +97,16 @@ internal class RegisterStoreFactory(
     private object ReducerImpl : Reducer<RegisterState, RegisterMsg> {
         override fun RegisterState.reduce(msg: RegisterMsg): RegisterState =
             when (msg) {
-                is SetUsername -> copy(username = msg.value)
-                is SetEmail -> copy(email = msg.value)
-                is SetPassword -> copy(password = msg.value)
-                is SetUsernameError -> copy(usernameError = msg.isError)
-                is SetEmailError -> copy(emailError = msg.isError)
-                is SetPasswordError -> copy(passwordError = msg.isError)
-                Loading -> copy(isLoading = true, error = null)
-                Success -> copy(isLoading = false, error = null)
+                is RegisterMsg.SetUsername -> copy(username = msg.value)
+                is RegisterMsg.SetEmail -> copy(email = msg.value)
+                is RegisterMsg.SetPassword -> copy(password = msg.value)
+                is RegisterMsg.SetUsernameError -> copy(usernameError = msg.isError)
+                is RegisterMsg.SetEmailError -> copy(emailError = msg.isError)
+                is RegisterMsg.SetPasswordError -> copy(passwordError = msg.isError)
+                RegisterMsg.Loading -> copy(isLoading = true, error = null)
+                RegisterMsg.Success -> copy(isLoading = false, error = null)
                 is Error -> copy(isLoading = false, error = msg.message)
+                is RegisterMsg.Error -> copy(isLoading = false, error = msg.message)
             }
     }
 }

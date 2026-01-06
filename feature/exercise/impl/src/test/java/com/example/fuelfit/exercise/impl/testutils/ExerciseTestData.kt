@@ -1,6 +1,9 @@
 package com.example.fuelfit.exercise.impl.testutils
 
-import com.example.fuelfit.exercise.api.model.*
+import com.example.fuelfit.exercise.api.model.ExerciseCategory
+import com.example.fuelfit.exercise.api.model.ExerciseInfo
+import com.example.fuelfit.exercise.api.model.ExerciseList
+import com.example.fuelfit.exercise.api.model.ExerciseSearchItem
 
 object ExerciseTestData {
 

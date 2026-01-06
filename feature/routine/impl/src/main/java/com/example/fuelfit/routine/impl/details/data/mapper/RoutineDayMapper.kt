@@ -1,7 +1,11 @@
 package com.example.fuelfit.routine.impl.details.data.mapper
 
-import com.example.fuelfit.routine.api.details.model.*
-import com.example.fuelfit.routine.impl.details.data.remote.dto.*
+import com.example.fuelfit.routine.api.details.model.RoutineDay
+import com.example.fuelfit.routine.api.details.model.RoutineDayRequest
+import com.example.fuelfit.routine.api.details.model.RoutineDayType
+import com.example.fuelfit.routine.impl.details.data.remote.dto.RoutineDayDto
+import com.example.fuelfit.routine.impl.details.data.remote.dto.RoutineDayRequestDto
+import com.example.fuelfit.routine.impl.details.data.remote.dto.RoutineDayTypeDto
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 

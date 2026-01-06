@@ -1,7 +1,7 @@
 package com.example.fuelfit.routine.impl.dayDetail.presentation.mvi
 
-import com.example.fuelfit.routine.api.dayDetail.model.*
-import com.example.fuelfit.routine.impl.details.presentation.mvi.RoutineDayIntent
+import com.example.fuelfit.routine.api.dayDetail.model.SlotEntryRequest
+import com.example.fuelfit.routine.api.dayDetail.model.SlotRequest
 
 internal sealed interface DayDetailIntent {
 

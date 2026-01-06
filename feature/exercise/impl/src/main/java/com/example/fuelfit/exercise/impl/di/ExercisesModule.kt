@@ -36,6 +36,10 @@ val exerciseModule = module {
     factory<GetExerciseCategoriesUseCase> { GetExerciseCategoriesUseCaseImpl(repository = get()) }
     factory<SearchExercisesUseCase> { SearchExercisesUseCaseImpl(repository = get()) }
 
-    factory { (ExercisesStoreFactory(storeFactory = get(), getExercisesUseCase = get(), getExerciseCategoriesUseCase = get())) }
+    factory { (ExercisesStoreFactory(
+        storeFactory = get(),
+        getExercisesUseCase = get(),
+        getExerciseCategoriesUseCase = get()
+    )) }
     factory { (ExerciseDetailStoreFactory(storeFactory = get(), getExerciseDetailUseCase = get())) }
 }

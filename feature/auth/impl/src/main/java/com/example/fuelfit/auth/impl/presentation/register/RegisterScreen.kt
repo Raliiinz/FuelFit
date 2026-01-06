@@ -1,13 +1,22 @@
 package com.example.fuelfit.auth.impl.presentation.register
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,7 +25,8 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.auth.impl.R
 import com.example.fuelfit.auth.impl.presentation.register.mvi.RegisterIntent
 import com.example.fuelfit.auth.impl.presentation.register.mvi.RegisterState
-import com.example.fuelfit.designsystem.*
+import com.example.fuelfit.designsystem.ErrorContent
+import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.designsystem.components.FuelFitButton
 import com.example.fuelfit.designsystem.components.FuelFitText
 import com.example.fuelfit.designsystem.components.FuelFitTextField

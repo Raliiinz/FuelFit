@@ -12,7 +12,9 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.example.fuelfit.designsystem.R
 import java.util.Calendar
 import java.util.Date
 
@@ -92,7 +94,7 @@ fun FuelFitDatePickerDialog(
                 }
             ) {
                 Text(
-                    text = "Ok",
+                    text = stringResource(R.string.ok),
                     fontWeight = FontWeight.SemiBold,
                     color = textColor
                 )
@@ -101,7 +103,7 @@ fun FuelFitDatePickerDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    text = "Oтмена",
+                    text = stringResource(R.string.cancel),
                     color = textColor
                 )
             }

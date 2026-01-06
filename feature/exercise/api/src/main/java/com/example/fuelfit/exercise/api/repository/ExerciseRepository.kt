@@ -1,6 +1,9 @@
 package com.example.fuelfit.exercise.api.repository
 
-import com.example.fuelfit.exercise.api.model.*
+import com.example.fuelfit.exercise.api.model.ExerciseCategory
+import com.example.fuelfit.exercise.api.model.ExerciseInfo
+import com.example.fuelfit.exercise.api.model.ExerciseList
+import com.example.fuelfit.exercise.api.model.ExerciseSearchItem
 import com.example.fuelfit.model.ResultWrapper
 
 interface ExerciseRepository {

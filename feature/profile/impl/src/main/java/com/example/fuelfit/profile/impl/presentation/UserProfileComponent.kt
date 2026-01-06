@@ -14,7 +14,9 @@ import com.example.fuelfit.profile.impl.presentation.mvi.UserProfileStoreFactory
 import com.example.fuelfit.utils.analytics.AnalyticsTracker
 import com.example.fuelfit.utils.analytics.Screen
 import com.example.fuelfit.utils.mvi.asValue
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import org.koin.core.component.KoinComponent

@@ -1,6 +1,10 @@
 package com.example.fuelfit.profile.impl.presentation.mvi
 
-import com.arkivanov.mvikotlin.core.store.*
+import android.annotation.SuppressLint
+import com.arkivanov.mvikotlin.core.store.Reducer
+import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
+import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.auth.api.usecase.LogoutUseCase
 import com.example.fuelfit.model.ResultWrapper
@@ -9,6 +13,7 @@ import com.example.fuelfit.model.mapApiErrorToUserFriendly
 import com.example.fuelfit.profile.api.usecase.GetCurrentUserProfileUseCase
 import com.example.fuelfit.profile.api.usecase.UpdateCurrentUserProfileUseCase
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 internal class UserProfileStoreFactory(
     private val storeFactory: StoreFactory,
@@ -75,6 +80,7 @@ internal class UserProfileStoreFactory(
             }
         }
 
+        @SuppressLint("DefaultLocale")
         private fun saveProfile() {
             if (state().isSaving) return
 
@@ -83,14 +89,14 @@ internal class UserProfileStoreFactory(
 
             var hasError = false
 
-            if (height == null || height < 140) {
+            if (height == null || height < MIN_HEIGHT) {
                 dispatch(UserProfileMsg.HeightChangedError(isError = true))
                 hasError = true
             } else {
                 dispatch(UserProfileMsg.HeightChangedError(isError = false))
             }
 
-            if (age == null || age < 10) {
+            if (age == null || age < MIN_AGE) {
                 dispatch(UserProfileMsg.AgeChangedError(isError = true))
                 hasError = true
             } else {
@@ -101,10 +107,11 @@ internal class UserProfileStoreFactory(
 
             dispatch(UserProfileMsg.Saving)
 
+
             val weight = state().weightInput
                 .takeIf { it.isNotBlank() }
                 ?.toFloatOrNull()
-                ?.let { String.format("%.2f", it) }
+                ?.let { String.format(Locale.US, "%.2f", it) }
 
             scope.launch {
                 when (val result = updateCurrentUserProfileUseCase(
@@ -166,5 +173,9 @@ internal class UserProfileStoreFactory(
                 UserProfileMsg.Saving -> copy(isSaving = true)
                 UserProfileMsg.Saved -> copy(isSaving = false)
             }
+    }
+    companion object {
+        private const val MIN_HEIGHT = 140
+        private const val MIN_AGE = 10
     }
 }

@@ -1,7 +1,6 @@
 package com.example.fuelfit.designsystem.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,46 +31,6 @@ object FuelFitText {
     )
 
     @Composable
-    fun DisplayMedium(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current,
-        textAlign: TextAlign? = null
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.displayMedium,
-        modifier = modifier,
-        color = color,
-        textAlign = textAlign
-    )
-
-    @Composable
-    fun DisplaySmall(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current,
-        textAlign: TextAlign? = null
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.displaySmall,
-        modifier = modifier,
-        color = color,
-        textAlign = textAlign
-    )
-
-    @Composable
-    fun HeadlineLarge(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.headlineLarge,
-        modifier = modifier,
-        color = color
-    )
-
-    @Composable
     fun HeadlineMedium(
         text: String,
         modifier: Modifier = Modifier,
@@ -79,18 +38,6 @@ object FuelFitText {
     ) = FuelFitBaseText(
         text = AnnotatedString(text),
         style = MaterialTheme.typography.headlineMedium,
-        modifier = modifier,
-        color = color
-    )
-
-    @Composable
-    fun HeadlineSmall(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.headlineSmall,
         modifier = modifier,
         color = color
     )
@@ -175,30 +122,6 @@ object FuelFitText {
     ) = FuelFitBaseText(
         text = AnnotatedString(text),
         style = MaterialTheme.typography.labelLarge,
-        modifier = modifier,
-        color = color
-    )
-
-    @Composable
-    fun LabelMedium(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.labelMedium,
-        modifier = modifier,
-        color = color
-    )
-
-    @Composable
-    fun LabelSmall(
-        text: String,
-        modifier: Modifier = Modifier,
-        color: Color = LocalContentColor.current
-    ) = FuelFitBaseText(
-        text = AnnotatedString(text),
-        style = MaterialTheme.typography.labelSmall,
         modifier = modifier,
         color = color
     )

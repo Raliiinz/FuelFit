@@ -67,9 +67,6 @@ class RoutineTabComponent(
             DayDetailComponent(
                 componentContext = context,
                 dayId = config.dayId,
-                onSlotClicked = { slotId ->
-                    println("Slot clicked $slotId")
-                },
                 onBack = {
                     navigation.pop()
                 }

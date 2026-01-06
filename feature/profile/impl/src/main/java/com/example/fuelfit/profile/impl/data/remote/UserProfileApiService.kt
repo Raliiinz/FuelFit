@@ -2,7 +2,9 @@ package com.example.fuelfit.profile.impl.data.remote
 
 import com.example.fuelfit.profile.impl.data.remote.dto.UpdateUserProfileRequest
 import com.example.fuelfit.profile.impl.data.remote.dto.UserProfileInfoDto
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
 
 internal interface UserProfileApiService {
     @GET("api/v2/userprofile/")

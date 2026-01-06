@@ -12,13 +12,11 @@ appcompat = "1.7.1"
 material = "1.13.0"
 compose = "1.6.8"
 kotlinx-coroutines = "1.10.2"
-detekt = "1.23.6"
 serialization = "1.7.3"
 
 # DI
 koin = "4.1.1"
 ksp = "2.0.21-1.0.27"
-#ksp = "2.2.10-2.0.2"
 
 # Architecture
 mvikotlin = "4.0.0"
@@ -54,10 +52,16 @@ google-services = "4.4.2"
 mockk = "1.13.10"
 coroutines-test = "1.10.2"
 
+# Code quality
+detekt = "1.23.8"
+detektFormatting = "1.23.8"
+ktlint = "12.2.0"
+
 # Android SDK
 minSdk = "26"
 targetSdk = "36"
 compileSdk = "36"
+java = "17"
 jetbrainsKotlinJvm = "2.0.21"
 material3 = "1.4.0"
 runtime = "1.9.5"
@@ -119,10 +123,12 @@ room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "roo
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
+
 # Unit testing
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 
 # Firebase
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
@@ -144,6 +150,8 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 # Google / Firebase плагины
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services"}

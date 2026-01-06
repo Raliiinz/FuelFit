@@ -1,10 +1,18 @@
 package com.example.fuelfit.routine.impl.list.presentation
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,6 +24,7 @@ import com.example.fuelfit.routine.impl.list.presentation.components.RoutinesLis
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutinesIntent
 import com.example.fuelfit.utils.flow.LaunchedEffectAndCollectAlways
 import com.example.fuelfit.routine.impl.R
+
 @Composable
 internal fun RoutinesListScreen(
     component: RoutinesListComponent

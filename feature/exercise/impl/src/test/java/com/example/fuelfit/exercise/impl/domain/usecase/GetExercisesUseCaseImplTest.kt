@@ -1,6 +1,5 @@
 package com.example.fuelfit.exercise.impl.domain.usecase
 
-import com.example.fuelfit.exercise.api.model.*
 import com.example.fuelfit.exercise.api.repository.ExerciseRepository
 import com.example.fuelfit.exercise.impl.testutils.ExerciseTestData.makeExerciseInfo
 import com.example.fuelfit.exercise.impl.testutils.ExerciseTestData.makeExerciseList
@@ -35,7 +34,9 @@ class GetExercisesUseCaseImplTest {
     fun `when repository returns Success then use case returns same Success`() = runTest {
         val exercise = makeExerciseInfo()
         val exerciseList = makeExerciseList(exercise)
-        coEvery { repository.getExercises(limit = 10, offset = 0, categories = listOf(1)) } returns ResultWrapper.Success(exerciseList)
+        coEvery {
+            repository.getExercises(limit = 10, offset = 0, categories = listOf(1))
+        } returns ResultWrapper.Success(exerciseList)
         val result = useCase.invoke(limit = 10, offset = 0, categories = listOf(1))
 
         assertTrue(result is ResultWrapper.Success)
@@ -62,7 +63,9 @@ class GetExercisesUseCaseImplTest {
     @Test
     fun `when repository returns empty ExerciseList then use case returns empty list`() = runTest {
         val emptyList = makeExerciseList()
-        coEvery { repository.getExercises(limit = 5, offset = 0, categories = listOf(2)) } returns ResultWrapper.Success(emptyList)
+        coEvery {
+            repository.getExercises(limit = 5, offset = 0, categories = listOf(2))
+        } returns ResultWrapper.Success(emptyList)
 
         val result = useCase.invoke(limit = 5, offset = 0, categories = listOf(2))
 
@@ -77,7 +80,9 @@ class GetExercisesUseCaseImplTest {
     fun `when limit offset categories are null then use case still works`() = runTest {
         val exercise = makeExerciseInfo(id = 2, categoryId = 2, categoryName = "Cardio")
         val exerciseList = makeExerciseList(exercise)
-        coEvery { repository.getExercises(limit = null, offset = null, categories = null) } returns ResultWrapper.Success(exerciseList)
+        coEvery {
+            repository.getExercises(limit = null, offset = null, categories = null)
+        } returns ResultWrapper.Success(exerciseList)
 
         val result = useCase.invoke(limit = null, offset = null, categories = null)
 

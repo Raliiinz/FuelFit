@@ -50,7 +50,9 @@ class SearchExercisesUseCaseImplTest {
         val emptyList = emptyList<ExerciseSearchItem>()
         val term = "nonexistent"
         val language = "en"
-        coEvery { repository.searchExercises(term = term, language = language) } returns ResultWrapper.Success(emptyList)
+        coEvery {
+            repository.searchExercises(term = term, language = language)
+        } returns ResultWrapper.Success(emptyList)
 
         val result = useCase.invoke(term = term, language = language)
 

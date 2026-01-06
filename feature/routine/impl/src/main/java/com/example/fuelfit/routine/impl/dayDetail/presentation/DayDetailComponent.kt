@@ -5,7 +5,6 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import org.koin.core.component.KoinComponent
@@ -19,12 +18,16 @@ import com.example.fuelfit.routine.impl.dayDetail.presentation.mvi.DayDetailStor
 import com.example.fuelfit.utils.analytics.AnalyticsTracker
 import com.example.fuelfit.utils.analytics.Screen
 import com.example.fuelfit.utils.mvi.asValue
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.getValue
 
 internal class DayDetailComponent(
     componentContext: ComponentContext,
     private val dayId: Int,
-    private val onSlotClicked: (Int) -> Unit,
     private val onBack: () -> Unit
 ) : ComponentContext by componentContext, KoinComponent {
 

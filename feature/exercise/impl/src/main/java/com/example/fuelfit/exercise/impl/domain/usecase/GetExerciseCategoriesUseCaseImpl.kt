@@ -8,7 +8,12 @@ import com.example.fuelfit.model.ResultWrapper
 internal class GetExerciseCategoriesUseCaseImpl(
     private val repository: ExerciseRepository
 ) : GetExerciseCategoriesUseCase {
-    override suspend fun invoke(limit: Int?, offset: Int?, name: String?, ordering: String?): ResultWrapper<List<ExerciseCategory>> {
+    override suspend fun invoke(
+        limit: Int?,
+        offset: Int?,
+        name: String?,
+        ordering: String?
+    ): ResultWrapper<List<ExerciseCategory>> {
         return repository.getExerciseCategories(limit, offset, name, ordering)
     }
 }

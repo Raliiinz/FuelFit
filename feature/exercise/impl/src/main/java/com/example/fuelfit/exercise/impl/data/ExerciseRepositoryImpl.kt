@@ -1,6 +1,9 @@
 package com.example.fuelfit.exercise.impl.data
 
-import com.example.fuelfit.exercise.api.model.*
+import com.example.fuelfit.exercise.api.model.ExerciseCategory
+import com.example.fuelfit.exercise.api.model.ExerciseInfo
+import com.example.fuelfit.exercise.api.model.ExerciseList
+import com.example.fuelfit.exercise.api.model.ExerciseSearchItem
 import com.example.fuelfit.exercise.api.repository.ExerciseRepository
 import com.example.fuelfit.exercise.impl.data.mapper.ExerciseMapper
 import com.example.fuelfit.exercise.impl.data.remote.ExerciseApiService

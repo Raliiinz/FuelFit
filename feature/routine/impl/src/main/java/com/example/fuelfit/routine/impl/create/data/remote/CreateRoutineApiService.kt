@@ -2,7 +2,10 @@ package com.example.fuelfit.routine.impl.create.data.remote
 
 import com.example.fuelfit.routine.impl.common.dto.RoutineDto
 import com.example.fuelfit.routine.impl.create.data.remote.dto.RoutineRequestDto
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 internal interface CreateRoutineApiService {
 

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="btn_retry">Повторить</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="password">Password</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="delete">Delete</string>
 </resources>

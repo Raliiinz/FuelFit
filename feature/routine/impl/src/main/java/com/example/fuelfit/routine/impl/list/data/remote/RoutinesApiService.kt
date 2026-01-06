@@ -2,7 +2,10 @@ package com.example.fuelfit.routine.impl.list.data.remote
 
 import com.example.fuelfit.routine.impl.common.dto.PaginatedResponseDto
 import com.example.fuelfit.routine.impl.common.dto.RoutineDto
-import retrofit2.http.*
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 internal interface RoutinesApiService {
 

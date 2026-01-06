@@ -1,6 +1,9 @@
 package com.example.fuelfit.routine.impl.details.presentation.mvi
 
-import com.arkivanov.mvikotlin.core.store.*
+import com.arkivanov.mvikotlin.core.store.Reducer
+import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
+import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.model.ApiError
 import com.example.fuelfit.model.ResultWrapper
@@ -128,7 +131,11 @@ internal class RoutineDayStoreFactory(
                     isLoading = false,
                     error = null
                 )
-                is RoutineDayMsg.DayDeleted -> copy(days = days.filterNot { it.id == msg.id }, isLoading = false, error = null)
+                is RoutineDayMsg.DayDeleted -> copy(
+                    days = days.filterNot { it.id == msg.id },
+                    isLoading = false,
+                    error = null
+                )
                 is RoutineDayMsg.Error -> copy(isLoading = false, error = msg.message)
             }
     }

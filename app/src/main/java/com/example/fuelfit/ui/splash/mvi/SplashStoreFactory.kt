@@ -1,6 +1,9 @@
 package com.example.fuelfit.ui.splash.mvi
 
-import com.arkivanov.mvikotlin.core.store.*
+import com.arkivanov.mvikotlin.core.store.Reducer
+import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
+import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.fuelfit.auth.api.usecase.IsAuthorizedUseCase
 import com.example.fuelfit.model.ResultWrapper

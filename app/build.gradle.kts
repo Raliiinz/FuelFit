@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
 //    alias(libs.plugins.crashlytics)
 //    alias(libs.plugins.perfomance)
 }
@@ -47,6 +49,7 @@ android {
 dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:database"))
+    implementation(project(":core:designsystem"))
     implementation(project(":core:utils"))
 
     implementation(project(":feature:auth:impl"))
