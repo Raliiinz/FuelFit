@@ -52,9 +52,9 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           cat <<EOF > ~/.gradle/gradle.properties
-          firebaseAppDistributionAppId=${{ secrets.FIREBASE_APP_ID }}
-          firebaseAppDistributionTesters=${{ secrets.FIREBASE_TESTERS }}
-          firebaseAppDistributionReleaseNotes=PR build from GitHub
+          firebaseAppDistribution.appId=${{ secrets.FIREBASE_APP_ID }}
+          firebaseAppDistribution.testers=${{ secrets.FIREBASE_TESTERS }}
+          firebaseAppDistribution.releaseNotes=PR build from GitHub
           EOF
 
       - name: Upload to Firebase App Distribution
