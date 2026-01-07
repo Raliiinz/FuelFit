@@ -46,7 +46,7 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew :app:assembleDebug
 
-      # 8. Set up Node.js (для firebase-tools, если нужно)
+      # 8. Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
