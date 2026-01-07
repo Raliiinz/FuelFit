@@ -48,12 +48,11 @@ jobs:
       - name: Assemble Debug
         run: ./gradlew assembleDebug
 
-      - name: Upload to Firebase App Distribution
+      - name: Inject Firebase App Distribution config
         run: |
-          ./gradlew appDistributionUploadDebug \
-            -PfirebaseAppDistribution.appId=$FIREBASE_APP_ID \
-            -PfirebaseAppDistribution.testers=$FIREBASE_TESTERS \
-            -PfirebaseAppDistribution.releaseNotes="PR build from GitHub"
-        env:
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_TESTERS: ${{ secrets.FIREBASE_TESTERS }}
+          echo "firebaseAppDistributionAppId=${{ secrets.FIREBASE_APP_ID }}" >> gradle.properties
+          echo "firebaseAppDistributionTesters=${{ secrets.FIREBASE_TESTERS }}" >> gradle.properties
+          echo "firebaseAppDistributionReleaseNotes=PR build from GitHub" >> gradle.properties
+
+      - name: Upload to Firebase App Distribution
+        run: ./gradlew :app:appDistributionUploadDebug
