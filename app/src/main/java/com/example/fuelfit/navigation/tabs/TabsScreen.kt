@@ -5,11 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,8 +16,8 @@ import com.example.fuelfit.exercise.impl.navigation.ExercisesScreen
 import com.example.fuelfit.profile.impl.presentation.UserProfileScreen
 import com.example.fuelfit.routine.impl.navigation.RoutineScreen
 import com.example.fuelfit.app.R
-import com.example.fuelfit.designsystem.components.BottomNavItem
 import com.example.fuelfit.designsystem.components.FuelFitBottomNavigation
+import com.example.fuelfit.designsystem.item.BottomNavItem
 
 @Composable
 fun TabsScreen(component: TabsComponent) {

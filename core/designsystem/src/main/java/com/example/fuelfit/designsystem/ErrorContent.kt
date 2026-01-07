@@ -33,7 +33,6 @@ fun ErrorContent(
             FuelFitButton.Primary(
                 text = stringResource(R.string.btn_retry),
                 onClick = onRetry,
-                contentPadding = PaddingValues(vertical = 4.dp)
             )
         }
     }
