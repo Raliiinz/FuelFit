@@ -50,9 +50,12 @@ jobs:
 
       - name: Inject Firebase App Distribution config
         run: |
-          echo "firebaseAppDistributionAppId=${{ secrets.FIREBASE_APP_ID }}" >> gradle.properties
-          echo "firebaseAppDistributionTesters=${{ secrets.FIREBASE_TESTERS }}" >> gradle.properties
-          echo "firebaseAppDistributionReleaseNotes=PR build from GitHub" >> gradle.properties
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          firebaseAppDistributionAppId=${{ secrets.FIREBASE_APP_ID }}
+          firebaseAppDistributionTesters=${{ secrets.FIREBASE_TESTERS }}
+          firebaseAppDistributionReleaseNotes=PR build from GitHub
+          EOF
 
       - name: Upload to Firebase App Distribution
         run: ./gradlew :app:appDistributionUploadDebug
