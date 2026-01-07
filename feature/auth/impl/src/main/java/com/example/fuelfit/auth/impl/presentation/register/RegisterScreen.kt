@@ -75,7 +75,7 @@ private fun RegisterContent(
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(160.dp))
 
         FuelFitText.DisplayLarge(
             text = stringResource(R.string.app_name),

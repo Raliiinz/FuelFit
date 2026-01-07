@@ -83,7 +83,7 @@ private fun LoginContent(
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(160.dp))
 
         FuelFitText.DisplayLarge(
             text = stringResource(R.string.app_name),
@@ -133,7 +133,7 @@ private fun LoginContent(
         Spacer(modifier = Modifier.height(12.dp))
 
         FuelFitButton.Secondary(
-            text = stringResource(R.string.btn_register),
+            text = stringResource(R.string.btn_yet_not_registered),
             onClick = { onIntent(LoginIntent.NavigateToRegister) },
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 16.dp)
