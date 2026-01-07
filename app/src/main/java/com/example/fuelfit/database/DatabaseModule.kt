@@ -23,4 +23,3 @@ internal val databaseModule = module {
         get<AppDatabaseImpl>().userProfileDao()
     }
 }
-
