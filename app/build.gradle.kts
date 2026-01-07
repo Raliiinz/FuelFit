@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.ktlint)
 //    alias(libs.plugins.crashlytics)
 //    alias(libs.plugins.perfomance)
+    alias(libs.plugins.firebase.app.distribution)
 }
 
 android {
@@ -44,6 +45,12 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+firebaseAppDistribution {
+    appId = (project.findProperty("firebaseAppDistribution.appId") as? String).orEmpty()
+    testers = (project.findProperty("firebaseAppDistribution.testers") as? String).orEmpty()
+    releaseNotes = "PR build from GitHub"
 }
 
 dependencies {

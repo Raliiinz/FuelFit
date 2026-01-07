@@ -28,7 +28,6 @@ val appModule = module {
         exerciseModule,
         routineModule,
         userProfileModule
-        // другие фичи
     )
 
     single { FirebaseAnalytics.getInstance(androidContext()) }

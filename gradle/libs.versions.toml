@@ -1,41 +1,57 @@
 [versions]
+
+# Android SDK / Java
+minSdk = "26"
+targetSdk = "36"
+compileSdk = "36"
+java = "17"
+jetbrainsKotlinJvm = "2.0.21"
+
+# Build tooling
 agp = "8.12.3"
 kotlin = "2.0.21"
+ksp = "2.0.21-1.0.27"
+
+# AndroidX Core / UI
 coreKtx = "1.17.0"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.6.1"
-activityCompose = "1.11.0"
-composeBom = "2024.09.00"
 appcompat = "1.7.1"
 material = "1.13.0"
+
+# Lifecycle / Activity
+lifecycleRuntimeKtx = "2.6.1"
+activityCompose = "1.11.0"
+
+# Compose / UI
+composeBom = "2024.09.00"
 compose = "1.6.8"
+material3 = "1.4.0"
+runtime = "1.9.5"
+androidx-compose-icons = "1.6.8"
+
+# Kotlin / Coroutines / Serialization
 kotlinx-coroutines = "1.10.2"
 serialization = "1.7.3"
 
-# DI
+# Dependency Injection
 koin = "4.1.1"
-ksp = "2.0.21-1.0.27"
 
-# Architecture
+# Architecture / MVIKotlin / Decompose / Essenty
 mvikotlin = "4.0.0"
 decompose = "3.1.0"
 essenty = "2.1.0"
 
-# UI
+# UI / Images
 coil = "2.7.0"
 
 # Network
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 
-# DB
+# Data / DB
 room = "2.6.1"
-
 datastore = "1.2.0"
 
-# Security
+# Security / Secrets
 secretsGradlePlugin = "2.0.1"
 
 # Firebase
@@ -47,8 +63,12 @@ firebase-perfomance = "21.0.4"
 crashlytics-plugin = "3.0.3"
 perfomance-plugin = "1.4.2"
 google-services = "4.4.2"
+firebase-app-distribution = "3.0.3"
 
 # Testing
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
 mockk = "1.13.10"
 coroutines-test = "1.10.2"
 
@@ -57,22 +77,19 @@ detekt = "1.23.8"
 detektFormatting = "1.23.8"
 ktlint = "12.2.0"
 
-# Android SDK
-minSdk = "26"
-targetSdk = "36"
-compileSdk = "36"
-java = "17"
-jetbrainsKotlinJvm = "2.0.21"
-material3 = "1.4.0"
-runtime = "1.9.5"
 
 [libraries]
+
+# Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Lifecycle / Work / ViewModel
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# Compose UI
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -80,12 +97,13 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+
+# Kotlin / Coroutines
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
-androidx-compose-icons = { group = "androidx.compose.material", name ="material-icons-extended", version.ref ="compose" }
 
 # DI / Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -93,67 +111,75 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
-# Extra
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
-
-coil-network-okhttp = { group = "io.coil-kt", name = "coil-network-okhttp", version.ref = "coil" }
-
-
+# Architecture
 mvikotlin-core = { group = "com.arkivanov.mvikotlin", name = "mvikotlin", version.ref = "mvikotlin" }
 mvikotlin-main = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-main", version.ref = "mvikotlin" }
-mvikotlin-extensions-coroutines = { group = "com.arkivanov.mvikotlin", name ="mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
+mvikotlin-extensions-coroutines = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 
-
-arch-decompose = { group = "com.arkivanov.decompose", name ="decompose", version.ref = "decompose" }
+arch-decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 arch-decompose-extensions-compose = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 arch-essenty-lifecycle = { group = "com.arkivanov.essenty", name = "lifecycle", version.ref = "essenty" }
 arch-essenty-coroutines = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenty" }
 arch-essenty-statekeeper = { group = "com.arkivanov.essenty", name = "state-keeper", version.ref = "essenty" }
 
-
+# Network
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
+# Data / DB
 room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
+# Images / Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt", name = "coil-network-okhttp", version.ref = "coil" }
 
-# Unit testing
+# Testing
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
+# Code quality
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 
 # Firebase
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
-firebase-crashlytics =  { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebase-analytics" }
-firebase-remote-config =  { group = "com.google.firebase", name = "firebase-config", version.ref = "firebase-remote-config" }
+firebase-remote-config = { group = "com.google.firebase", name = "firebase-config", version.ref = "firebase-remote-config" }
 firebase-perfomance = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase-perfomance" }
 
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
+
+# Android
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+# Kotlin
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "agp" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
+# Code quality
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
-# Google / Firebase плагины
-google-services = { id = "com.google.gms.google-services", version.ref = "google-services"}
-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin"}
+# Google / Firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 perfomance = { id = "com.google.firebase.firebase-perf", version.ref = "perfomance-plugin" }
+firebase-app-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-app-distribution" }
+
+# Security / Secrets
+secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
+import com.example.fuelfit.designsystem.components.FloatingActionButton
 import com.example.fuelfit.routine.api.details.model.RoutineDay
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayDialog
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayListContent
@@ -75,15 +75,14 @@ internal fun RoutineDayScreen(
                 editingDay = null
                 isDialogOpen = true
             },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.add_day)
-            )
-        }
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_day)
+                )
+            },
+            modifier = Modifier.align(Alignment.BottomEnd),
+        )
 
         SnackbarHost(
             hostState = snackbarHostState,

@@ -35,20 +35,20 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFFFF8C1A),
+    primary = PrimaryContainer,
     onPrimary = Color.Black,
-    primaryContainer = Color(0xFF5A2A00),
-    onPrimaryContainer = Color(0xFFFFE1C4),
+    primaryContainer = Primary,
+    onPrimaryContainer = OnPrimary,
 
-    secondary = Color(0xFFB89B8C),
+    secondary = SecondaryContainer,
     onSecondary = Color.Black,
-    secondaryContainer = Color(0xFF3B2A25),
-    onSecondaryContainer = Color(0xFFD7C2B5),
+    secondaryContainer = Secondary,
+    onSecondaryContainer = OnSecondary,
 
-    tertiary = Color(0xFFFFCC80),
+    tertiary = TertiaryContainer,
     onTertiary = Color.Black,
-    tertiaryContainer = Color(0xFF5A3A10),
-    onTertiaryContainer = Color(0xFFFFE8CC),
+    tertiaryContainer = Tertiary,
+    onTertiaryContainer = OnTertiary,
 
     background = DarkBackground,
     onBackground = Color(0xFFF5EFEA),

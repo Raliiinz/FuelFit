@@ -101,7 +101,8 @@ private fun RoutineItem(
             IconButton(onClick = onEdit) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Routine"
+                    contentDescription = "Edit Routine",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

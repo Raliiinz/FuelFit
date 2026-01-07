@@ -8,8 +8,13 @@ class FirebaseAnalyticsTracker(
 ) : AnalyticsTracker {
 
     override fun screenOpened(screen: Screen) {
-        analytics.logEvent("screen_opened") {
-            param("screen_name", screen.screenName)
+        analytics.logEvent(EVENT_SCREEN_OPENED) {
+            param(PARAM_SCREEN_NAME, screen.screenName)
         }
+    }
+
+    companion object {
+        private const val EVENT_SCREEN_OPENED = "screen_opened"
+        private const val PARAM_SCREEN_NAME = "screen_name"
     }
 }

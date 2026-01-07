@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
+import com.example.fuelfit.designsystem.LoadingContent
 import com.example.fuelfit.utils.flow.LaunchedEffectAndCollect
 
 @Composable
@@ -30,8 +30,7 @@ fun SplashScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        LoadingContent()
         SnackbarHost(snackbarHostState)
     }
 }
-

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
+import com.example.fuelfit.designsystem.components.FloatingActionButton
 import com.example.fuelfit.routine.impl.list.presentation.components.RoutinesListContent
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutinesIntent
 import com.example.fuelfit.utils.flow.LaunchedEffectAndCollectAlways
@@ -68,20 +68,15 @@ internal fun RoutinesListScreen(
         }
 
         FloatingActionButton(
-            onClick = {
-                component.onIntent(RoutinesIntent.CreateRoutineClicked)
-            },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(
-                    R.string.create_routine
+            onClick = { component.onIntent(RoutinesIntent.CreateRoutineClicked) },
+            modifier = Modifier.align(Alignment.BottomEnd),
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.create_routine)
                 )
-            )
-        }
+            }
+        )
 
         SnackbarHost(
             hostState = snackbarHostState,

@@ -4,47 +4,58 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.exercise.impl.navigation.ExercisesScreen
 import com.example.fuelfit.profile.impl.presentation.UserProfileScreen
 import com.example.fuelfit.routine.impl.navigation.RoutineScreen
+import com.example.fuelfit.app.R
+import com.example.fuelfit.designsystem.components.FuelFitBottomNavigation
+import com.example.fuelfit.designsystem.item.BottomNavItem
 
 @Composable
 fun TabsScreen(component: TabsComponent) {
     val stack by component.stack.subscribeAsState()
 
+    val tabs: List<BottomNavItem<TabsComponent.Config>> = listOf(
+        BottomNavItem(
+            id = TabsComponent.Config.Exercises,
+            label = stringResource(R.string.tab_exercises),
+            icon = Icons.Default.List
+        ),
+        BottomNavItem(
+            id = TabsComponent.Config.Routine,
+            label = stringResource(R.string.tab_workout),
+            icon = Icons.Default.FitnessCenter
+        ),
+        BottomNavItem(
+            id = TabsComponent.Config.UserProfile,
+            label = stringResource(R.string.tab_profile),
+            icon = Icons.Default.Person
+        )
+    )
+
+    val currentId = when (stack.active.instance) {
+        is TabsComponent.Child.ExercisesChild -> TabsComponent.Config.Exercises
+        is TabsComponent.Child.RoutineChild -> TabsComponent.Config.Routine
+        is TabsComponent.Child.UserProfileChild -> TabsComponent.Config.UserProfile
+    }
+
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    selected = stack.active.instance is TabsComponent.Child.ExercisesChild,
-                    onClick = { component.onTabClicked(TabsComponent.Config.Exercises) },
-                    label = { Text("Exercises") },
-                    icon = { Icon(Icons.Default.List, null) }
-                )
-                NavigationBarItem(
-                    selected = stack.active.instance is TabsComponent.Child.RoutineChild,
-                    onClick = { component.onTabClicked(TabsComponent.Config.Routine) },
-                    label = { Text("Workout") },
-                    icon = { Icon(Icons.Default.FitnessCenter, null) }
-                )
-                NavigationBarItem(
-                    selected = stack.active.instance is TabsComponent.Child.UserProfileChild,
-                    onClick = { component.onTabClicked(TabsComponent.Config.UserProfile) },
-                    label = { Text("Food") },
-                    icon = { Icon(Icons.Default.Fastfood, null) }
-                )
-            }
+            FuelFitBottomNavigation(
+                items = tabs,
+                currentId = currentId,
+                onItemSelected = { config ->
+                    component.onTabClicked(config)
+                }
+            )
         }
     ) { padding ->
         Children(

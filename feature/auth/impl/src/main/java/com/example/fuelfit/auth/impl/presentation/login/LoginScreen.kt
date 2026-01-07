@@ -83,7 +83,7 @@ private fun LoginContent(
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(160.dp))
 
         FuelFitText.DisplayLarge(
             text = stringResource(R.string.app_name),
@@ -91,7 +91,7 @@ private fun LoginContent(
         )
         FuelFitText.BodyMedium(
             text = stringResource(R.string.login_subtitle),
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier.padding(bottom = 40.dp)
         )
 
         FuelFitTextField.Outlined(
@@ -120,7 +120,7 @@ private fun LoginContent(
             errorMessage = stringResource(R.string.error_fill_field)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         FuelFitButton.Primary(
             text = if (state.isLoading) stringResource(R.string.btn_loading) else stringResource(R.string.btn_login),
@@ -133,7 +133,7 @@ private fun LoginContent(
         Spacer(modifier = Modifier.height(12.dp))
 
         FuelFitButton.Secondary(
-            text = stringResource(R.string.btn_register),
+            text = stringResource(R.string.btn_yet_not_registered),
             onClick = { onIntent(LoginIntent.NavigateToRegister) },
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 16.dp)
