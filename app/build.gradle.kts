@@ -47,6 +47,12 @@ android {
     }
 }
 
+firebaseAppDistribution {
+    appId = (project.findProperty("firebaseAppDistribution.appId") as? String).orEmpty()
+    testers = (project.findProperty("firebaseAppDistribution.testers") as? String).orEmpty()
+    releaseNotes = "PR build from GitHub"
+}
+
 dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:database"))
