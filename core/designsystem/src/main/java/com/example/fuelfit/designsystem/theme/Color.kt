@@ -2,30 +2,30 @@ package com.example.fuelfit.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFFFF7A00)
+val Primary = Color(0xFF41795A)
 val OnPrimary = Color(0xFFFFFFFF)
-val PrimaryContainer = Color(0xFFFFE1C4)
-val OnPrimaryContainer = Color(0xFF3A1E00)
+val PrimaryContainer = Color(0xFFC4D23C)
+val OnPrimaryContainer = Color(0xFF1F2A1F)
 
-val Secondary = Color(0xFF4E342E)
+val Secondary = Color(0xFFA3745B)
 val OnSecondary = Color(0xFFFFFFFF)
-val SecondaryContainer = Color(0xFFD7C2B5)
-val OnSecondaryContainer = Color(0xFF2A1A15)
+val SecondaryContainer = Color(0xFFE5CDB1)
+val OnSecondaryContainer = Color(0xFF4F2E1F)
 
-val Tertiary = Color(0xFFFFB74D)
-val OnTertiary = Color(0xFF3A2200)
-val TertiaryContainer = Color(0xFFFFE8CC)
-val OnTertiaryContainer = Color(0xFF3A2200)
+val Tertiary = Color(0xFFC4D23C)
+val OnTertiary = Color(0xFF1F2A1F)
+val TertiaryContainer = Color(0xFFE6F2B2)
+val OnTertiaryContainer = Color(0xFF41795A)
 
-val Background = Color(0xFFFFF8F3)
-val OnBackground = Color(0xFF1C1B1A)
-val Surface = Color(0xFFFFF1E6)
-val SurfaceVariant = Color(0xFFF3E6DC)
-val Outline = Color(0xFFC7B6AA)
+val Background = Color(0xFFF9F8F4)
+val OnBackground = Color(0xFF1F1D1B)
+val Surface = Color(0xFFFFFDF8)
+val SurfaceVariant = Color(0xFFEFE7DF)
+val Outline = Color(0xFFB1A399)
 
-val DarkBackground = Color(0xFF1A120E)
-val DarkSurface = Color(0xFF241813)
-val DarkOutline = Color(0xFF4A3B33)
+val DarkBackground = Color(0xFF1F1B18)
+val DarkSurface = Color(0xFF2E2721)
+val DarkOutline = Color(0xFF4F2E1F)
 
 val Error = Color(0xFFD32F2F)
 val OnError = Color(0xFFFFFFFF)
