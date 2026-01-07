@@ -11,5 +11,9 @@
     <string name="label_email">Email: %1$s</string>
     <string name="error_height_min">Height must be at least 140 cm</string>
     <string name="error_age_min">Age must be at least 10 years</string>
+    <string name="today_workout_title">You have a workout today</string>
+    <string name="today_no_workout_title">No workout scheduled for today</string>
+    <string name="today_workout_day">Day: %1$d</string>
+    <string name="today_no_workout_description">Take a rest or plan a new workout</string>
 </resources>
 

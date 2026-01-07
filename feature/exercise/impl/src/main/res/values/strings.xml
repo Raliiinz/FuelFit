@@ -16,4 +16,5 @@
     <string name="images">Images</string>
     <string name="videos">Videos</string>
     <string name="video_url">Video URL: %1$s</string>
+    <string name="back">Back</string>
 </resources>

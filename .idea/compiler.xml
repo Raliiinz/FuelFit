@@ -5,6 +5,7 @@
       <module name="FuelFit.core.navigation" target="21" />
       <module name="FuelFit.core.ui" target="21" />
       <module name="FuelFit.feature.food.impl" target="21" />
+      <module name="FuelFit.feature.workout.impl" target="21" />
       <module name="FuelFit.feature.workoutsession.impl" target="21" />
     </bytecodeTargetLevel>
   </component>

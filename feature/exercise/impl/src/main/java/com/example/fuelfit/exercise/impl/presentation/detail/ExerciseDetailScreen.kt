@@ -4,11 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHost
@@ -20,6 +23,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -56,7 +63,10 @@ internal fun ExerciseDetailScreen(component: ExerciseDetailComponent) {
             )
             state.detail != null -> ExerciseDetailContent(
                 detail = state.detail!!,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onBackClicked = {
+                    component.onIntent(ExerciseDetailIntent.BackClicked)
+                }
             )
         }
 
@@ -70,19 +80,40 @@ internal fun ExerciseDetailScreen(component: ExerciseDetailComponent) {
 }
 
 @Composable
-private fun ExerciseDetailContent(detail: ExerciseInfo, modifier: Modifier = Modifier) {
+private fun ExerciseDetailContent(
+    detail: ExerciseInfo,
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit
+) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        FuelFitText.HeadlineMedium(
-            text = detail.translations.firstOrNull()?.name ?: stringResource(R.string.no_name),
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = onBackClicked,
+                modifier = Modifier.offset(x = (-8).dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            FuelFitText.HeadlineMedium(
+                text = detail.translations.firstOrNull()?.name
+                    ?: stringResource(R.string.no_name)
+            )
+        }
 
         if (!detail.translations.firstOrNull()?.description.isNullOrEmpty()) {
             FuelFitCard.FuelFitOutlinedCard {

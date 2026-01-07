@@ -15,7 +15,7 @@ import com.example.fuelfit.designsystem.components.FuelFitTextField
 import com.example.fuelfit.profile.impl.R
 
 @Composable
-fun UserProfileForm(
+internal fun UserProfileForm(
     weight: String,
     onWeightChange: (String) -> Unit,
     height: String,

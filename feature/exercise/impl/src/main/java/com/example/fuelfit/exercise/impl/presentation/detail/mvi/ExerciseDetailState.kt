@@ -5,5 +5,6 @@ import com.example.fuelfit.exercise.api.model.ExerciseInfo
 internal data class ExerciseDetailState(
     val isLoading: Boolean = false,
     val detail: ExerciseInfo? = null,
-    val error: String? = null
+    val error: String? = null,
+    val exerciseId: Int,
 )

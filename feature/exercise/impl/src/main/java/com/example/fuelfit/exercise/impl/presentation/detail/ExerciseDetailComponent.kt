@@ -27,8 +27,8 @@ import kotlin.getValue
 
 internal class ExerciseDetailComponent(
     componentContext: ComponentContext,
-    exerciseId: Int,
-    val onBack: () -> Unit
+    private val exerciseId: Int,
+    private val onBack: () -> Unit,
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val analytics: AnalyticsTracker by inject()
@@ -48,6 +48,7 @@ internal class ExerciseDetailComponent(
                 store.labels.collect { label ->
                     when (label) {
                         is ExerciseDetailLabel.ShowError -> _snackbar.emit(label.message)
+                        ExerciseDetailLabel.NavigateBack -> onBack()
                     }
                 }
             }

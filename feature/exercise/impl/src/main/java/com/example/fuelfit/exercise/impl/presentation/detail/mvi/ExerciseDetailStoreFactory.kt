@@ -20,7 +20,7 @@ internal class ExerciseDetailStoreFactory(
         object : ExerciseDetailStore,
             Store<ExerciseDetailIntent, ExerciseDetailState, ExerciseDetailLabel> by storeFactory.create(
                 name = "ExerciseDetailStore",
-                initialState = ExerciseDetailState(),
+                initialState = ExerciseDetailState(exerciseId = exerciseId),
                 bootstrapper = SimpleBootstrapper(Unit),
                 executorFactory = { Executor(exerciseId) },
                 reducer = ReducerImpl
@@ -38,6 +38,7 @@ internal class ExerciseDetailStoreFactory(
             when (intent) {
                 ExerciseDetailIntent.Load,
                 ExerciseDetailIntent.Retry -> loadDetail()
+                ExerciseDetailIntent.BackClicked -> publish(ExerciseDetailLabel.NavigateBack)
             }
         }
 
