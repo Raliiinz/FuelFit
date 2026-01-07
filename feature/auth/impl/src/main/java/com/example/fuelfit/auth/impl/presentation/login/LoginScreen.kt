@@ -91,7 +91,7 @@ private fun LoginContent(
         )
         FuelFitText.BodyMedium(
             text = stringResource(R.string.login_subtitle),
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier.padding(bottom = 40.dp)
         )
 
         FuelFitTextField.Outlined(
@@ -120,7 +120,7 @@ private fun LoginContent(
             errorMessage = stringResource(R.string.error_fill_field)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         FuelFitButton.Primary(
             text = if (state.isLoading) stringResource(R.string.btn_loading) else stringResource(R.string.btn_login),

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
-import com.example.fuelfit.designsystem.components.FuelFitFab
+import com.example.fuelfit.designsystem.components.FloatingActionButton
 import com.example.fuelfit.routine.api.details.model.RoutineDay
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayDialog
 import com.example.fuelfit.routine.impl.details.presentation.components.RoutineDayListContent
@@ -70,12 +70,11 @@ internal fun RoutineDayScreen(
             }
         }
 
-        FuelFitFab.FloatingActionButton(
+        FloatingActionButton(
             onClick = {
                 editingDay = null
                 isDialogOpen = true
             },
-            contentDescription = stringResource(R.string.add_day),
             icon = {
                 Icon(
                     imageVector = Icons.Default.Add,

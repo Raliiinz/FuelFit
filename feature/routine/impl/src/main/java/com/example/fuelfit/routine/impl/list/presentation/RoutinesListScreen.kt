@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.example.fuelfit.designsystem.ErrorContent
 import com.example.fuelfit.designsystem.LoadingContent
-import com.example.fuelfit.designsystem.components.FuelFitFab
+import com.example.fuelfit.designsystem.components.FloatingActionButton
 import com.example.fuelfit.routine.impl.list.presentation.components.RoutinesListContent
 import com.example.fuelfit.routine.impl.list.presentation.mvi.RoutinesIntent
 import com.example.fuelfit.utils.flow.LaunchedEffectAndCollectAlways
@@ -67,9 +67,8 @@ internal fun RoutinesListScreen(
             }
         }
 
-        FuelFitFab.FloatingActionButton(
+        FloatingActionButton(
             onClick = { component.onIntent(RoutinesIntent.CreateRoutineClicked) },
-            contentDescription = stringResource(R.string.create_routine),
             modifier = Modifier.align(Alignment.BottomEnd),
             icon = {
                 Icon(
