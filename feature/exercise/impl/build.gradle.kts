@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)
     implementation(libs.mvikotlin.extensions.coroutines)
+
     implementation(libs.arch.decompose)
     implementation(libs.arch.decompose.extensions.compose)
     implementation(libs.arch.essenty.lifecycle)
@@ -53,6 +54,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.android.compose)
+
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.datastore.preferences)
@@ -64,15 +66,16 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.material3)
+    implementation(libs.material)
     implementation(libs.androidx.compose.icons)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

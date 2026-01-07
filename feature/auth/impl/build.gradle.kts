@@ -35,15 +35,23 @@ android {
 }
 
 dependencies {
+
     api(project(":feature:auth:api"))
     api(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
     implementation(project(":core:utils"))
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.compose.icons)
+    implementation(libs.material)
+    implementation(libs.androidx.material3)
+
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)
     implementation(libs.mvikotlin.extensions.coroutines)
+
     implementation(libs.arch.decompose)
     implementation(libs.arch.decompose.extensions.compose)
     implementation(libs.arch.essenty.lifecycle)
@@ -52,6 +60,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.android.compose)
+
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.datastore.preferences)
@@ -61,11 +70,6 @@ dependencies {
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.icons)
-    implementation(libs.material)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

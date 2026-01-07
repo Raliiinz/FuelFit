@@ -43,21 +43,25 @@ android {
 }
 
 dependencies {
-
     api(project(":core:model"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.serialization)
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging)
+
     implementation(libs.kotlin.serialization)
+
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.android.compose)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

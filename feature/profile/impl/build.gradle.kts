@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)
     implementation(libs.mvikotlin.extensions.coroutines)
+
     implementation(libs.arch.decompose)
     implementation(libs.arch.decompose.extensions.compose)
     implementation(libs.arch.essenty.lifecycle)
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.android.compose)
+
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.datastore.preferences)
@@ -63,12 +65,14 @@ dependencies {
     implementation(libs.retrofit.serialization)
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging)
+
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

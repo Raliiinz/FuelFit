@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
-//    alias(libs.plugins.crashlytics)
-//    alias(libs.plugins.perfomance)
+    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.perfomance)
     alias(libs.plugins.firebase.app.distribution)
 }
 
@@ -54,6 +54,7 @@ firebaseAppDistribution {
 }
 
 dependencies {
+
     implementation(project(":core:network"))
     implementation(project(":core:database"))
     implementation(project(":core:designsystem"))
@@ -72,18 +73,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.compose.icons)
+
     implementation(libs.coil.compose)
+
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.android.compose)
-    implementation(libs.androidx.compose.icons)
-    implementation(libs.koin.core)
     implementation(libs.koin.compose)
     implementation(libs.arch.decompose)
     implementation(libs.arch.decompose.extensions.compose)
@@ -91,11 +87,21 @@ dependencies {
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)
     implementation(libs.mvikotlin.extensions.coroutines)
+
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
 
     implementation(libs.firebase.analytics)
-//    implementation(libs.firebase.crashlytics)
-//    implementation(libs.firebase.perfomance)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perfomance)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
